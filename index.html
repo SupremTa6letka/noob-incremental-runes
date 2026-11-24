@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noob Incremental Runes Info</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 14px 46px;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(124, 58, 237, 0.25), transparent 42%),
+        radial-gradient(circle at 86% 8%, rgba(14, 165, 233, 0.16), transparent 38%),
+        #09080f;
+      color: #f9fafb;
+      font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+    .wrap {
+      max-width: 1380px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .header-box {
+      background: linear-gradient(90deg, #2e1065 0%, #171329 55%, #121829 100%);
+      border: 2px solid #7c3aed;
+      box-shadow: 0 0 24px rgba(124, 58, 237, 0.28);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    }
+    .gem {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #e879f9, #7c3aed);
+      border: 2px solid #f5d0fe;
+      display: inline-block;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+    .meta-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .meta-pill {
+      background: rgba(10, 12, 20, 0.75);
+      border: 1px solid #4c1d95;
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .search-input {
+      background: rgba(10, 12, 20, 0.85);
+      border: 2px solid #4c1d95;
+      border-radius: 9px;
+      color: #ffffff;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 210px;
+      max-width: 100%;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .search-input:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+    }
+    .lang-btn {
+      background: linear-gradient(180deg, #7c3aed 0%, #4c1d95 100%);
+      color: #ffffff;
+      border: 2px solid #c4b5fd;
+      border-radius: 9px;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+    .lang-btn:hover {
+      transform: translateY(-1px);
+      border-color: #f5d0fe;
+      box-shadow: 0 0 14px rgba(167, 139, 250, 0.55);
+    }
+    .lang-btn:active {
+      transform: translateY(0);
+    }
+    .lang-tag {
+      background: rgba(10, 12, 20, 0.55);
+      border: 1px solid rgba(245, 208, 254, 0.45);
+      border-radius: 5px;
+      padding: 1px 5px;
+      font-size: 10px;
+      color: #fde047;
+    }
+    .support-btn {
+      background: linear-gradient(180deg, #27223d 0%, #171426 100%);
+      color: #ffffff;
+      border: 2px solid #6366f1;
+      border-radius: 9px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.1s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .support-btn:hover {
+      transform: translateY(-1px);
+      border-color: #a5b4fc;
+      box-shadow: 0 0 14px rgba(99, 102, 241, 0.45);
+    }
+    .support-btn:active {
+      transform: translateY(0);
+    }
+    .support-btn.active {
+      background: linear-gradient(180deg, #4f46e5 0%, #312e81 100%);
+      border-color: #c7d2fe;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.55);
+    }
+    .nav-panel {
+      background: rgba(19, 17, 33, 0.94);
+      border: 2px solid #2e2849;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .nav-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: #a78bfa;
+      margin-bottom: 8px;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .btn-row:last-child {
+      margin-bottom: 0;
+    }
+    .game-btn {
+      background: linear-gradient(180deg, #27223d 0%, #171426 100%);
+      color: #e5e7eb;
+      border: 2px solid #3f3763;
+      border-radius: 9px;
+      padding: 8px 15px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.1s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .game-btn:hover {
+      transform: translateY(-1px);
+      border-color: #a78bfa;
+      color: #ffffff;
+    }
+    .game-btn.active {
+      background: linear-gradient(180deg, #8b5cf6 0%, #5b21b6 100%);
+      border-color: #ddd6fe;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(139, 92, 246, 0.55);
+    }
+    .game-btn.event-main.active {
+      background: linear-gradient(180deg, #ec4899 0%, #7e22ce 100%);
+      border-color: #fbcfe8;
+      box-shadow: 0 0 16px rgba(236, 72, 153, 0.55);
+    }
+    .sub-btn.active {
+      background: linear-gradient(180deg, #0284c7 0%, #1d4ed8 100%);
+      border-color: #bae6fd;
+      box-shadow: 0 0 14px rgba(14, 165, 233, 0.45);
+    }
+    .game-btn.creator-main {
+      border-color: #6366f1;
+    }
+    .game-btn.creator-main.active {
+      background: linear-gradient(180deg, #4f46e5 0%, #312e81 100%);
+      border-color: #c7d2fe;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.55);
+    }
+    .event-picker-banner {
+      background: linear-gradient(90deg, rgba(88, 28, 135, 0.45) 0%, rgba(30, 27, 75, 0.7) 100%);
+      border: 1px solid #a855f7;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      color: #f3e8ff;
+    }
+    .board {
+      background: rgba(14, 13, 24, 0.95);
+      border: 2px solid #2b2642;
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .board-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #25213a;
+    }
+    .board-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+    .board-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .board-hint {
+      font-size: 12px;
+      font-weight: 700;
+      color: #9ca3af;
+    }
+    .runes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 12px;
+    }
+    .rune-card {
+      position: relative;
+      border-radius: 10px;
+      padding: 12px 11px 13px;
+      border: 2px solid #3b3554;
+      background: linear-gradient(180deg, #232036 0%, #12111c 75%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 6px 14px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .card-green  { background: linear-gradient(180deg, #15432c 0%, #111622 72%); border-color: #22c55e; }
+    .card-brown  { background: linear-gradient(180deg, #472814 0%, #15121c 72%); border-color: #d97706; }
+    .card-purple { background: linear-gradient(180deg, #391957 0%, #13101f 72%); border-color: #a855f7; }
+    .card-maroon { background: linear-gradient(180deg, #4f1726 0%, #171019 72%); border-color: #f43f5e; }
+    .card-teal   { background: linear-gradient(180deg, #133e4a 0%, #101722 72%); border-color: #06b6d4; }
+    .card-olive  { background: linear-gradient(180deg, #3c3a14 0%, #15151d 72%); border-color: #eab308; }
+    .card-slate  { background: linear-gradient(180deg, #273247 0%, #121621 72%); border-color: #64748b; }
+
+    .note-tag {
+      width: 100%;
+      background: #facc15;
+      color: #111827;
+      border-radius: 6px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 2px;
+    }
+    .r-name {
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85);
+    }
+    .r-rarity {
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+    .rar-basic { color: #e5e7eb; }
+    .rar-noob  { color: #fde047; }
+    .r-chance {
+      font-size: 14px;
+      font-weight: 900;
+      color: #a3e635;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+    }
+    .r-lvl {
+      width: 100%;
+      margin: 2px 0 3px;
+      padding: 3px 6px;
+      border-radius: 5px;
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      border: 2px solid #e0f2fe;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.2;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    }
+    .r-lvl.is-nonmax {
+      background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
+      border-color: #fef3c7;
+    }
+    .r-stats {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+    .st-row { color: #f3f4f6; }
+    .st-val { color: #ffffff; }
+    .st-max { color: #ffffff; }
+    .st-oof { color: #facc15; }
+    .st-rebirth { color: #f472b6; }
+    .st-fire { color: #ef4444; }
+    .st-bulk { color: #fbbf24; }
+    .st-luck { color: #4ade80; }
+    .st-speed { color: #38bdf8; }
+    .st-cash { color: #22c55e; }
+    .st-prism { color: #22d3ee; }
+    .st-coin { color: #f59e0b; }
+    .st-food { color: #eab308; }
+    .st-hack { color: #4ade80; }
+    .st-water { color: #38bdf8; }
+    .st-gem { color: #e879f9; }
+    .st-mat { color: #d6b48a; }
+    .st-dmg { color: #f87171; }
+    .st-souls { color: #60a5fa; }
+    .st-yang { color: #ffffff; }
+    .st-yin { color: #cbd5e1; }
+    .st-sea { color: #67e8f9; }
+    .st-space { color: #fbbf24; }
+    .st-event { color: #fb923c; }
+    .st-misc { color: #c084fc; }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 28px 16px;
+      color: #9ca3af;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .creator-wrap {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      padding: 12px 0 6px;
+    }
+    .creator-card {
+      width: 100%;
+      max-width: 540px;
+      background: linear-gradient(180deg, #1e1b38 0%, #121021 100%);
+      border: 2px solid #6366f1;
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.28);
+      border-radius: 16px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+    }
+    .creator-badge-top {
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid #818cf8;
+      color: #c7d2fe;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+    .creator-avatar-frame {
+      position: relative;
+      width: 104px;
+      height: 104px;
+      border-radius: 18px;
+      padding: 3px;
+      background: linear-gradient(135deg, #a78bfa, #ec4899, #38bdf8);
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.42);
+      flex-shrink: 0;
+    }
+    .creator-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      object-fit: cover;
+      display: block;
+      background: #171426;
+    }
+    .creator-nick {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    }
+    .creator-sub {
+      font-size: 13px;
+      font-weight: 700;
+      color: #a5b4fc;
+      margin-top: -8px;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid #374151;
+      background: rgba(15, 23, 42, 0.85);
+    }
+    .status-pill.is-online {
+      border-color: #22c55e;
+      color: #86efac;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.22);
+    }
+    .status-pill.is-offline {
+      border-color: #64748b;
+      color: #cbd5e1;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .status-pill.is-online .status-dot {
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+    .status-pill.is-offline .status-dot {
+      background: #94a3b8;
+    }
+    .creator-info-box {
+      width: 100%;
+      background: rgba(10, 12, 22, 0.75);
+      border: 1px solid #312e81;
+      border-radius: 11px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+    .discord-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #5865f2 0%, #4752c4 100%);
+      color: #ffffff;
+      border: 2px solid #a5b4fc;
+      border-radius: 11px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 6px 18px rgba(88, 101, 242, 0.4);
+      transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .discord-btn:hover {
+      transform: translateY(-1px);
+      border-color: #ffffff;
+      box-shadow: 0 8px 22px rgba(88, 101, 242, 0.6);
+    }
+    .discord-btn:active {
+      transform: translateY(0);
+    }
+    .discord-note {
+      font-size: 12px;
+      font-weight: 700;
+      color: #a5b4fc;
+      line-height: 1.4;
+      margin-top: -6px;
+    }
+    .discord-feedback {
+      font-size: 12px;
+      font-weight: 800;
+      color: #fde047;
+      min-height: 18px;
+    }
+    .status-toggle-mini {
+      background: transparent;
+      border: 1px dashed #4f46e5;
+      color: #a5b4fc;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .status-toggle-mini:hover {
+      border-color: #c7d2fe;
+      color: #ffffff;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 12px 10px 36px; }
+      .header-box { padding: 12px 14px; }
+      .brand { font-size: 18px; }
+      .search-input { min-width: 150px; flex: 1; }
+      .runes-grid { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header-box">
+      <div class="brand">
+        <span class="gem"></span>
+        <span>Noob Incremental Runes Info</span>
+      </div>
+      <div class="meta-group">
+        <input id="searchInput" class="search-input" type="text" placeholder="Поиск руны или стата..." />
+        <button id="langBtn" class="lang-btn" type="button" title="Switch UI language (RU / EN)">
+          <span>RU / EN</span>
+          <span id="langTag" class="lang-tag">RU</span>
+        </button>
+        <div class="meta-pill">Realms 1–6 + Events</div>
+        <button id="supportBtn" class="support-btn" type="button">Support</button>
+      </div>
+    </div>
+
+    <div class="nav-panel">
+      <div id="realmLabel" class="nav-label">Выбери мир или категорию (Realm / Events)</div>
+      <div id="realmRow" class="btn-row"></div>
+
+      <div id="subLabel" class="nav-label">Выбери вкладку</div>
+      <div id="subRow" class="btn-row"></div>
+    </div>
+
+    <div id="eventBanner" class="event-picker-banner" style="display:none;">
+      <span id="eventBannerText"><strong>Категория Events:</strong> выбери нужный ивент выше — <strong>Football</strong>, <strong>Spooky</strong>, <strong>Pumpkin</strong>, <strong>Witch</strong> или <strong>Thanksgiving</strong>.</span>
+      <span id="eventCountInfo"></span>
+    </div>
+
+    <div class="board">
+      <div class="board-top">
+        <h2 id="boardTitle" class="board-title"></h2>
+      </div>
+      <div id="runesGrid" class="runes-grid"></div>
+    </div>
+  </div>
+
+  <script>
+    const RUNE_DATA = {
+      "Realm 1": {
+        "Basic": [
+          { name: "Rookie", rarity: "Basic", chance: "1/1.25", lvl: "LVL 500 MAX", color: "card-slate", stats: ["x101 Oof [MAX]", "x51 Rebirth [MAX]"] },
+          { name: "Learner", rarity: "Basic", chance: "1/6.67", lvl: "LVL 400 MAX", color: "card-green", stats: ["x61 Rebirth [MAX]", "x1.5 Rune Luck [MAX]"] },
+          { name: "Trained", rarity: "Basic", chance: "1/33.29", lvl: "LVL 300 MAX", color: "card-teal", stats: ["x151 Oof [MAX]", "x61 Rebirth [MAX]", "x46 Fire [MAX]", "+5 Rune Bulk [MAX]"] },
+          { name: "Skilled", rarity: "Basic", chance: "1/200", lvl: "LVL 200 MAX", color: "card-purple", stats: ["x501 Oof [MAX]", "x51 Fire [MAX]", "x1.75 Rune Luck [MAX]"] },
+          { name: "Expert", rarity: "Basic", chance: "1/50k", lvl: "LVL 150 MAX", color: "card-brown", stats: ["x751 Oof [MAX]", "x114 Fire [MAX]", "x1.5 Rune Speed [MAX]", "x3 Rune Bulk [MAX]"] },
+          { name: "Master", rarity: "Basic", chance: "1/1M", lvl: "LVL 115 MAX", color: "card-maroon", stats: ["x1.73k Oof [MAX]", "x576 Rebirth [MAX]", "x116 Fire [MAX]", "x24 Blaze [MAX]", "+10 Rune Bulk [MAX]"] },
+          { name: "Grandmaster", rarity: "Basic", chance: "1/40M", lvl: "LVL 95 MAX", color: "card-brown", stats: ["x4.75k Oof [MAX]", "x72.3 Blaze [MAX]", "x1.5 Rune Speed [MAX]", "x4 Rune Bulk [MAX]"] },
+          { name: "Celestial", rarity: "Basic", chance: "1/625B", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x56.3k Oof [MAX]", "x1.12k Fire [MAX]", "x5.63k Rebirth [MAX]", "x151 Blaze [MAX]", "x21 Rune Bulk [MAX]", "x4 Rune Luck [MAX]"] },
+          { name: "Immortal", rarity: "Basic", chance: "1/500Sp", lvl: "LVL 50 MAX", color: "card-green", stats: ["x125k Oof [MAX]", "x2.5k Fire [MAX]", "x12.5k Rebirth [MAX]", "x251 Blaze [MAX]", "x31 Rune Bulk [MAX]", "x6 Rune Luck [MAX]"] },
+          { name: "Shadow", rarity: "Noobinia", chance: "1/2.5Sx", lvl: "LVL 5 MAX", color: "card-purple", stats: ["x501 Oof [MAX]", "x76 Blaze [MAX]", "x1.25 Prism [MAX]", "x3.5 Coin [MAX]", "x51 Rune Bulk [MAX]", "x26 Bread [MAX]"] },
+          { name: "Phantom", rarity: "Noobinia", chance: "1/2.5Oc", lvl: "LVL 20 MAX", color: "card-purple", stats: ["x20k Oof [MAX]", "x1k Fire [MAX]", "x2k Cash [MAX]", "x1.35 Prism [MAX]", "x3 Rune Luck [MAX]", "x501 Rune Bulk [MAX]", "x101 Bread [MAX]"] },
+          { name: "Atomic", rarity: "Noobinia", chance: "1/300QdDe", lvl: "LVL 20 MAX", color: "card-slate", stats: ["x20k Oof [MAX]", "x2k Fire [MAX]", "x5k Cash [MAX]", "x1.25 Prism [MAX]", "x51 Tier Luck [MAX]", "x26 Tier Bulk [MAX]", "x101 Bread [MAX]"] },
+          { name: "Chronos Core", rarity: "Noobinia", chance: "1/3.5QnDe", lvl: "LVL 3 MAX", color: "card-brown", stats: ["x3k Fire [MAX]", "x1.05k Cash [MAX]", "x1.14 Prism [MAX]", "x41 Rune Bulk [MAX]", "x61 Tier Bulk [MAX]", "x4 Hack Points [MAX]", "x16 Wheat [MAX]"] }
+        ],
+        "Super": [
+          { name: "Initiate", rarity: "Basic", chance: "1/1.11", lvl: "LVL 1,500 MAX", color: "card-green", stats: ["x1.5k Oof [MAX]", "x751 Fire [MAX]"] },
+          { name: "Adept", rarity: "Basic", chance: "1/13.3", lvl: "LVL 1,500 MAX", color: "card-olive", stats: ["x976 Blaze [MAX]", "x2.5 Rune Bulk [MAX]"] },
+          { name: "Veteran", rarity: "Basic", chance: "1/50", lvl: "LVL 1,500 MAX", color: "card-purple", stats: ["x12.8k Oof [MAX]", "x751 Fire [MAX]", "x2.5 Rune Luck [MAX]"] },
+          { name: "Elite", rarity: "Basic", chance: "1/5k", lvl: "LVL 250 MAX", color: "card-brown", stats: ["x1.25k Rebirth [MAX]", "x189 Cash [MAX]", "x1.5 Rune Speed [MAX]"] },
+          { name: "Champion", rarity: "Basic", chance: "1/200k", lvl: "LVL 175 MAX", color: "card-olive", stats: ["x2.63k Oof [MAX]", "x176 Fire [MAX]", "x290 Cash [MAX]", "x1.5 Rune Speed [MAX]"] },
+          { name: "Ascended", rarity: "Basic", chance: "1/2M", lvl: "LVL 125 MAX", color: "card-teal", stats: ["x251 Fire [MAX]", "x314 Cash [MAX]", "x3 Rune Luck [MAX]", "x1.5 Rune Speed [MAX]", "+3 Rune Bulk [MAX]"] },
+          { name: "Transcendent", rarity: "Basic", chance: "1/50M", lvl: "LVL 100 MAX", color: "card-brown", stats: ["x3k Oof [MAX]", "x101 Blaze [MAX]", "x401 Cash [MAX]", "x3 Rune Luck [MAX]", "x6 Rune Bulk [MAX]", "x4 Coin [MAX]"] },
+          { name: "Universal", rarity: "Basic", chance: "1/20Qn", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x901 Oof [MAX]", "x1.12k Fire [MAX]", "x901 Cash [MAX]", "x4.5 Rune Luck [MAX]", "x8.5 Rune Bulk [MAX]", "x51 Tier Luck [MAX]", "x5.5 Coin [MAX]"] },
+          { name: "Omnipotent", rarity: "Basic", chance: "1/12.5Oc", lvl: "LVL 50 MAX", color: "card-olive", stats: ["x2k Blaze [MAX]", "x2.25k Fire [MAX]", "x2k Cash [MAX]", "x7 Rune Luck [MAX]", "x16 Rune Bulk [MAX]"] },
+          { name: "Eclipse", rarity: "Noobinia", chance: "1/250Sx", lvl: "LVL 10 MAX", color: "card-purple", stats: ["x1k Oof [MAX]", "x251 Fire [MAX]", "x1.25 Prism [MAX]", "x101 Rune Bulk [MAX]", "x51 Bread [MAX]"] },
+          { name: "Void", rarity: "Noobinia", chance: "1/2.5No", lvl: "LVL 25 MAX", color: "card-purple", stats: ["x25k Oof [MAX]", "x626 Blaze [MAX]", "x2.5k Cash [MAX]", "x1.35 Prism [MAX]", "x3 Rune Luck [MAX]", "x1k Rune Bulk [MAX]", "x126 Bread [MAX]"] },
+          { name: "Primordial", rarity: "Noobinia", chance: "1/5UDe", lvl: "LVL 25 MAX", color: "card-green", stats: ["x25k Oof [MAX]", "x12.5k Rebirth [MAX]", "x2.5k Fire [MAX]", "x51 Tier Luck [MAX]", "x3.5 P.Rune Speed [MAX]", "x13.5 Tier Bulk [MAX]", "x126 Wheat [MAX]", "x76 Bread [MAX]"] },
+          { name: "Oblivion Sigil", rarity: "Noobinia", chance: "1/300QnDe", lvl: "LVL 10 MAX", color: "card-brown", stats: ["x1M Oof [MAX]", "x201 Tier Luck [MAX]", "x2.5 P.Rune Speed [MAX]", "x1.1 Prism [MAX]", "x3 Rune Speed [MAX]", "x151 Tier Bulk [MAX]", "x31 Wheat [MAX]", "x3.5 Coin [MAX]"] }
+        ],
+        "Advanced": [
+          { name: "Little", rarity: "Basic", chance: "1/1.01", lvl: "LVL 600 MAX", color: "card-purple", stats: ["x1.2k Oof [MAX]", "x3.5 Wheat [MAX]"] },
+          { name: "Lesser", rarity: "Basic", chance: "1/100k", lvl: "LVL 500 MAX", color: "card-slate", stats: ["x251 Cash [MAX]", "x251 Rebirth [MAX]", "x6 Wheat [MAX]"] },
+          { name: "Standard", rarity: "Basic", chance: "1/1M", lvl: "LVL 400 MAX", color: "card-teal", stats: ["x201 Fire [MAX]", "x801 Cash [MAX]", "x2k Oof [MAX]", "x3.5 Bread [MAX]"] },
+          { name: "Greater", rarity: "Basic", chance: "1/50M", lvl: "LVL 300 MAX", color: "card-maroon", stats: ["x451 Fire [MAX]", "x601 Rebirth [MAX]", "x31 Blaze [MAX]", "x6 Wheat [MAX]"] },
+          { name: "Superior", rarity: "Basic", chance: "1/200M", lvl: "LVL 200 MAX", color: "card-green", stats: ["x601 Cash [MAX]", "x2k Oof [MAX]", "x11 Bread [MAX]"] },
+          { name: "Prime", rarity: "Basic", chance: "1/100B", lvl: "LVL 150 MAX", color: "card-purple", stats: ["x751 Cash [MAX]", "x1.5k Rebirth [MAX]", "x76 Blaze [MAX]", "x2.5 Rune Luck [MAX]", "x16 Wheat [MAX]"] },
+          { name: "Apex", rarity: "Basic", chance: "1/1T", lvl: "LVL 125 MAX", color: "card-maroon", stats: ["x501 Fire [MAX]", "x939 Cash [MAX]", "x2.5k Oof [MAX]", "x4 Rune Bulk [MAX]", "x3 Rune Luck [MAX]", "x11 Bread [MAX]"] },
+          { name: "Ethereal", rarity: "Basic", chance: "1/50T", lvl: "LVL 100 MAX", color: "card-purple", stats: ["x1k Cash [MAX]", "x2.75k Oof [MAX]", "x3k Rebirth [MAX]", "x101 Blaze [MAX]", "x4 Rune Luck [MAX]", "x16 Bread [MAX]"] },
+          { name: "Divine", rarity: "Basic", chance: "1/200Qd", lvl: "LVL 75 MAX", color: "card-olive", stats: ["x601 Fire [MAX]", "x939 Cash [MAX]", "x2.63k Oof [MAX]", "x151 Blaze [MAX]", "x5 Coin [MAX]", "x7 Rune Bulk [MAX]", "x5 Rune Luck [MAX]"] },
+          { name: "Infinite", rarity: "Basic", chance: "1/17.5Oc", lvl: "LVL 50 MAX", color: "card-brown", stats: ["x2.5k Oof [MAX]", "x2k Rebirth [MAX]", "x501 Fire [MAX]", "x751 Cash [MAX]", "x151 Blaze [MAX]", "x11 Rune Bulk [MAX]", "x6 Rune Luck [MAX]", "x26 Bread [MAX]"] },
+          { name: "Abyss", rarity: "Noobinia", chance: "1/25Sp", lvl: "LVL 15 MAX", color: "card-purple", stats: ["x1.5k Oof [MAX]", "x601 Cash [MAX]", "x1.25 Prism [MAX]", "x3 Rune Luck [MAX]", "x189 Rune Bulk [MAX]", "x76 Bread [MAX]"] },
+          { name: "Enigma", rarity: "Noobinia", chance: "1/2.5De", lvl: "LVL 30 MAX", color: "card-teal", stats: ["x30k Oof [MAX]", "x1.5k Fire [MAX]", "x751 Blaze [MAX]", "x1.35 Prism [MAX]", "x2.5k Rune Bulk [MAX]", "x151 Bread [MAX]"] },
+          { name: "Seraphim's Tear", rarity: "Noobinia", chance: "1/100TDe", lvl: "LVL 6 MAX", color: "card-maroon", stats: ["x60k Oof [MAX]", "x3k Rebirth [MAX]", "x601 Fire [MAX]", "x19 Tier Luck [MAX]", "x13 Tier Bulk [MAX]", "x31 Wheat [MAX]", "x19 Bread [MAX]"] },
+          { name: "Aetherion", rarity: "Noobinia", chance: "1/12.5SxDe", lvl: "LVL 4 MAX", color: "card-purple", stats: ["x40k Oof [MAX]", "x4k Fire [MAX]", "x3 Hack Points [MAX]", "x1.14 Prism [MAX]", "x101 Tier Bulk [MAX]", "x61 Tier Luck [MAX]", "x5 Coin [MAX]"] }
+        ],
+        "Cosmic Prism": [
+          { name: "Lucent", rarity: "Basic", chance: "1/2.5", lvl: "LVL 5,000 MAX", color: "card-teal", stats: ["x250k Oof [MAX]", "x250k Cash [MAX]", "x5k Bread [MAX]"] },
+          { name: "Chroma", rarity: "Basic", chance: "1/4", lvl: "LVL 4,500 MAX", color: "card-maroon", stats: ["x518k Oof [MAX]", "x16 Tier Bulk [MAX]", "x11 Rune Bulk [MAX]"] },
+          { name: "Fractal", rarity: "Basic", chance: "1/20", lvl: "LVL 135 MAX", color: "card-brown", stats: ["+100 P.Rune Bulk [MAX]", "x101 Blaze [MAX]", "x16 Wheat [MAX]"] },
+          { name: "Refraction", rarity: "Basic", chance: "1/100", lvl: "LVL 3,500 MAX", color: "card-maroon", stats: ["x3 P.Rune Speed [MAX]", "x101 Fire [MAX]", "x1.4M Oof [MAX]", "x11 Tier Luck [MAX]", "x11 Rune Bulk [MAX]"] },
+          { name: "Tessellation", rarity: "Basic", chance: "1/200", lvl: "LVL 3,000 MAX", color: "card-olive", stats: ["+220 P.Rune Bulk [MAX]", "x1.8M Oof [MAX]", "x101 Blaze [MAX]", "x6k Bread [MAX]", "x11 Rune Bulk [MAX]"] },
+          { name: "Hyperlight", rarity: "Basic", chance: "1/333", lvl: "LVL 2,500 MAX", color: "card-purple", stats: ["x4 P.Rune Speed [MAX]", "x501 Cash [MAX]", "x5M Oof [MAX]", "x11 Tier Luck [MAX]", "x11 Rune Bulk [MAX]"] },
+          { name: "Prism God", rarity: "Basic", chance: "1/1k", lvl: "LVL 2,000 MAX", color: "card-teal", stats: ["+400 P.Rune Bulk [MAX]", "x501 Fire [MAX]", "x10M Oof [MAX]", "x2.5 Rune Bulk [MAX]"] },
+          { name: "Voidglass", rarity: "Basic", chance: "1/1M", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x2.33 P.Rune Speed [MAX]", "+375 P.Rune Bulk [MAX]", "x1.88k Cash [MAX]", "x750k Oof [MAX]", "x21 Tier Bulk [MAX]"] },
+          { name: "Godshard", rarity: "Noobinia", chance: "1/100M", lvl: "LVL 25 MAX", color: "card-olive", stats: ["x19 P.Rune Speed [MAX]", "+1.25k P.Rune Bulk [MAX]", "x2.5M Oof [MAX]", "x51 Bread [MAX]", "x13.5 Coin [MAX]"] },
+          { name: "Ultimate Shard", rarity: "Noobinia", chance: "1/250B", lvl: "LVL 25 MAX", color: "card-brown", stats: ["x1.5 Prism [MAX]", "x1.25k Cash [MAX]", "x25M Oof [MAX]", "x51 Bread [MAX]", "x13.5 Coin [MAX]", "x2.25 Rune Bulk [MAX]", "x51 Tier Luck [MAX]"] }
+        ],
+        "Hacker": [
+          { name: "Script", rarity: "Basic", chance: "1/1.01", lvl: "LVL 600 MAX", color: "card-slate", stats: ["x7.5 Hack Points [MAX]", "x1.2k Oof [MAX]", "x4 Wheat [MAX]"] },
+          { name: "Protocol", rarity: "Basic", chance: "1/100Qd", lvl: "LVL 500 MAX", color: "card-green", stats: ["x7.5 Hack Points [MAX]", "x2.5k Oof [MAX]", "x751 Cash [MAX]", "x7 Wheat [MAX]"] },
+          { name: "Cipher", rarity: "Basic", chance: "1/10Sx", lvl: "LVL 400 MAX", color: "card-teal", stats: ["x10 Hack Points [MAX]", "x601 Rebirth [MAX]", "x201 Fire [MAX]", "x6 Bread [MAX]", "x1.1 Rune Speed [MAX]"] },
+          { name: "Exploit", rarity: "Basic", chance: "1/1000Sp", lvl: "LVL 300 MAX", color: "card-teal", stats: ["x13 Hack Points [MAX]", "x3k Oof [MAX]", "x901 Rebirth [MAX]", "x11 Wheat [MAX]"] },
+          { name: "Kernel", rarity: "Basic", chance: "1/1No", lvl: "LVL 200 MAX", color: "card-purple", stats: ["x21 Hack Points [MAX]", "x1k Cash [MAX]", "x16 Bread [MAX]"] },
+          { name: "Root", rarity: "Basic", chance: "1/1De", lvl: "LVL 150 MAX", color: "card-maroon", stats: ["x51 Hack Points [MAX]", "x3.75k Oof [MAX]", "x76 Blaze [MAX]", "x26 Wheat [MAX]", "x1.5 Rune Bulk [MAX]"] },
+          { name: "Backdoor", rarity: "Basic", chance: "1/1UDe", lvl: "LVL 125 MAX", color: "card-brown", stats: ["x101 Hack Points [MAX]", "x626 Fire [MAX]", "x1.25k Cash [MAX]", "x1.2 Rune Speed [MAX]"] },
+          { name: "Rootkit", rarity: "Noobinia", chance: "1/1000Sp", lvl: "LVL 20 MAX", color: "card-brown", stats: ["x10k Oof [MAX]", "x2k Cash [MAX]", "x2k Rebirth [MAX]", "x501 Bread [MAX]", "x5 Hack Points [MAX]", "x2 Rune Luck [MAX]", "x2 Rune Bulk [MAX]"] },
+          { name: "Masterkey", rarity: "Noobinia", chance: "1/20Oc", lvl: "LVL 30 MAX", color: "card-green", stats: ["x60k Oof [MAX]", "x6k Fire [MAX]", "x3k Blaze [MAX]", "x1.5k Wheat [MAX]", "x1.5k Coin [MAX]", "x6 Hack Points [MAX]", "x2.5 Rune Bulk [MAX]", "x2.5 Rune Luck [MAX]"] },
+          { name: "Stuxnet", rarity: "Noobinia", chance: "1/52.4No", lvl: "LVL 22 MAX", color: "card-purple", stats: ["x440k Oof [MAX]", "x11k Fire [MAX]", "x56 Coin [MAX]", "x4 Hack Points [MAX]", "x155 Tier Bulk [MAX]", "x111 Tier Luck [MAX]", "x1.25 Prism [MAX]"] },
+          { name: "Glitched", rarity: "Basic", chance: "1/50Vt", lvl: "LVL 25,000 MAX", color: "card-purple", note: "Получается ближе к концу Realm 3", stats: ["x2.5M Hack Points [MAX]", "x12.5k Fire [MAX]", "x7.5k Ash [MAX]", "x5k Planks [MAX]", "x1.25 Rune Luck [MAX]"] },
+          { name: "Firewall", rarity: "Basic", chance: "1/20TVt", lvl: "LVL 8,000 MAX", color: "card-brown", note: "Получается ближе к концу Realm 3", stats: ["x120k Hack Points [MAX]", "x3.2k Wood [MAX]", "x80k Bread [MAX]", "x4 Bones [MAX]", "x1.3 Rune Luck [MAX]"] },
+          { name: "Connor Hacked it", rarity: "Basic", chance: "1/75SxVt", lvl: "LVL 5,000,000,000 MAX", color: "card-slate", note: "Получается ближе к концу Realm 3", stats: ["x251 Hack Points [MAX]", "x51 Oof [MAX]", "x3 Bones [MAX]", "x16 Sand [MAX]", "x51 Shovel Damage [MAX]", "x6 Souls [MAX]", "x2.25 Rune Luck [MAX]"] },
+          { name: "Anti-Cheat", rarity: "Basic", chance: "1/20cVt", lvl: "LVL 200 MAX", color: "card-teal", note: "Получается ближе к концу Realm 3", stats: ["x4k Hack Points [MAX]", "x7 Souls [MAX]", "x401 Cash [MAX]", "x3.5 Meat [MAX]", "x11 Coin [MAX]", "x1.25 Rune Luck [MAX]", "x1.05 Prism [MAX]", "x1.25 Rune Bulk [MAX]"] },
+          { name: "Unstoppable Virus", rarity: "Noobinia", chance: "1/1DVt", lvl: "LVL 40 MAX", color: "card-green", note: "Получается ближе к концу Realm 3", stats: ["x21 Oof [MAX]", "x51 Hack Points [MAX]", "x81 Souls [MAX]", "x11 Tier Luck [MAX]", "x1.3 Prism [MAX]", "x2.25 Rune Bulk [MAX]", "x1.75 P.Rune Bulk [MAX]", "x21 P.Rune Luck [MAX]"] }
+        ],
+        "Pro Hacker": [
+          { name: "Network", rarity: "Basic", chance: "1/1.01", lvl: "LVL 1,048", color: "card-teal", stats: ["x2.8 Hack Points [MAX]", "x5 Wheat [MAX]", "x2.6 Bread [MAX]", "x11.5 Coin"] },
+          { name: "Security", rarity: "Basic", chance: "1/1NoVt", lvl: "LVL 5,000 MAX", color: "card-brown", stats: ["x1.8 Hack Points [MAX]", "x2.6 Wheat [MAX]", "x1.9 Bread [MAX]", "x76 Coin"] },
+          { name: "WLAN", rarity: "Basic", chance: "1/100QnTg", lvl: "LVL 5,000 MAX", color: "card-green", stats: ["x11 Hack Points [MAX]", "x4 Wheat [MAX]", "x101 Coin"] },
+          { name: "Cryptography", rarity: "Basic", chance: "1/10Dqq", lvl: "LVL 5,000 MAX", color: "card-olive", stats: ["x3.4 Hack Points [MAX]", "x2.4 Wheat [MAX]", "x51 Yin"] },
+          { name: "Encryption", rarity: "Basic", chance: "1/1Noqg", lvl: "LVL 5,000 MAX", color: "card-teal", stats: ["x2.7 Hack Points [MAX]", "x2.29 Bread [MAX]", "x3.2 Wheat [MAX]", "x51 Yang"] },
+          { name: "Decryption", rarity: "Basic", chance: "1/10QnQg", lvl: "LVL 5,000 MAX", color: "card-maroon", stats: ["x2.5 Hack Points [MAX]", "x3 Bread [MAX]", "x126 Coin [MAX]", "x1.7 Wheat [MAX]"] },
+          { name: "Caesar", rarity: "Basic", chance: "1/1.5SpQg", lvl: "LVL 5,000 MAX", color: "card-purple", stats: ["x5 Hack Points [MAX]", "x151 Coin [MAX]", "x5 Wheat [MAX]", "x1.1 Rune Luck [MAX]"] },
+          { name: "Affine", rarity: "Basic", chance: "1/10SpQg", lvl: "LVL 5,000 MAX", color: "card-brown", stats: ["x8 Bread [MAX]", "x176 Coin [MAX]", "x8 Wheat [MAX]", "x1.14 Rune Luck [MAX]"] },
+          { name: "Hill", rarity: "Basic", chance: "1/75SpQg", lvl: "LVL 5,000 MAX", color: "card-purple", stats: ["x11 Hack Points [MAX]", "x201 Coin [MAX]", "x11 Bread [MAX]", "x1.2 Rune Luck [MAX]", "x101 Tier Luck [MAX]"] },
+          { name: "Brute Force", rarity: "Noobinia", chance: "1/5QnTg", lvl: "LVL 37", color: "card-olive", stats: ["x1.4 Rune Bulk [MAX]", "x1.25 Rune Luck [MAX]", "x1.5 Tier Bulk [MAX]", "x10.19 Tier Luck", "x19.5 Coin", "x8.4 Yang", "x8.4 Yin", "x1.05 Prism [MAX]"] },
+          { name: "DDOS Attack", rarity: "Noobinia", chance: "1/20QnTg", lvl: "LVL 26", color: "card-brown", stats: ["x1.5 Rune Bulk [MAX]", "x1.35 Rune Luck [MAX]", "x2 Tier Bulk [MAX]", "x14 Tier Luck", "x53 Coin", "x14 Yang", "x14 Yin", "x1.1 Prism [MAX]"] },
+          { name: "SQL Injection", rarity: "Noobinia", chance: "1/100QnTg", lvl: "LVL 16", color: "card-maroon", stats: ["x1.75 Rune Bulk [MAX]", "x1.5 Rune Luck [MAX]", "x3 Tier Bulk [MAX]", "x17 Tier Luck", "x161 Coin", "x17 Yang", "x17 Yin", "x1.14 Prism [MAX]"] },
+          { name: "Unstoppable Hacker", rarity: "Noobinia", chance: "1/500QnTg", lvl: "LVL 10", color: "card-green", stats: ["x1.75 Rune Bulk [MAX]", "x1.25 Rune Luck [MAX]", "x3.5 Tier Bulk [MAX]", "x16 Tier Luck", "x201 Coin", "x16 Yang", "x16 Yin", "x1.14 Prism [MAX]"] }
+        ],
+        "Awakened": [
+          { name: "Potential", rarity: "Basic", chance: "1/1.01", lvl: "LVL 111 MAX", color: "card-olive", note: "Found in Realm 1 Upgrade Tree Area", stats: ["x51 Oof [MAX]", "x28.8 Hack Points [MAX]", "x28.8 Water [MAX]", "x28.8 Gem [MAX]", "x28.8 Planks [MAX]", "x6.55 Tier Luck [MAX]", "x2.11 Coin [MAX]", "x1.5 Sea Points [MAX]"] },
+          { name: "Limitless", rarity: "Basic", chance: "1/1QdVt", lvl: "LVL 500 MAX", color: "card-maroon", stats: ["x326 Oof [MAX]", "x11 Coin [MAX]", "x26 Yang [MAX]", "x3 Alien Cash [MAX]"] },
+          { name: "Incomparable", rarity: "Basic", chance: "1/1SpVt", lvl: "LVL 550 MAX", color: "card-teal", stats: ["x691 Oof [MAX]", "x17.5 Coin [MAX]", "x28.5 Yin [MAX]", "x3 Chips [MAX]"] },
+          { name: "Unfathomable", rarity: "Basic", chance: "1/1000NoVt", lvl: "LVL 850 MAX", color: "card-green", stats: ["x1.5k Oof [MAX]", "x35 Coin [MAX]", "x86 Yang [MAX]", "x851 Pearl [MAX]"] },
+          { name: "Unmatched", rarity: "Basic", chance: "1/1TTg", lvl: "LVL 1,333 MAX", color: "card-purple", stats: ["x2.75k Oof [MAX]", "x67.7 Coin [MAX]", "x134 Yin [MAX]", "x13.3k Trash Cash [MAX]"] },
+          { name: "Unbelievable", rarity: "Basic", chance: "1/1SxTg", lvl: "LVL 2,000 MAX", color: "card-slate", stats: ["x4.5k Oof [MAX]", "x121 Coin [MAX]", "x301 Yang [MAX]", "x401 Sea Points [MAX]"] },
+          { name: "Untouchable", rarity: "Basic", chance: "1/1NoTg", lvl: "LVL 5,000 MAX", color: "card-brown", stats: ["x7.5k Oof [MAX]", "x351 Coin [MAX]", "x751 Yin [MAX]", "x15k Fire [MAX]", "x50k Cash [MAX]", "x51 Sea Points [MAX]"] },
+          { name: "Unstoppable", rarity: "Basic", chance: "1/1Dqq", lvl: "LVL 10,000 MAX", color: "card-teal", stats: ["x15k Oof [MAX]", "x801 Coin [MAX]", "x2k Yang [MAX]", "x1.5k Yin [MAX]", "x201 Sea Points [MAX]", "x301 Blaze [MAX]", "x10k Fire [MAX]", "x10k Cash [MAX]"] },
+          { name: "Unrivaled", rarity: "Basic", chance: "1/1Qnqg", lvl: "LVL 12,000 MAX", color: "card-purple", stats: ["x12.5k Oof [MAX]", "x1.08k Coin [MAX]", "x3k Fire [MAX]", "x3k Cash [MAX]", "x21 Sea Points [MAX]", "x3k Yang [MAX]", "x2.4k Yin [MAX]"] },
+          { name: "Unconquerable", rarity: "Basic", chance: "1/500Spqg", lvl: "LVL 35,000 MAX", color: "card-teal", stats: ["x2.5k Oof [MAX]", "x1.05 Rune Bulk [MAX]", "x35k Sea Points [MAX]", "x2k Tier Luck [MAX]", "x6 Sword Damage [MAX]", "x8.75k Yang [MAX]", "x7k Yin [MAX]", "x3.5k Coin [MAX]"] },
+          { name: "Unforgettable", rarity: "Basic", chance: "1/500Qg", lvl: "LVL 100,000 MAX", color: "card-green", stats: ["x1.5k Oof [MAX]", "x1M Fire [MAX]", "x1M Blaze [MAX]", "x1M Cash [MAX]", "x10k Tier Luck [MAX]", "x3 Tier Bulk [MAX]", "x1.25 Rune Bulk [MAX]", "x1.25 Rune Luck [MAX]"] },
+          { name: "Otherworldly", rarity: "Noobinia", chance: "1/1UTg", lvl: "LVL 15,000 MAX", color: "card-green", stats: ["x1k Oof [MAX]", "x10k Tier Luck [MAX]", "x3.5 Tier Bulk [MAX]", "x375k Yin [MAX]", "x1.35 Rune Bulk [MAX]", "x1.35 Rune Luck [MAX]", "x375k Coin [MAX]", "x1.25 P.Rune Bulk [MAX]"] },
+          { name: "Cosmic Origin", rarity: "Noobinia", chance: "1/10QdTg", lvl: "LVL 623", color: "card-purple", stats: ["x101 Oof [MAX]", "x101 Tier Luck [MAX]", "x1.5 Tier Bulk [MAX]", "x11 Authority [MAX]", "x1.5 Rune Bulk [MAX]", "x1.5 Rune Luck [MAX]", "x6.23k Coin ", "x25 Thunder [MAX]"] }
+        ]
+      },
+      "Realm 2": {
+        "Snowy": [
+          { name: "Snow", rarity: "Basic", chance: "1/1.01", lvl: "LVL 500 MAX", color: "card-slate", stats: ["x1k Oof [MAX]", "x16 Water [MAX]"] },
+          { name: "Frost", rarity: "Basic", chance: "1/1Qn", lvl: "LVL 400 MAX", color: "card-teal", stats: ["x2k Oof [MAX]", "x16 Ice [MAX]"] },
+          { name: "Ice", rarity: "Basic", chance: "1/100Qn", lvl: "LVL 300 MAX", color: "card-teal", stats: ["x2.25k Oof [MAX]", "x21 Water [MAX]", "x26 Ice [MAX]", "x2 Rune Luck [MAX]"] },
+          { name: "Hail", rarity: "Basic", chance: "1/2Sx", lvl: "LVL 200 MAX", color: "card-green", stats: ["x31 Water [MAX]", "x31 Ice [MAX]", "x4 Coin [MAX]"] },
+          { name: "Glacier", rarity: "Basic", chance: "1/100Sp", lvl: "LVL 150 MAX", color: "card-purple", stats: ["x1.5k Oof [MAX]", "x41 Ice [MAX]", "x1.5 Rune Speed [MAX]", "x2 Rune Bulk [MAX]", "x1.75 Rune Luck [MAX]"] },
+          { name: "Blizzard", rarity: "Basic", chance: "1/500DDe", lvl: "LVL 115 MAX", color: "card-brown", stats: ["x47 Water [MAX]", "x58.5 Ice [MAX]", "x18.2 Ash [MAX]", "x2 Rune Bulk [MAX]"] },
+          { name: "Tundra", rarity: "Basic", chance: "1/2QdDe", lvl: "LVL 95 MAX", color: "card-brown", stats: ["x1.19k Oof [MAX]", "x72.3 Wood [MAX]", "x5 Water [MAX]", "x951 Fire [MAX]", "x24.8 Ash [MAX]", "x1.5 Rune Speed [MAX]"] },
+          { name: "Arctic", rarity: "Basic", chance: "1/400OcDe", lvl: "LVL 75 MAX", color: "card-teal", stats: ["x226 Oof [MAX]", "x31 Water [MAX]", "x51 Planks [MAX]", "x7.5k Fire [MAX]", "x3 Rune Luck [MAX]"] },
+          { name: "Permafrost", rarity: "Basic", chance: "1/190Vt", lvl: "LVL 50 MAX", color: "card-slate", stats: ["x751 Oof [MAX]", "x38.5 Ice [MAX]", "x101 Wood [MAX]", "x500k Fire [MAX]", "x51 Ash [MAX]", "x5 Rune Luck [MAX]"] },
+          { name: "Whiteout", rarity: "Noobinia", chance: "1/500SxDe", lvl: "LVL 10 MAX", color: "card-purple", stats: ["x501 Oof [MAX]", "x8.5 Ice [MAX]", "x61 Wood [MAX]", "x7.5 Gem [MAX]", "x9.5 Ash [MAX]", "x3.5 Rune Bulk [MAX]"] },
+          { name: "Icebound", rarity: "Noobinia", chance: "1/500SpDe", lvl: "LVL 15 MAX", color: "card-slate", stats: ["x1.12k Oof [MAX]", "x16 Ice [MAX]", "x151 Tier Luck [MAX]", "x12.3 Gem [MAX]", "x8.5 Ore Damage [MAX]", "x2.88 Rune Speed [MAX]"] },
+          { name: "Everfrost", rarity: "Noobinia", chance: "1/1500OcDe", lvl: "LVL 10 MAX", color: "card-green", stats: ["x1k Oof [MAX]", "x31 Ice [MAX]", "x1.5 Prism [MAX]", "x11 Gem [MAX]", "x7.75 Ore Damage [MAX]", "x4.25 Rune Bulk [MAX]"] }
+        ],
+        "Deepcore": [
+          { name: "Dust", rarity: "Basic", chance: "1/1.01", lvl: "LVL 500 MAX", color: "card-slate", stats: ["x1k Oof [MAX]", "x3 Ores Stats [MAX]"] },
+          { name: "Pebble", rarity: "Basic", chance: "1/10Sx", lvl: "LVL 400 MAX", color: "card-purple", stats: ["x7 Gem [MAX]", "x801 Oof [MAX]", "x2.1 Ores Stats [MAX]", "x11 Ice [MAX]"] },
+          { name: "Hollow", rarity: "Basic", chance: "1/20Sx", lvl: "LVL 300 MAX", color: "card-olive", stats: ["x15k Fire [MAX]", "x1.14 Ore Damage [MAX]", "x5 Gem [MAX]", "x21 Ice [MAX]"] },
+          { name: "Echo", rarity: "Basic", chance: "1/10Sp", lvl: "LVL 200 MAX", color: "card-teal", stats: ["x801 Oof [MAX]", "x2.5 Ores Stats [MAX]", "x2 Rune Luck [MAX]", "x51 Ice [MAX]"] },
+          { name: "Stalagmite", rarity: "Basic", chance: "1/200Sp", lvl: "LVL 150 MAX", color: "card-slate", stats: ["x601 Oof [MAX]", "x1.14 Ore Damage [MAX]", "x2.5 Gem [MAX]", "x38.5 Fire [MAX]", "x81 Ice [MAX]"] },
+          { name: "Cavern", rarity: "Basic", chance: "1/50Oc", lvl: "LVL 115 MAX", color: "card-brown", stats: ["x864 Oof [MAX]", "x2.5 Gem [MAX]", "x38 Water [MAX]", "x2 Rune Luck [MAX]"] },
+          { name: "Crystalborn", rarity: "Basic", chance: "1/10No", lvl: "LVL 95 MAX", color: "card-purple", stats: ["x1.14 Ore Damage [MAX]", "x2 Ores Stats [MAX]", "x24.8 Ice [MAX]", "x2.25 Rune Luck [MAX]"] },
+          { name: "Earthshaker", rarity: "Basic", chance: "1/10De", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x57.3 Gem [MAX]", "x2.5 Ore Damage [MAX]", "x6 Rune Bulk [MAX]", "x2 Rune Speed [MAX]"] },
+          { name: "Golemheart", rarity: "Basic", chance: "1/100UDe", lvl: "LVL 50 MAX", color: "card-purple", stats: ["x126 Gem [MAX]", "x16 Ore Damage [MAX]", "x500k Oof [MAX]", "x6 Rune Luck [MAX]"] },
+          { name: "Stone Titan", rarity: "Noobinia", chance: "1/1.5No", lvl: "LVL 15 MAX", color: "card-olive", stats: ["x46 Gem [MAX]", "x8.5 Ores Stats [MAX]", "x751 Oof [MAX]", "x2.25 Ore Damage [MAX]", "x46 Tier Bulk [MAX]"] },
+          { name: "Cave Guardian", rarity: "Noobinia", chance: "1/3De", lvl: "LVL 25 MAX", color: "card-brown", stats: ["x26 Gem [MAX]", "x16 Ores Stats [MAX]", "x2.5k Oof [MAX]", "x1.5 Rune Speed [MAX]", "x51 Tier Luck [MAX]"] },
+          { name: "Deep Spirit", rarity: "Noobinia", chance: "1/200De", lvl: "LVL 30 MAX", color: "card-maroon", stats: ["x61 Gem [MAX]", "x1.2 Prism [MAX]", "x2 Ore Damage [MAX]", "x46 Tier Bulk [MAX]", "x76 Tier Luck [MAX]"] }
+        ],
+        "Shard": [
+          { name: "Air Shard", rarity: "Basic", chance: "1/1.01", lvl: "LVL 75 MAX", color: "card-slate", note: "Found in Realm 2 Mine", stats: ["x4 Oof [MAX]", "x15 Gem [MAX]", "x151 Stars [MAX]"] },
+          { name: "Water Shard", rarity: "Basic", chance: "1/1.5QdVt", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x16 Gem [MAX]", "x3 Ores Stats [MAX]", "x250B Ice [MAX]", "x8.5 Oof [MAX]"] },
+          { name: "Earth Shard", rarity: "Basic", chance: "1/400QnVt", lvl: "LVL 240 MAX", color: "card-brown", stats: ["x13 Coin [MAX]", "x13 Oof [MAX]", "x10 Ores Stats [MAX]", "x73 Stars [MAX]", "x240B Sand [MAX]"] },
+          { name: "Fire Shard", rarity: "Basic", chance: "1/75SpVt", lvl: "LVL 230 MAX", color: "card-maroon", stats: ["x10 Gem [MAX]", "x93 Stars [MAX]", "x17.1 Oof [MAX]", "x12.5 Moon [MAX]", "x7 Chips [MAX]"] },
+          { name: "Ice Shard", rarity: "Basic", chance: "1/12NoVt", lvl: "LVL 200 MAX", color: "card-teal", stats: ["x15 Gem [MAX]", "x19 Oof [MAX]", "x4.75 Ores Stats [MAX]", "x71 Stars [MAX]", "x1.5 Rune Luck [MAX]", "x1.25 Ore Damage [MAX]"] },
+          { name: "Poison Shard", rarity: "Basic", chance: "1/125UTg", lvl: "LVL 185 MAX", color: "card-green", stats: ["x21 Gem [MAX]", "x2 Ores Stats [MAX]", "x93.5 Stars [MAX]", "x10.19 Planets [MAX]", "x17.7 Oof [MAX]"] },
+          { name: "Metal Shard", rarity: "Basic", chance: "1/150TTg", lvl: "LVL 175 MAX", color: "card-slate", stats: ["x5 Ores Stats [MAX]", "x18.5 Coin [MAX]", "x18.5 Oof [MAX]", "x132 Stars [MAX]", "x1.5 Rune Luck [MAX]"] },
+          { name: "Light Shard", rarity: "Basic", chance: "1/32.5QdTg", lvl: "LVL 160 MAX", color: "card-olive", stats: ["x2.5 Ore Damage [MAX]", "x25 Oof [MAX]", "x121 Stars [MAX]", "x9 Coin [MAX]", "x9 Blackholes [MAX]", "x3 Ores Stats [MAX]", "x10 Hack Points [MAX]"] },
+          { name: "Shadow Shard", rarity: "Basic", chance: "1/4QnTg", lvl: "LVL 150 MAX", color: "card-purple", stats: ["x4 Ores Stats [MAX]", "x31 Oof [MAX]", "x226 Stars [MAX]", "x2 Gem [MAX]", "x31 Coin [MAX]", "x16 Rune Luck [MAX]", "x16 Hack Points [MAX]"] },
+          { name: "Galactic Shard", rarity: "Noobinia", chance: "1/2.5QdVt", lvl: "LVL 100 MAX", color: "card-purple", stats: ["x101 Gem [MAX]", "x1.05 Prism [MAX]", "x1.5 Ore Damage [MAX]", "x51 Oof [MAX]", "x2.5k Stars [MAX]", "x201 Alien Cash [MAX]", "x501 Planets [MAX]", "x2 Ores Stats [MAX]"] },
+          { name: "Elemental Shard", rarity: "Noobinia", chance: "1/40QdVt", lvl: "LVL 75 MAX", color: "card-maroon", stats: ["x189 Gem [MAX]", "x4.75 Tier Luck [MAX]", "x16 Knowledge [MAX]", "x6 Ore Damage [MAX]", "x150k Stars [MAX]", "x151 Alien Cash [MAX]", "x751 Planets [MAX]", "x2 Rune Bulk [MAX]"] },
+          { name: "Dragon Shard", rarity: "Noobinia", chance: "1/600QdVt", lvl: "LVL 50 MAX", color: "card-brown", stats: ["x251 Gem [MAX]", "x11 Tier Luck [MAX]", "x26 Knowledge [MAX]", "x251 Oof [MAX]", "x26 Chips [MAX]", "x126 Alien Cash [MAX]", "x1.5 Rune Speed [MAX]", "x1.75 Rune Bulk [MAX]"] }
+        ]
+      },
+      "Realm 3": {
+        "Dunes": [
+          { name: "Marrow", rarity: "Basic", chance: "1/1.01", lvl: "LVL 500 MAX", color: "card-purple", stats: ["x101 Meat [MAX]", "x6 Gem [MAX]", "x1.25k Oof [MAX]"] },
+          { name: "Femur", rarity: "Basic", chance: "1/333k", lvl: "LVL 350 MAX", color: "card-maroon", stats: ["x88.5 Bones [MAX]", "x2.5 Sword Damage [MAX]", "x4.5 Wood [MAX]"] },
+          { name: "Skull", rarity: "Basic", chance: "1/1B", lvl: "LVL 200 MAX", color: "card-slate", stats: ["x121 Meat [MAX]", "x31 Planks [MAX]", "x1k Oof [MAX]"] },
+          { name: "Dune", rarity: "Basic", chance: "1/375B", lvl: "LVL 200 MAX", color: "card-olive", stats: ["x121 Meat [MAX]", "x3.5 Rune Luck [MAX]", "x1.4k Oof [MAX]", "x31 Bones [MAX]"] },
+          { name: "Oasis", rarity: "Basic", chance: "1/43.5Qd", lvl: "LVL 200 MAX", color: "card-brown", stats: ["x31 Water [MAX]", "x2k Oof [MAX]", "x31 Bones [MAX]"] },
+          { name: "Mirage", rarity: "Basic", chance: "1/250Qn", lvl: "LVL 200 MAX", color: "card-olive", stats: ["x81 Water [MAX]", "x3k Oof [MAX]", "x29 Meat [MAX]", "x31 Tier Luck [MAX]", "x3 Sword Damage [MAX]"] },
+          { name: "Sunspire", rarity: "Basic", chance: "1/4.29Sp", lvl: "LVL 200 MAX", color: "card-maroon", stats: ["x31 Ice [MAX]", "x3.5k Oof [MAX]", "x6 Souls [MAX]", "x2 Rune Luck [MAX]"] },
+          { name: "Eternal Sand", rarity: "Basic", chance: "1/5.08Oc", lvl: "LVL 200 MAX", color: "card-olive", stats: ["x31 Souls [MAX]", "x31 Oof [MAX]", "x31 Meat [MAX]", "x31 Bones [MAX]", "x31 Ash [MAX]", "x1.45 Rune Speed [MAX]"] },
+          { name: "Sphinx", rarity: "Noobinia", chance: "1/30DDe", lvl: "LVL 7,500 MAX", color: "card-olive", stats: ["x15k Souls [MAX]", "x75k Oof [MAX]", "x10.79k Meat [MAX]", "x7.5M Bones [MAX]", "x6 Tier Luck [MAX]", "x2 Rune Speed [MAX]"] },
+          { name: "Anubis", rarity: "Noobinia", chance: "1/75NoDe", lvl: "LVL 50 MAX", color: "card-purple", stats: ["x251 Souls [MAX]", "x5k Oof [MAX]", "x26 Tier Luck [MAX]", "x26 Bones [MAX]", "x51 Sand [MAX]", "x4.75 Rune Speed [MAX]"] },
+          { name: "Ancient Fragment", rarity: "Noobinia", chance: "1/35Vt", lvl: "LVL 65 MAX", color: "card-olive", stats: ["x131 Souls [MAX]", "x4 Sand [MAX]", "x2.5 Rune Bulk [MAX]", "x376 Oof [MAX]", "x17.3 Tier Luck [MAX]", "x4.25 Bones [MAX]"] }
+        ],
+        "Sunfire": [
+          { name: "Ashen", rarity: "Basic", chance: "1/1.01", lvl: "LVL 6,500 MAX", color: "card-slate", stats: ["x3 Souls [MAX]", "x1.3k Oof [MAX]"] },
+          { name: "Parched", rarity: "Basic", chance: "1/43.5M", lvl: "LVL 6,000 MAX", color: "card-olive", stats: ["x46 Bones [MAX]", "x6k Oof [MAX]"] },
+          { name: "Cactus", rarity: "Basic", chance: "1/6.9B", lvl: "LVL 5,500 MAX", color: "card-green", stats: ["x3.3k Oof [MAX]", "x81 Bones [MAX]", "x1.5 Rune Luck [MAX]"] },
+          { name: "Scorch", rarity: "Basic", chance: "1/3.65T", lvl: "LVL 5,000 MAX", color: "card-olive", stats: ["x3.75k Oof [MAX]", "x91 Meat [MAX]", "x100 Tier Bulk [MAX]"] },
+          { name: "Spark", rarity: "Basic", chance: "1/44.6Sx", lvl: "LVL 4,500 MAX", color: "card-olive", stats: ["x5.63k Oof [MAX]", "x61 Meat [MAX]"] },
+          { name: "Flare", rarity: "Basic", chance: "1/4.34Oc", lvl: "LVL 4,250 MAX", color: "card-maroon", stats: ["x5 Souls [MAX]", "x6.38k Oof [MAX]", "x25 Bones [MAX]", "x1.5 Rune Speed [MAX]"] },
+          { name: "Desert Jewel", rarity: "Basic", chance: "1/7.52UDe", lvl: "LVL 4,000 MAX", color: "card-olive", stats: ["x6 Souls [MAX]", "x8k Oof [MAX]", "x1.5 Rune Bulk [MAX]", "x6 Tier Luck [MAX]"] },
+          { name: "Solar Titan", rarity: "Basic", chance: "1/2.67QdDe", lvl: "LVL 3,750 MAX", color: "card-olive", stats: ["x41 Souls [MAX]", "x15k Oof [MAX]", "x6 Tier Bulk [MAX]", "x16 Tier Luck [MAX]", "x3 Rune Luck [MAX]"] },
+          { name: "Immortal Sun", rarity: "Basic", chance: "1/3.94SpDe", lvl: "LVL 3,500 MAX", color: "card-olive", stats: ["x31 Souls [MAX]", "x350k Oof [MAX]", "x36 Bones [MAX]", "x1.5 Rune Bulk [MAX]", "x3.5 Rune Luck [MAX]"] },
+          { name: "Pharaoh", rarity: "Noobinia", chance: "1/200NoDe", lvl: "LVL 75 MAX", color: "card-olive", stats: ["x5 Sand [MAX]", "x16 Bones [MAX]", "x75k Oof [MAX]", "x4 Rune Bulk [MAX]", "x1.5 Rune Speed [MAX]", "x1.5 Prism [MAX]", "x2 Shovel Damage [MAX]"] },
+          { name: "Horus", rarity: "Noobinia", chance: "1/1.5Vt", lvl: "LVL 80 MAX", color: "card-purple", stats: ["x15 Sand [MAX]", "x161 Souls [MAX]", "x4M Oof [MAX]", "x4 Rune Bulk [MAX]", "x2 Rune Speed [MAX]", "x2 Rune Luck [MAX]", "x41 Tier Luck [MAX]"] },
+          { name: "Secrets Of Egypt", rarity: "Noobinia", chance: "1/300Vt", lvl: "LVL 60 MAX", color: "card-olive", stats: ["x1.5k Souls [MAX]", "x10 Sand [MAX]", "x2 Rune Bulk [MAX]", "x1.6 Rune Speed [MAX]", "x601 Oof [MAX]", "x13 Tier Luck [MAX]", "x7 Tier Bulk [MAX]"] }
+        ],
+        "Sunstorm Prism": [
+          { name: "Cinderfall", rarity: "Basic", chance: "1/1.01", lvl: "LVL 35,000 MAX", color: "card-brown", stats: ["x351 Oof [MAX]", "x1.75k Fire [MAX]"] },
+          { name: "Shadowflare", rarity: "Basic", chance: "1/1.5B", lvl: "LVL 25,000 MAX", color: "card-purple", stats: ["x11 P.Rune Luck [MAX]", "+1k P.Rune Bulk [MAX]", "x1.25M Cash [MAX]", "x2.5k Wood [MAX]"] },
+          { name: "Dawnshard", rarity: "Basic", chance: "1/75B", lvl: "LVL 20,000 MAX", color: "card-teal", stats: ["x5 P.Rune Bulk [MAX]", "x5k Wheat [MAX]", "x400k Bread [MAX]"] },
+          { name: "Lumina", rarity: "Basic", chance: "1/1.5T", lvl: "LVL 12,500 MAX", color: "card-brown", stats: ["x4 P.Rune Speed [MAX]", "x11 P.Rune Luck [MAX]", "x125k Bread [MAX]", "x1.88k Water [MAX]"] },
+          { name: "Pyrestone", rarity: "Basic", chance: "1/22.5T", lvl: "LVL 10,000 MAX", color: "card-brown", stats: ["x10 P.Rune Luck [MAX]", "x2.5k Ice [MAX]", "x50k Wood [MAX]", "x201 Oof [MAX]"] },
+          { name: "Helios", rarity: "Basic", chance: "1/500T", lvl: "LVL 5,000 MAX", color: "card-olive", stats: ["x21 P.Rune Luck [MAX]", "+1.5k P.Rune Bulk [MAX]", "x26 Meat [MAX]", "x1k Planks [MAX]", "x1.5k Ash [MAX]", "x3 Shovel Damage [MAX]"] },
+          { name: "Starforge", rarity: "Basic", chance: "1/20Qd", lvl: "LVL 2,000 MAX", color: "card-purple", stats: ["x76 P.Rune Luck [MAX]", "+2k P.Rune Bulk [MAX]", "x4k Planks [MAX]", "x6 Bones [MAX]", "x5 Hack Points [MAX]", "x100k Bread [MAX]", "x201 Gem [MAX]"] },
+          { name: "Celestia", rarity: "Basic", chance: "1/1.5Qn", lvl: "LVL 750 MAX", color: "card-teal", stats: ["x5 P.Rune Bulk [MAX]", "x376 Coin [MAX]", "x1.5 Sand [MAX]", "x30.5 Tier Luck [MAX]", "x51 Souls [MAX]", "x1.5 F.Rune Bulk [MAX]", "x38.5 Oof [MAX]"] },
+          { name: "Eternis", rarity: "Noobinia", chance: "1/75T", lvl: "LVL 45 MAX", color: "card-brown", stats: ["x5 P.Rune Speed [MAX]", "+3k P.Rune Bulk [MAX]", "x46 Oof [MAX]", "x1.1 Prism [MAX]", "x2.5 Rune Bulk [MAX]", "x4 Sand [MAX]", "x91 Souls [MAX]", "x3.5 F.Rune Bulk [MAX]"] },
+          { name: "Omnira", rarity: "Noobinia", chance: "1/1.25Qd", lvl: "LVL 35 MAX", color: "card-olive", stats: ["x4 P.Rune Bulk [MAX]", "x10.5 P.Rune Luck [MAX]", "x1.25 Prism [MAX]", "x71 Oof [MAX]", "x4.5 Sand [MAX]", "x176 Souls [MAX]", "x1.25 Rune Bulk [MAX]", "x71 Tier Luck [MAX]"] }
+        ],
+        "Mini Noobinia": [
+          { name: "Mini Noob", rarity: "Noobinia", chance: "1/1.01", lvl: "LVL 30,000 MAX", color: "card-green", note: "Found in Realm 3 Sand Area", stats: ["x3 Souls [MAX]", "x16 Sand [MAX]", "x1.1 Rune Bulk [MAX]", "x6 Meat [MAX]", "x91 Oof [MAX]", "x301 Coin [MAX]"] },
+          { name: "Noob", rarity: "Noobinia", chance: "1/2M", lvl: "LVL 25,000 MAX", color: "card-slate", stats: ["x2 Tier Luck [MAX]", "x501 Sand [MAX]", "x1.25 Rune Bulk [MAX]", "x2 Stars [MAX]", "x1.5 Space Points [MAX]", "x2.75 Planets [MAX]", "x3 Moon [MAX]", "x16 Oof [MAX]"] },
+          { name: "Big Noob", rarity: "Noobinia", chance: "1/25Sp", lvl: "LVL 22,500 MAX", color: "card-olive", stats: ["x201 Oof [MAX]", "x2.25 Yang [MAX]", "x1.5 Yin [MAX]", "x2.5 Chips [MAX]", "x3 Alien Cash [MAX]", "x2.5 Knowledge [MAX]", "x501 Shovel Damage [MAX]", "x11.3k Sand [MAX]"] },
+          { name: "Huge Noob", rarity: "Noobinia", chance: "1/350QnDe", lvl: "LVL 20,000 MAX", color: "card-green", stats: ["x301 Oof [MAX]", "x3.5 Yang [MAX]", "x1.5 Yin [MAX]", "x201 Coin [MAX]", "x76 Shovel Damage [MAX]", "x51 Bubbles [MAX]", "x4M Sand [MAX]", "x25k Coral [MAX]"] },
+          { name: "Giant Noob", rarity: "Noobinia", chance: "1/75QdVt", lvl: "LVL 17,500 MAX", color: "card-teal", stats: ["x251 Oof [MAX]", "x176 Coin [MAX]", "x5k Shovel Damage [MAX]", "x1.75k Sea Points [MAX]", "x17.5M Sand [MAX]", "x36 Tier Luck [MAX]", "x17.5M Coral [MAX]"] },
+          { name: "Colossal Noob", rarity: "Noobinia", chance: "1/400NoVt", lvl: "LVL 12,500 MAX", color: "card-brown", stats: ["x176 Oof [MAX]", "x251 Coin [MAX]", "x10k Shovel Damage [MAX]", "x26 Coral [MAX]", "x6.25k Sand [MAX]", "x201 Tier Luck [MAX]", "x2 Rune Bulk [MAX]", "x7.5 Rune Luck [MAX]"] },
+          { name: "Biggest Noob of all time", rarity: "Noobinia", chance: "1/2.5Tg", lvl: "LVL 5,000 MAX", color: "card-olive", stats: ["x76 Oof [MAX]", "x501 Coin [MAX]", "x51 Coral [MAX]", "x500k Trash Cash [MAX]", "x5k Sand [MAX]", "x251 Tier Luck [MAX]", "x2.5 Rune Bulk [MAX]", "x8.5 Rune Luck [MAX]"] },
+          { name: "The Ultimate Noob", rarity: "Noobinia", chance: "1/1QdTg", lvl: "LVL 10,000 MAX", color: "card-olive", stats: ["x51 Oof [MAX]", "x1k Coin [MAX]", "x10Qn Sand [MAX]", "x2 Tier Bulk [MAX]", "x101 Tier Luck [MAX]", "x1.5 Rune Bulk [MAX]", "x1.25 Rune Luck [MAX]", "x1.05 Prism [MAX]"] }
+        ]
+      },
+      "Realm 4": {
+        "Starlight": [
+          { name: "Moonlight", rarity: "Basic", chance: "1/1.01", lvl: "LVL 650 MAX", color: "card-slate", stats: ["x5 Stars [MAX]", "x6 Moon [MAX]", "x294 Oof [MAX]"] },
+          { name: "Sunlight", rarity: "Basic", chance: "1/500De", lvl: "LVL 500 MAX", color: "card-olive", stats: ["x7.5 Moon [MAX]", "x7 Planets [MAX]", "x126 Oof [MAX]"] },
+          { name: "Invasion", rarity: "Basic", chance: "1/80DDe", lvl: "LVL 450 MAX", color: "card-maroon", stats: ["x25.5 Stars [MAX]", "x5 Planets [MAX]", "x1.25 Rune Luck [MAX]", "x91 Oof [MAX]"] },
+          { name: "Alien", rarity: "Basic", chance: "1/225QdDe", lvl: "LVL 400 MAX", color: "card-green", stats: ["x15 Stars [MAX]", "x5.5 Planets [MAX]", "x7 Moon [MAX]", "x81 Oof [MAX]"] },
+          { name: "Universe", rarity: "Basic", chance: "1/925SpDe", lvl: "LVL 375 MAX", color: "card-purple", stats: ["x21 Stars [MAX]", "x3.25 Planets [MAX]", "x7 Moon [MAX]", "x151 Oof [MAX]"] },
+          { name: "Gravity", rarity: "Basic", chance: "1/15UVt", lvl: "LVL 350 MAX", color: "card-slate", stats: ["x16 Stars [MAX]", "x30 Blackholes [MAX]", "x11.5 Moon [MAX]", "x88.5 Oof [MAX]", "x1.35 Rune Luck [MAX]"] },
+          { name: "Dimensional", rarity: "Basic", chance: "1/1QnVt", lvl: "LVL 325 MAX", color: "card-brown", stats: ["x7 Moon [MAX]", "x4 Blackholes [MAX]", "x4 Planets [MAX]", "x49.7 Oof [MAX]", "x5.5 Tier Luck [MAX]"] },
+          { name: "Meteor", rarity: "Basic", chance: "1/75UTg", lvl: "LVL 300 MAX", color: "card-maroon", stats: ["x91 Stars [MAX]", "x46 Oof [MAX]", "x2.5 Tier Bulk [MAX]", "x8 Alien Cash [MAX]", "x4 Blackholes [MAX]", "x3 Rune Luck [MAX]"] },
+          { name: "Nebula", rarity: "Basic", chance: "1/2DTg", lvl: "LVL 275 MAX", color: "card-slate", stats: ["x28.5 Stars [MAX]", "x7 Tier Luck [MAX]", "x1.5 Rune Bulk [MAX]", "x1.75 Rune Luck [MAX]", "x46 Alien Cash [MAX]", "x28.5 Oof [MAX]"] },
+          { name: "Supernova", rarity: "Noobinia", chance: "1/125DVt", lvl: "LVL 525 MAX", color: "card-teal", stats: ["x12.5 Alien XP [MAX]", "x4 Rune Speed [MAX]", "x1.58k Oof [MAX]", "x61 Planets [MAX]", "x1.5 Rune Bulk [MAX]", "x1.05 Prism [MAX]", "x25 Alien Cash [MAX]", "x27.3 Tier Luck [MAX]"] },
+          { name: "Galactic Chaos", rarity: "Noobinia", chance: "1/1.25TVt", lvl: "LVL 500 MAX", color: "card-purple", stats: ["x1.1 Prism [MAX]", "x1k Blackholes [MAX]", "x2.5k Oof [MAX]", "x3 Rune Bulk [MAX]", "x2 Rune Luck [MAX]", "x10 Alien XP [MAX]", "x101 Knowledge [MAX]", "x51 Tier Luck [MAX]"] },
+          { name: "Chaotic Destruction", rarity: "Noobinia", chance: "1/3QnVt", lvl: "LVL 200 MAX", color: "card-maroon", stats: ["x100k Stars [MAX]", "x2k Oof [MAX]", "x2 Rune Bulk [MAX]", "x25 Rune Luck [MAX]", "x10 Chips [MAX]", "x500 Alien XP [MAX]", "x3k Planets [MAX]", "x31 Tier Luck [MAX]"] }
+        ],
+        "Cosma": [
+          { name: "Asteroid", rarity: "Basic", chance: "1/1.01", lvl: "LVL 750 MAX", color: "card-slate", stats: ["x8.5 Oof [MAX]", "x21 Stars [MAX]", "x2 Alien Cash [MAX]"] },
+          { name: "Comet", rarity: "Basic", chance: "1/150UDe", lvl: "LVL 700 MAX", color: "card-teal", stats: ["x5 Planets [MAX]", "x3 Space Points [MAX]", "x4 Knowledge [MAX]", "x2.5 Rune Luck [MAX]", "x15 Oof [MAX]"] },
+          { name: "Satellite", rarity: "Basic", chance: "1/3QdDe", lvl: "LVL 650 MAX", color: "card-slate", stats: ["x4.5 Alien Cash [MAX]", "x20.5 Oof [MAX]", "x3 Blackholes [MAX]", "x4.75 Planets [MAX]", "x1.5 Rune Speed [MAX]"] },
+          { name: "Orbit", rarity: "Basic", chance: "1/700SxDe", lvl: "LVL 575 MAX", color: "card-purple", stats: ["x1.5 Rune Luck [MAX]", "x1.05 Prism [MAX]", "x2 Knowledge [MAX]", "x101 Stars [MAX]", "x24 Oof [MAX]"] },
+          { name: "Cluster", rarity: "Basic", chance: "1/17.5NoDe", lvl: "LVL 500 MAX", color: "card-maroon", stats: ["x3 Planets [MAX]", "x1.5 Alien XP [MAX]", "x1.9 Alien Cash [MAX]", "x8 Moon [MAX]", "x26 Oof [MAX]"] },
+          { name: "Quasar", rarity: "Basic", chance: "1/525QdVt", lvl: "LVL 400 MAX", color: "card-olive", stats: ["x6 Tier Luck [MAX]", "x4 Blackholes [MAX]", "x1.75 Rune Bulk [MAX]", "x2.5 Alien Cash [MAX]", "x101 Stars [MAX]", "x2.5 Knowledge [MAX]", "x25 Oof [MAX]"] },
+          { name: "Pulsar", rarity: "Basic", chance: "1/250DTg", lvl: "LVL 300 MAX", color: "card-teal", stats: ["x35 Blackholes [MAX]", "x6k Stars [MAX]", "x1.5 Rune Bulk [MAX]", "x1.6 Rune Luck [MAX]", "x5 Alien XP [MAX]", "x22 Oof [MAX]", "x151 Coin [MAX]"] },
+          { name: "Black Hole", rarity: "Basic", chance: "1/10TTg", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x51 Alien Cash [MAX]", "x3.5 Rune Bulk [MAX]", "x12.5k Stars [MAX]", "x4 Tier Luck [MAX]", "x1.75 Rune Speed [MAX]", "x25 Planets [MAX]", "x12.5 Blackholes [MAX]", "x21 Oof [MAX]"] },
+          { name: "Magnetar", rarity: "Noobinia", chance: "1/3.75TVt", lvl: "LVL 475 MAX", color: "card-green", stats: ["x5 Rune Speed [MAX]", "x4.75k Oof [MAX]", "x238k Stars [MAX]", "x951 Alien Cash [MAX]", "x48.5 Rune Luck [MAX]", "x4.75k Planets [MAX]", "x30 Alien XP [MAX]", "x96 Tier Luck [MAX]"] },
+          { name: "Event Horizon", rarity: "Noobinia", chance: "1/25TVt", lvl: "LVL 450 MAX", color: "card-teal", stats: ["x4 Rune Bulk [MAX]", "x9k Blackholes [MAX]", "x1.25 Prism [MAX]", "x9k Oof [MAX]", "x226 Knowledge [MAX]", "x2.25k Alien Cash [MAX]", "x136 Tier Luck [MAX]", "x41 Tier Bulk [MAX]"] },
+          { name: "Elemental Creation", rarity: "Noobinia", chance: "1/35QnVt", lvl: "LVL 100 MAX", color: "card-olive", stats: ["x3 Rune Bulk [MAX]", "x2 Rune Speed [MAX]", "x2.5k Oof [MAX]", "x501 Alien Cash [MAX]", "x36 Tier Luck [MAX]", "x16 Tier Bulk [MAX]", "x101 Knowledge [MAX]", "x1k Blackholes [MAX]"] }
+        ],
+        "Light": [
+          { name: "White", rarity: "Basic", chance: "1/1.01", lvl: "LVL 15 MAX", color: "card-slate", stats: ["x10 Yang [MAX]", "x15Qd Sand [MAX]", "x4 Stars [MAX]", "x4 Knowledge [MAX]", "x5 Alien Cash [MAX]"] },
+          { name: "Divine Light", rarity: "Basic", chance: "1/15NoDe", lvl: "LVL 65 MAX", color: "card-olive", stats: ["x2.95 Oof [MAX]", "x8 Yang [MAX]", "x66 Stars [MAX]", "x4.25 Coin [MAX]"] },
+          { name: "Daylight", rarity: "Basic", chance: "1/1TVt", lvl: "LVL 75 MAX", color: "card-olive", stats: ["x4 Oof [MAX]", "x9 Yang [MAX]", "x301 Stars [MAX]", "x8.5 Coin [MAX]"] },
+          { name: "Elemental Of Light", rarity: "Basic", chance: "1/1SpVt", lvl: "LVL 100 MAX", color: "card-olive", stats: ["x7 Yang [MAX]", "x10k Stars [MAX]", "x26 Planets [MAX]", "x11 Blackholes [MAX]"] },
+          { name: "Protected", rarity: "Basic", chance: "1/1UTg", lvl: "LVL 150 MAX", color: "card-teal", stats: ["x10 Oof [MAX]", "x8.5 Yang [MAX]", "x1.5k Stars [MAX]", "x16 Planets [MAX]"] },
+          { name: "Creation", rarity: "Basic", chance: "1/1QnTg", lvl: "LVL 200 MAX", color: "card-teal", stats: ["x400k Stars [MAX]", "x151 Planets [MAX]", "x100 Yang [MAX]", "x51 Blackholes [MAX]", "x41 Coin [MAX]"] },
+          { name: "Angelic Goodness", rarity: "Basic", chance: "1/200OcTg", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x26 Oof [MAX]", "x50 Yang [MAX]", "x26 Tier Luck [MAX]", "x25M Stars [MAX]", "x251 Blackholes [MAX]", "x6.25k Planets [MAX]", "x1.5 Rune Luck [MAX]"] },
+          { name: "Absolute Divinity", rarity: "Noobinia", chance: "1/12.5SxVt", lvl: "LVL 100 MAX", color: "card-olive", stats: ["x201 Oof [MAX]", "x100 Yang [MAX]", "x1k Alien Cash [MAX]", "x1k Coin [MAX]", "x36 Tier Luck [MAX]", "x100B Stars [MAX]", "x1.25 Rune Bulk [MAX]", "x7.5 Rune Luck [MAX]"] },
+          { name: "Light Genesis", rarity: "Noobinia", chance: "1/92.5SxVt", lvl: "LVL 100 MAX", color: "card-purple", stats: ["x1.5 Chips [MAX]", "x301 Oof [MAX]", "x125 Yang [MAX]", "x1.2 Prism [MAX]", "x51 Tier Luck [MAX]", "x1.5k Coin [MAX]", "x1.5 Rune Bulk [MAX]", "x3.75 Rune Luck [MAX]"] },
+          { name: "Ultimate Light", rarity: "Noobinia", chance: "1/200SpVt", lvl: "LVL 250 MAX", color: "card-olive", stats: ["x51 Oof [MAX]", "x251 Yang [MAX]", "x1.25k Coin [MAX]", "x1.1 Prism [MAX]", "x63.5 Tier Luck [MAX]", "x13.5 Tier Bulk [MAX]", "x1.2 Rune Bulk [MAX]", "x5 Rune Luck [MAX]"] }
+        ],
+        "Dark": [
+          { name: "Black", rarity: "Basic", chance: "1/1.01", lvl: "LVL 15 MAX", color: "card-slate", stats: ["x1.45 Oof [MAX]", "x10 Yin [MAX]", "x15Qd Ice [MAX]", "x3 Chips [MAX]"] },
+          { name: "Infinite Darkness", rarity: "Basic", chance: "1/1Vt", lvl: "LVL 65 MAX", color: "card-teal", stats: ["x8 Yin [MAX]", "x66 Stars [MAX]", "x4.25 Coin [MAX]", "x65Qd Bones [MAX]"] },
+          { name: "Midnight", rarity: "Basic", chance: "1/1TVt", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x4.75 Oof [MAX]", "x7 Yin [MAX]", "x301 Stars [MAX]", "x8.5 Coin [MAX]"] },
+          { name: "Dark Elemental", rarity: "Basic", chance: "1/1SpVt", lvl: "LVL 100 MAX", color: "card-olive", stats: ["x9 Oof [MAX]", "x4 Yin [MAX]", "x1k Stars [MAX]", "x11 Planets [MAX]"] },
+          { name: "Doomed", rarity: "Basic", chance: "1/1UTg", lvl: "LVL 150 MAX", color: "card-slate", stats: ["x3 Yin [MAX]", "x15k Stars [MAX]", "x38.5 Planets [MAX]", "x16 Blackholes [MAX]"] },
+          { name: "Destruction", rarity: "Basic", chance: "1/1QnTg", lvl: "LVL 200 MAX", color: "card-maroon", stats: ["x151 Planets [MAX]", "x50 Yin [MAX]", "x21 Oof [MAX]", "x400k Stars [MAX]", "x51 Blackholes [MAX]"] },
+          { name: "Demonic Evil", rarity: "Basic", chance: "1/200OcTg", lvl: "LVL 250 MAX", color: "card-maroon", stats: ["x25M Stars [MAX]", "x251 Blackholes [MAX]", "x51 Oof [MAX]", "x100 Yin [MAX]", "x751 Planets [MAX]", "x126 Coin [MAX]", "x1.1 Rune Bulk [MAX]", "x51 Tier Luck [MAX]"] },
+          { name: "Absolute Darkness", rarity: "Noobinia", chance: "1/250SxVt", lvl: "LVL 100 MAX", color: "card-olive", stats: ["x1k Oof [MAX]", "x100 Yin [MAX]", "x7.5 Chips [MAX]", "x1k Knowledge [MAX]", "x101 Tier Luck [MAX]", "x26 Tier Bulk [MAX]", "x2 Rune Bulk [MAX]", "x7.5 Rune Luck [MAX]"] },
+          { name: "Dark Genesis", rarity: "Noobinia", chance: "1/5SpVt", lvl: "LVL 75 MAX", color: "card-purple", stats: ["x1.88k Oof [MAX]", "x100 Yin [MAX]", "x2 Chips [MAX]", "x1.2 Prism [MAX]", "x57.3 Tier Luck [MAX]", "x12.2 Tier Bulk [MAX]", "x2.5 Rune Bulk [MAX]", "x10 Rune Luck [MAX]"] },
+          { name: "Ultimate Darkness", rarity: "Noobinia", chance: "1/1.25OcVt", lvl: "LVL 200 MAX", color: "card-slate", stats: ["x201 Oof [MAX]", "x201 Yin [MAX]", "x10k Coin [MAX]", "x1.14 Prism [MAX]", "x201 Tier Luck [MAX]", "x21 Tier Bulk [MAX]", "x1.4 Rune Bulk [MAX]", "x10 Rune Luck [MAX]"] }
+        ]
+      },
+      "Realm 5": {
+        "Underwater": [
+          { name: "Water", rarity: "Basic", chance: "1/1.01", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x6 Bubbles [MAX]"] },
+          { name: "Bubbles", rarity: "Basic", chance: "1/10B", lvl: "LVL 250 MAX", color: "card-purple", stats: ["x9 Bubbles [MAX]"] },
+          { name: "Pond", rarity: "Basic", chance: "1/10Qd", lvl: "LVL 250 MAX", color: "card-green", stats: ["x6 Air [MAX]"] },
+          { name: "Lake", rarity: "Basic", chance: "1/10Sx", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x6 Coral [MAX]"] },
+          { name: "River", rarity: "Basic", chance: "1/1No", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x16 Bubbles [MAX]"] },
+          { name: "Pool", rarity: "Basic", chance: "1/10DDe", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x11 Air [MAX]", "x11 Coral [MAX]"] },
+          { name: "Sea", rarity: "Basic", chance: "1/10SxDe", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x26 Bubbles [MAX]"] },
+          { name: "Ocean", rarity: "Basic", chance: "1/100NoDe", lvl: "LVL 250 MAX", color: "card-purple", stats: ["x101 Bubbles [MAX]"] },
+          { name: "Deep Sea", rarity: "Basic", chance: "1/10UVt", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x251 Bubbles [MAX]"] },
+          { name: "Tidal Wave", rarity: "Noobinia", chance: "1/3.5OcVt", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x2.5k Oof [MAX]", "x1.25k Bubbles [MAX]", "x501 Air [MAX]", "x501 Coral [MAX]", "x1k Yin [MAX]", "x5 Rune Luck [MAX]", "x10 Rune Bulk [MAX]", "x1.02 Prism [MAX]"] },
+          { name: "Tsunami", rarity: "Noobinia", chance: "1/3.5NoVt", lvl: "LVL 500 MAX", color: "card-slate", stats: ["x12.5k Oof [MAX]", "x7.5k Bubbles [MAX]", "x2.5k Air [MAX]", "x2.5k Coral [MAX]", "x5k Yin [MAX]", "x5k Yang [MAX]", "x5 Rune Bulk [MAX]", "x1.04 Prism [MAX]"] },
+          { name: "Infinite Flood", rarity: "Noobinia", chance: "1/200NoVt", lvl: "LVL 450 MAX", color: "card-brown", stats: ["x5k Oof [MAX]", "x901 Coin [MAX]", "x901 Bubbles [MAX]", "x1.35k Coral [MAX]", "x451 Tier Luck [MAX]", "x3.5 Tier Bulk [MAX]", "x1.35 Rune Bulk [MAX]", "x1.25 Prism [MAX]"] }
+        ],
+        "Atlantis": [
+          { name: "Underwater", rarity: "Basic", chance: "1/1.01", lvl: "LVL 250 MAX", color: "card-teal", stats: ["x51 Bubbles [MAX]"] },
+          { name: "Ancient City", rarity: "Basic", chance: "1/10Qd", lvl: "LVL 250 MAX", color: "card-slate", stats: ["x38.5 Oil [MAX]", "x26 Air [MAX]"] },
+          { name: "Mermaid", rarity: "Basic", chance: "1/10Sx", lvl: "LVL 250 MAX", color: "card-olive", stats: ["x51 Sea Points [MAX]", "x76 Bubbles [MAX]"] },
+          { name: "Sea Monument", rarity: "Basic", chance: "1/1No", lvl: "LVL 250 MAX", color: "card-green", stats: ["x76 Trash Cash [MAX]", "x51 Coral [MAX]"] },
+          { name: "Fish", rarity: "Basic", chance: "1/10DDe", lvl: "LVL 250 MAX", color: "card-brown", stats: ["x376 Oof [MAX]", "x76 Pearl [MAX]"] },
+          { name: "Coral", rarity: "Basic", chance: "1/10SxDe", lvl: "LVL 250 MAX", color: "card-purple", stats: ["x501 Bubbles [MAX]", "x251 Sea Points [MAX]"] },
+          { name: "Sea Shell", rarity: "Basic", chance: "1/100NoDe", lvl: "LVL 250 MAX", color: "card-brown", stats: ["x1k Oof [MAX]", "x251 Oil [MAX]"] },
+          { name: "Pearl", rarity: "Basic", chance: "1/1TVt", lvl: "LVL 250 MAX", color: "card-purple", stats: ["x2.5k Bubbles [MAX]", "x501 Trash Cash [MAX]"] },
+          { name: "Natural Disaster", rarity: "Basic", chance: "1/10SxVt", lvl: "LVL 250 MAX", color: "card-green", stats: ["x2.5k Oof [MAX]", "x1.25k Sea Points [MAX]", "x1.25T Hack Points [MAX]"] },
+          { name: "Secrets of Atlantis", rarity: "Noobinia", chance: "1/2220cVt", lvl: "LVL 100 MAX", color: "card-teal", stats: ["x5k Oof [MAX]", "x10k Bubbles [MAX]", "x1.5k Pearl [MAX]", "x2k Oil [MAX]", "x2k Sea Points [MAX]", "x15 Rune Luck [MAX]", "x5 Rune Bulk [MAX]", "x1.06 Prism [MAX]"] },
+          { name: "Poseidon", rarity: "Noobinia", chance: "1/88NoVt", lvl: "LVL 500 MAX", color: "card-green", stats: ["x50k Oof [MAX]", "x100k Bubbles [MAX]", "x20k Oil [MAX]", "x901 Trash Cash [MAX]", "x1.5k Sea Points [MAX]", "x20 Rune Luck [MAX]", "x3 Rune Bulk [MAX]", "x1.08 Prism [MAX]"] },
+          { name: "Lord of Atlantis", rarity: "Noobinia", chance: "1/1.11Tg", lvl: "LVL 375 MAX", color: "card-slate", stats: ["x3k Oof [MAX]", "x751 Tier Luck [MAX]", "x6 Tier Bulk [MAX]", "x3.75k Coin [MAX]", "x470 Sea Points [MAX]", "x3 P.Rune Bulk [MAX]", "x1.5 Rune Bulk [MAX]", "x1.35 Prism [MAX]"] }
+        ],
+        "Aquatic Prism": [
+          { name: "Water Molecule", rarity: "Basic", chance: "1/1.01", lvl: "LVL 75 MAX", color: "card-slate", stats: ["x4.75 Oof [MAX]", "x76 Hack Points [MAX]", "x26 Bubbles [MAX]"] },
+          { name: "Aqua", rarity: "Basic", chance: "1/350Oc", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x3 P.Rune Luck [MAX]", "+7.5k P.Rune Bulk [MAX]", "x26 Coin [MAX]", "x100 Bubbles [MAX]", "x71 Air [MAX]", "x1k Oof [MAX]"] },
+          { name: "Atlantic", rarity: "Basic", chance: "1/3.25No", lvl: "LVL 20,000 MAX", color: "card-green", stats: ["x3 P.Rune Bulk [MAX]", "x141 Coral [MAX]", "x86 Pearl [MAX]", "x601 Oof [MAX]"] },
+          { name: "Take a shower", rarity: "Basic", chance: "1/35No", lvl: "LVL 15,000 MAX", color: "card-olive", stats: ["+15k P.Rune Bulk [MAX]", "x6 P.Rune Luck [MAX]", "x51 Coin [MAX]", "x129 Oil [MAX]", "x131 Trash Cash [MAX]", "x1.5k Oof [MAX]"] },
+          { name: "Low Tide", rarity: "Basic", chance: "1/444No", lvl: "LVL 10,000 MAX", color: "card-teal", stats: ["x7 P.Rune Luck [MAX]", "x751 Bubbles [MAX]", "x5M Yang [MAX]", "x500k Yin [MAX]", "x1k Coral [MAX]", "x101 Sea Points [MAX]", "x201 Oof [MAX]"] },
+          { name: "Underwater Crystal", rarity: "Basic", chance: "1/5De", lvl: "LVL 7,500 MAX", color: "card-purple", stats: ["x3 P.Rune Luck [MAX]", "x26 Chips [MAX]", "x151 Air [MAX]", "x251 Oil [MAX]", "x226 Pearl [MAX]", "x1.5k Oof [MAX]", "+20k P.Rune Bulk [MAX]"] },
+          { name: "Oceanic Wonder", rarity: "Basic", chance: "1/67.5De", lvl: "LVL 5,000 MAX", color: "card-olive", stats: ["x8.5 P.Rune Luck [MAX]", "+30k P.Rune Bulk [MAX]", "x2.25k Bubbles [MAX]", "x61 Sea Points [MAX]", "x351 Trash Cash [MAX]", "x1k Coral [MAX]", "x151 Coin [MAX]", "x1.1 Prism [MAX]"] },
+          { name: "Submerged", rarity: "Basic", chance: "1/1UDe", lvl: "LVL 3,500 MAX", color: "card-brown", stats: ["x5 P.Rune Bulk [MAX]", "x4 Sea Points [MAX]", "x151 Coral [MAX]", "x176 Tier Luck [MAX]", "x101 Oil [MAX]", "x1.2 Prism [MAX]", "x126 Pearl [MAX]", "x1.75k Oof [MAX]"] },
+          { name: "Water Elemental", rarity: "Basic", chance: "1/2.5TDe", lvl: "LVL 2,500 MAX", color: "card-teal", stats: ["x1.2 P.Rune Bulk [MAX]", "x3.5 Sea Points [MAX]", "x5 Coral [MAX]", "x126 Tier Luck [MAX]", "x51 Pearl [MAX]", "x51 Bubbles [MAX]", "x1k Oof [MAX]"] },
+          { name: "Whirlpool", rarity: "Noobinia", chance: "1/2.5Sx", lvl: "LVL 200 MAX", color: "card-slate", stats: ["x5 P.Rune Speed [MAX]", "+75k P.Rune Bulk [MAX]", "x301 Oof [MAX]", "x1.35 Prism [MAX]", "x2.5 Rune Bulk [MAX]", "x151 Tier Luck [MAX]", "x201 Coin [MAX]", "x21 Coral [MAX]"] },
+          { name: "Prismatic Water", rarity: "Noobinia", chance: "1/12.5Sx", lvl: "LVL 175 MAX", color: "card-olive", stats: ["x4 P.Rune Bulk [MAX]", "x351 P.Rune Luck [MAX]", "x1.5 Prism [MAX]", "x301 Oof [MAX]", "x201 Sea Points [MAX]", "x876 Coin [MAX]", "x1.5 Rune Bulk [MAX]", "x264 Tier Luck [MAX]"] },
+          { name: "Prismatic Ocean", rarity: "Noobinia", chance: "1/50Sx", lvl: "LVL 150 MAX", color: "card-slate", stats: ["x2 P.Rune Bulk [MAX]", "x2 P.Rune Luck [MAX]", "x1.1 Prism [MAX]", "x351 Oof [MAX]", "x201 Sea Points [MAX]", "x151 Coin [MAX]", "x1.2 Rune Bulk [MAX]", "x76 Tier Luck [MAX]"] }
+        ],
+        "Mini Noobinia": [
+          { name: "Pro", rarity: "Basic", chance: "1/1.01", lvl: "LVL 165,000 MAX", color: "card-maroon", stats: ["x3 Bubbles [MAX]", "x3 Coral [MAX]", "x5 Oof [MAX]", "x16.5k Yang [MAX]"] },
+          { name: "Very Pro", rarity: "Basic", chance: "1/2500cDe", lvl: "LVL 150,000 MAX", color: "card-maroon", stats: ["x3 Bubbles [MAX]", "x3 Coral [MAX]", "x501 Oof [MAX]", "x501 Sand [MAX]", "x7.5k Yin [MAX]"] },
+          { name: "Insanely Pro", rarity: "Basic", chance: "1/2500cVt", lvl: "LVL 150,000 MAX", color: "card-purple", stats: ["x15 Sea Points [MAX]", "x5 Coral [MAX]", "x1k Pearl [MAX]", "x1.25k Oof [MAX]", "x500 Shovel Damage [MAX]", "x3k Yin [MAX]", "x7.5k Yang [MAX]"] },
+          { name: "Dedicated Pro", rarity: "Basic", chance: "1/2500cTg", lvl: "LVL 125,000 MAX", color: "card-green", stats: ["x750k Pearl [MAX]", "x62.5M Coral [MAX]", "x750k Oil [MAX]", "x1k Oof [MAX]", "x20M Sand [MAX]", "x50 Shovel Damage [MAX]", "x6.25k Yin [MAX]", "x12.5k Yang [MAX]"] },
+          { name: "Awakened Pro", rarity: "Basic", chance: "1/1000Ocqg", lvl: "LVL 100,000 MAX", color: "card-purple", stats: ["x10k Coral [MAX]", "x10k Trash Cash [MAX]", "x101 Tier Luck [MAX]", "x251 Oof [MAX]", "x10k Yin [MAX]", "x25k Yang [MAX]", "x10 Rune Luck [MAX]", "x1k Coin [MAX]"] },
+          { name: "One of the Best", rarity: "Basic", chance: "1/300Qg", lvl: "LVL 200,000 MAX", color: "card-maroon", stats: ["x50k Coral [MAX]", "x201 Tier Luck [MAX]", "x126 Oof [MAX]", "x50k Yin [MAX]", "x200k Yang [MAX]", "x2.5 Rune Luck [MAX]", "x2 Rune Bulk [MAX]", "x251 Coin [MAX]"] },
+          { name: "The Best", rarity: "Basic", chance: "1/4UQg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x100k Coral [MAX]", "x501 Tier Luck [MAX]", "x76 Oof [MAX]", "x12.5k Yin [MAX]", "x50k Yang [MAX]", "x2.5 Rune Luck [MAX]", "x1.75 Rune Bulk [MAX]", "x501 Coin [MAX]"] },
+          { name: "Infinite Skill", rarity: "Basic", chance: "1/690SxQg", lvl: "LVL 4,025", color: "card-olive", stats: ["x51 Oof [MAX]", "x404 Tier Luck", "x10 Tier Bulk", "x1.75 Rune Luck [MAX]", "x1.5 Rune Bulk [MAX]", "x1.05 Prism [MAX]", "x40.3k Coin", "x4.03k Cash"] }
+        ]
+      },
+      "Realm 6": {
+        "Ares": [
+          { name: "Warrior", rarity: "Basic", chance: "1/1.01", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x1k Oof [MAX]", "x2 Glory [MAX]", "x251 Coin [MAX]"] },
+          { name: "Clash", rarity: "Basic", chance: "1/1QdVt", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x2k Oof [MAX]", "x11 Momentum [MAX]", "x501 Coin [MAX]"] },
+          { name: "Bloodshed", rarity: "Basic", chance: "1/10DTg", lvl: "LVL 25,000 MAX", color: "card-maroon", stats: ["x3k Oof [MAX]", "x3.25 Glory [MAX]", "x1.25k Coin [MAX]"] },
+          { name: "Rage", rarity: "Basic", chance: "1/100qg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x4k Oof [MAX]", "x2.5 Glory [MAX]", "x5 Colosseum Damage [MAX]", "x5 Colosseum HP [MAX]", "x3.25 Momentum [MAX]", "x2.5k Coin [MAX]"] },
+          { name: "Valor", rarity: "Basic", chance: "1/1Noqg", lvl: "LVL 25,000 MAX", color: "card-slate", stats: ["x5k Oof [MAX]", "x5 Glory [MAX]", "x4 Momentum [MAX]", "x6.25k Coin [MAX]"] },
+          { name: "Carnage", rarity: "Basic", chance: "1/10Qg", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x6k Oof [MAX]", "x2 Glory [MAX]", "x2 Momentum [MAX]", "x12.5k Coin [MAX]"] },
+          { name: "Dominion", rarity: "Basic", chance: "1/1UQg", lvl: "LVL 25,000 MAX", color: "card-green", stats: ["x7k Oof [MAX]", "x3 Glory [MAX]", "x3 Momentum [MAX]", "x26 Tier Luck [MAX]", "x25k Coin [MAX]"] },
+          { name: "Conquest", rarity: "Basic", chance: "1/100UQg", lvl: "LVL 1,000 MAX", color: "card-purple", stats: ["x8k Oof [MAX]", "x2.5 Colosseum Damage [MAX]", "x2.5 Colosseum HP [MAX]", "x1.2 Rune Bulk [MAX]", "x1.2 Rune Luck [MAX]", "x51 Tier Luck [MAX]", "x6 Glory [MAX]", "x6 Momentum [MAX]"] },
+          { name: "War Eternal", rarity: "Basic", chance: "1/10DQg", lvl: "LVL 25,000 MAX", color: "card-maroon", stats: ["x9k Oof [MAX]", "x10 Colosseum Damage [MAX]", "x10 Colosseum HP [MAX]", "x125k Coin [MAX]", "x7 Glory [MAX]", "x7 Momentum [MAX]", "x1.25 Rune Luck [MAX]", "x101 Tier Luck [MAX]"] },
+          { name: "War Immortal", rarity: "Noobinia", chance: "1/2.5DTg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x10k Oof [MAX]", "x1.45 Rune Bulk [MAX]", "x125k Fire [MAX]", "x125k Cash [MAX]", "x125k Yin [MAX]", "x125k Yang [MAX]", "x1.5 Rune Luck [MAX]", "x501 Tier Luck [MAX]"] },
+          { name: "Wrath Eternal", rarity: "Noobinia", chance: "1/15DTg", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x12.5k Oof [MAX]", "x1.25 Rune Bulk [MAX]", "x125k Coin [MAX]", "x250k Sea Points [MAX]", "x125k Yin [MAX]", "x125k Yang [MAX]", "x1.5 Rune Luck [MAX]", "x626 Tier Luck [MAX]"] },
+          { name: "Wrath Immortal", rarity: "Noobinia", chance: "1/10TTg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x15k Oof [MAX]", "x2 Rune Bulk [MAX]", "x1.5 Rune Luck [MAX]", "x1k Tier Luck [MAX]", "x6 Tier Bulk [MAX]", "x1.2 Prism [MAX]", "x21 Glory [MAX]", "x250k Coin [MAX]"] }
+        ],
+        "Apollo": [
+          { name: "Whisper", rarity: "Basic", chance: "1/1.01", lvl: "LVL 25,000 MAX", color: "card-slate", stats: ["x5k Oof [MAX]", "x2.5 Radiance [MAX]", "x251 Coin [MAX]"] },
+          { name: "Glow", rarity: "Basic", chance: "1/20QdVt", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x10k Oof [MAX]", "x2 Radiance [MAX]", "x1.25k Yin [MAX]", "x1.25k Yang [MAX]"] },
+          { name: "Lyric", rarity: "Basic", chance: "1/300DTg", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x15k Oof [MAX]", "x5.5 Radiance [MAX]", "x3.25 Momentum [MAX]", "x5 Glory [MAX]", "x1.25k Coin [MAX]"] },
+          { name: "Pulse", rarity: "Basic", chance: "1/4UQg", lvl: "LVL 25,000 MAX", color: "card-purple", stats: ["x20k Oof [MAX]", "x3.25 Radiance [MAX]", "x30 Chariot Strength [MAX]", "x3 Momentum [MAX]", "x400 Chariot Noob Power [MAX]", "x4 Glory [MAX]", "x2.5k Coin [MAX]"] },
+          { name: "Harmony", rarity: "Basic", chance: "1/50Noqg", lvl: "LVL 25,000 MAX", color: "card-green", stats: ["x25k Oof [MAX]", "x1.75 Radiance [MAX]", "x2.5k Yin [MAX]", "x2.5k Yang [MAX]"] },
+          { name: "Shine", rarity: "Basic", chance: "1/100Qg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x30k Oof [MAX]", "x6 Momentum [MAX]", "x6.25k Yin [MAX]", "x6.25k Yang [MAX]", "x25T Hack Points [MAX]"] },
+          { name: "Oracle", rarity: "Basic", chance: "1/2DQg", lvl: "LVL 25,000 MAX", color: "card-purple", stats: ["x35k Oof [MAX]", "x6 Momentum [MAX]", "x6 Glory [MAX]", "x35 Radiance [MAX]", "x35 Starlight [MAX]", "x6.25k Coin [MAX]", "x11 Tier Luck [MAX]"] },
+          { name: "Divinity", rarity: "Basic", chance: "1/50DQg", lvl: "LVL 25,000 MAX", color: "card-slate", stats: ["x40k Oof [MAX]", "x6 Momentum [MAX]", "x6 Glory [MAX]", "x50 Radiance [MAX]", "x50 Starlight [MAX]", "x12.5k Coin [MAX]", "x26 Tier Luck [MAX]", "x2.5k Fire [MAX]"] },
+          { name: "Solar Crown", rarity: "Basic", chance: "1/1TQg", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x45k Oof [MAX]", "x1.45 Rune Bulk [MAX]", "x75 Radiance [MAX]", "x75 Starlight [MAX]", "x6 Glory [MAX]", "x25k Coin [MAX]", "x126 Tier Luck [MAX]", "x2.5k Cash [MAX]"] },
+          { name: "Beyond The Stars", rarity: "Noobinia", chance: "1/9.75DTg", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x50k Oof [MAX]", "x2 Rune Bulk [MAX]", "x1.5 Rune Luck [MAX]", "x2k Tier Luck [MAX]", "x3 Tier Bulk [MAX]", "x2 P.Rune Bulk [MAX]", "x2.5M Coin [MAX]", "x1.25 Prism [MAX]"] },
+          { name: "Beyond The Galaxy", rarity: "Noobinia", chance: "1/35DTg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x75k Oof [MAX]", "x1.5 Rune Bulk [MAX]", "x1.35 Rune Luck [MAX]", "x1.5k Tier Luck [MAX]", "x4 Tier Bulk [MAX]", "x5M Coin [MAX]", "x13.5 Starlight [MAX]", "x26 Radiance [MAX]"] },
+          { name: "Beyond The Multiverse", rarity: "Noobinia", chance: "1/35TTg", lvl: "LVL 25,000 MAX", color: "card-purple", stats: ["x100k Oof [MAX]", "x2 Rune Bulk [MAX]", "x1.5 Rune Luck [MAX]", "x2k Tier Luck [MAX]", "x5 Tier Bulk [MAX]", "x1.25 Prism [MAX]", "x101 Starlight [MAX]", "x250k Coin [MAX]"] }
+        ],
+        "Zeus": [
+          { name: "Bolt", rarity: "Basic", chance: "1/1.01", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x1k Oof [MAX]", "x251 Coin [MAX]", "x5 Glory [MAX]", "x11 Thunder [MAX]", "x31 Radiance [MAX]", "x11 Starlight [MAX]", "x2 Tier Luck [MAX]"] },
+          { name: "Cloud", rarity: "Basic", chance: "1/10SpVt", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x2k Oof [MAX]", "x501 Coin [MAX]", "x7 Burden [MAX]", "x15 Thunder [MAX]", "x3 Tier Luck [MAX]", "x1T Bones [MAX]", "x1T Gem [MAX]"] },
+          { name: "Storm", rarity: "Basic", chance: "1/20DTg", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x3k Oof [MAX]", "x751 Coin [MAX]", "x3 Burden [MAX]", "x3 Thunder [MAX]", "x3.5 Starlight [MAX]", "x4 Tier Luck [MAX]"] },
+          { name: "Thunder", rarity: "Basic", chance: "1/30SpTg", lvl: "LVL 25,000 MAX", color: "card-brown", stats: ["x4k Oof [MAX]", "x1k Coin [MAX]", "x5 Thunder [MAX]", "x3 Burden [MAX]", "x4 Tier Luck [MAX]", "x1.25 Authority [MAX]"] },
+          { name: "Charge", rarity: "Basic", chance: "1/50DQg", lvl: "LVL 25,000 MAX", color: "card-olive", stats: ["x5k Oof [MAX]", "x1.25k Coin [MAX]", "x1.35 Authority [MAX]", "x7 Thunder [MAX]", "x7 Glory [MAX]", "x4 Tier Luck [MAX]"] },
+          { name: "Strike", rarity: "Basic", chance: "1/75Spqg", lvl: "LVL 25,000 MAX", color: "card-maroon", stats: ["x6k Oof [MAX]", "x1.5k Coin [MAX]", "x9 Thunder [MAX]", "x2.5 Glory [MAX]", "x21 Burden [MAX]"] },
+          { name: "Tempest", rarity: "Basic", chance: "1/50TQg", lvl: "LVL 25,000 MAX", color: "card-green", stats: ["x7k Oof [MAX]", "x1.75k Coin [MAX]", "x6 Thunder [MAX]", "x41 Radiance [MAX]", "x7 Burden [MAX]", "x1.1 Rune Luck [MAX]", "x1.05 Prism [MAX]", "x3.5 Authority [MAX]"] },
+          { name: "Skyking", rarity: "Basic", chance: "1/1QdQg", lvl: "LVL 25,000 MAX", color: "card-slate", stats: ["x8k Oof [MAX]", "x2k Coin [MAX]", "x8.5 Thunder [MAX]", "x8.5 Radiance [MAX]", "x8.5 Burden [MAX]", "x3 Authority [MAX]", "x1.25 Rune Luck [MAX]"] },
+          { name: "Olympian", rarity: "Basic", chance: "1/20QdQg", lvl: "LVL 25,000 MAX", color: "card-teal", stats: ["x9k Oof [MAX]", "x2.5k Coin [MAX]", "x11 Glory [MAX]", "x11 Starlight [MAX]", "x11 Thunder [MAX]", "x2.5 Authority [MAX]", "x1.2 Rune Luck [MAX]", "x1.2 Rune Bulk [MAX]"] },
+          { name: "Thunder Lord", rarity: "Noobinia", chance: "1/3.5TTg", lvl: "LVL 5,000 MAX", color: "card-brown", stats: ["x10k Oof [MAX]", "x10k Tier Luck [MAX]", "x3 Tier Bulk [MAX]", "x1.3 Prism [MAX]", "x1.5 Rune Luck [MAX]", "x1.5 Rune Bulk [MAX]", "x11 Thunder [MAX]", "x3 Authority [MAX]"] },
+          { name: "Eternal Thunder", rarity: "Noobinia", chance: "1/150TTg", lvl: "LVL 4,000 MAX", color: "card-brown", stats: ["x20k Oof [MAX]", "x10k Tier Luck [MAX]", "x6 Tier Bulk [MAX]", "x1.35 Prism [MAX]", "x1.5 Rune Luck [MAX]", "x2 Rune Bulk [MAX]", "x21 Thunder [MAX]", "x6 Authority [MAX]"] },
+          { name: "Godlike Lightning", rarity: "Noobinia", chance: "1/100QdTg", lvl: "LVL 500", color: "card-brown", stats: ["x101 Oof [MAX]", "x1k Tier Luck", "x10 Tier Bulk [MAX]", "x1.1 Prism [MAX]", "x2 Rune Luck [MAX]", "x2 Rune Bulk [MAX]", "x19 Thunder [MAX]", "x10 Authority [MAX]"] }
+        ],
+        "Colosseum": [
+          { name: "Strength", rarity: "Basic", chance: "1/1.01", lvl: "LVL 55 MAX", color: "card-maroon", note: "Found by Colosseum Milestones", stats: ["x5 Oof [MAX]", "x12.5k Thunder [MAX]", "x276 Radiance [MAX]", "x4 Glory [MAX]", "x111 Hack Points [MAX]", "x56 Wheat [MAX]", "x28.5 Bread [MAX]"] },
+          { name: "Health", rarity: "Basic", chance: "1/10QdTg", lvl: "LVL 59", color: "card-green", stats: ["x10 Oof [MAX]", "x120k Thunder [MAX]", "x2.95k Radiance", "x11 Glory [MAX]", "x46 Hack Points [MAX]", "x23.5 Wheat [MAX]", "x11.5 Bread [MAX]"] },
+          { name: "Mobility", rarity: "Basic", chance: "1/15Dqq", lvl: "LVL 58", color: "card-olive", stats: ["x15 Oof [MAX]", "x2 Colosseum Damage [MAX]", "x2 Colosseum HP [MAX]", "x1.75 Glory [MAX]", "x1.5k Thunder [MAX]", "x9.25 Hack Points [MAX]", "x24.2 Bread", "x3 Wheat [MAX]"] },
+          { name: "Defence", rarity: "Basic", chance: "1/22.5Qg", lvl: "LVL 56", color: "card-teal", stats: ["x25 Oof [MAX]", "x3 Colosseum Damage [MAX]", "x3 Colosseum HP [MAX]", "x3.5 Glory [MAX]", "x150k Thunder", "x141 Hack Points", "x29 Bread", "x6.6 Wheat"] },
+          { name: "Combat", rarity: "Basic", chance: "1/35OcQg", lvl: "LVL 78", color: "card-brown", stats: ["x4.9 Tier Luck", "x1.5 Tier Bulk [MAX]", "x3 Rune Luck [MAX]", "x20.5 Colosseum Damage", "x20.5 Colosseum HP", "x20.5 Glory", "x391 Thunder", "x391 Hack Points"] },
+          { name: "Battle", rarity: "Basic", chance: "1/2.75NoQg", lvl: "LVL 42", color: "card-slate", stats: ["x5.2 Tier Luck", "x1.75 Tier Bulk [MAX]", "x1.2 Rune Luck [MAX]", "x3.1 Colosseum Damage", "x3.1 Colosseum HP", "x11.5 Glory", "x211 Thunder", "x211 Hack Points"] },
+          { name: "Showdown", rarity: "Basic", chance: "1/200NoQg", lvl: "LVL 21", color: "card-brown", stats: ["x3.63 Tier Luck", "x1.1 Tier Bulk [MAX]", "x1.2 Rune Luck [MAX]", "x3.1 Glory", "x2.04 Wheat", "x11.5 Bread", "x2.1k Thunder [MAX]", "x3 Hack Points [MAX]"] },
+          { name: "Powerful Chakra", rarity: "Noobinia", chance: "1/7.5SxTg", lvl: "LVL 17", color: "card-purple", stats: ["x4.4 Tier Luck", "x1.75 Tier Bulk [MAX]", "x2 Rune Luck [MAX]", "x1.75 Rune Bulk [MAX]", "x26.5 Glory", "x4.4 Milk", "x4.4 Egg", "x4.4 Bacon"] },
+          { name: "Powerful Aura", rarity: "Noobinia", chance: "1/50SxTg", lvl: "LVL 10", color: "card-olive", stats: ["x3.5 Tier Luck", "x1.6 Tier Bulk", "x2.5 Rune Luck [MAX]", "x2.25 Rune Bulk [MAX]", "x11 Thunder", "x6 Authority", "x6 Colosseum Damage", "x6 Colosseum HP"] },
+          { name: "Powerful Duelist", rarity: "Noobinia", chance: "1/350SxTg", lvl: "LVL 5", color: "card-slate", stats: ["x2.5 Tier Luck", "x1.38 Tier Bulk", "x1.5 Rune Luck [MAX]", "x1.45 Rune Bulk [MAX]", "x251 Thunder", "x2.25 Hack Points", "x1.5 Wheat", "x3.5 Bread"] },
+          { name: "Powerful Champion", rarity: "Noobinia", chance: "1/2SpTg", lvl: "LVL 2", color: "card-teal", stats: ["x1.7 Tier Luck", "x1.2 Tier Bulk", "x1.2 Rune Luck ", "x1.5 Rune Bulk ", "x401 Thunder", "x2 Glory", "x1.5 Colosseum Damage", "x1.5 Colosseum HP"] }
+        ]
+      },
+      "Events": {
+        "Football": [
+          { name: "Scuff", rarity: "Basic", chance: "1/1.12", lvl: "LVL 1,500 MAX", color: "card-slate", stats: ["x5.5 Goals [MAX]", "x151 Oof [MAX]"] },
+          { name: "Fade", rarity: "Basic", chance: "1/10", lvl: "LVL 1,250 MAX", color: "card-brown", stats: ["x7.6 Goals [MAX]", "x251 Rebirth [MAX]"] },
+          { name: "Stitch", rarity: "Basic", chance: "1/1k", lvl: "LVL 1,000 MAX", color: "card-maroon", stats: ["x11.5 Goals [MAX]", "x151 Fire [MAX]"] },
+          { name: "Kickoff", rarity: "Basic", chance: "1/100k", lvl: "LVL 625 MAX", color: "card-green", stats: ["x14.2 Goals [MAX]", "x110 Cash [MAX]"] },
+          { name: "Dribble", rarity: "Basic", chance: "1/10M", lvl: "LVL 400 MAX", color: "card-teal", stats: ["x19 Goals [MAX]", "x4 Coin [MAX]", "+400 F.Rune Bulk [MAX]"] },
+          { name: "Tackle", rarity: "Basic", chance: "1/1T", lvl: "LVL 250 MAX", color: "card-maroon", stats: ["x31 Goals [MAX]", "x16 Water [MAX]", "x11 Wheat [MAX]", "x2 F.Rune Luck [MAX]"] },
+          { name: "Corner", rarity: "Basic", chance: "1/100Qd", lvl: "LVL 150 MAX", color: "card-brown", stats: ["x5 Goals [MAX]", "x13 Gem [MAX]", "x13 Bread [MAX]", "+300 F.Rune Bulk [MAX]"] },
+          { name: "Volley", rarity: "Basic", chance: "1/10Sx", lvl: "LVL 100 MAX", color: "card-purple", stats: ["x41 Goals [MAX]", "x5 Ash [MAX]", "x4 F.Rune Luck [MAX]"] },
+          { name: "Header", rarity: "Basic", chance: "1/100No", lvl: "LVL 150 MAX", color: "card-olive", stats: ["x106 Goals [MAX]", "x42.2 Tier Luck [MAX]", "x34.79 Tier Bulk [MAX]", "x4 F.Rune Luck [MAX]", "x9 F.Rune Bulk [MAX]"] },
+          { name: "Finale", rarity: "Noobinia", chance: "1/1Sx", lvl: "LVL 20 MAX", color: "card-brown", stats: ["x25 Goals [MAX]", "x21 Oof [MAX]", "x7 Cash [MAX]", "x17 Fire [MAX]", "x71 F.Rune Bulk [MAX]"] },
+          { name: "Victory", rarity: "Noobinia", chance: "1/100Sx", lvl: "LVL 20 MAX", color: "card-olive", stats: ["x21 Goals [MAX]", "x21 Wheat [MAX]", "x7 Coin [MAX]", "x17 Bread [MAX]", "x16 F.Rune Bulk [MAX]"] },
+          { name: "Iconic", rarity: "Noobinia", chance: "1/2.5Sp", lvl: "LVL 20 MAX", color: "card-teal", stats: ["x36 Goals [MAX]", "x2 Ore Damage [MAX]", "x2 Gem [MAX]", "x3 Ores Stats [MAX]", "x1.2 Prism [MAX]", "x5 F.Rune Bulk [MAX]"] }
+        ],
+        "Spooky": [
+          { name: "Creepy", rarity: "Basic", chance: "1/1.11", lvl: "LVL 155,000,000 MAX", color: "card-slate", stats: ["x31M Ghost [MAX]"] },
+          { name: "Haunted", rarity: "Basic", chance: "1/10", lvl: "LVL 60,000,000 MAX", color: "card-olive", stats: ["x15M Spooky Oof [MAX]"] },
+          { name: "Ghastly", rarity: "Basic", chance: "1/5k", lvl: "LVL 35,000,000 MAX", color: "card-teal", stats: ["x2 Candy Corn [MAX]", "x70M Ghost [MAX]"] },
+          { name: "Wicked", rarity: "Basic", chance: "1/75k", lvl: "LVL 185,000,000 MAX", color: "card-brown", stats: ["x2 H.Rune Luck [MAX]", "+10 H.Rune Bulk [MAX]", "x74M Spooky Oof [MAX]"] },
+          { name: "Cursed", rarity: "Basic", chance: "1/1M", lvl: "LVL 550,000,000 MAX", color: "card-purple", stats: ["x440M Spooky Oof [MAX]", "x27.5M Ghost [MAX]", "+25 H.Rune Bulk [MAX]"] },
+          { name: "Spectral", rarity: "Basic", chance: "1/15M", lvl: "LVL 1,600,000,000 MAX", color: "card-slate", stats: ["x2.4B Spooky Oof [MAX]", "x1.3 Candy Corn [MAX]"] },
+          { name: "Zombie", rarity: "Basic", chance: "1/500M", lvl: "LVL 4,500,000,000 MAX", color: "card-green", stats: ["x3.38B Spooky Oof [MAX]", "x1.12B Ghost [MAX]", "+50 H.Rune Bulk [MAX]"] },
+          { name: "Treats", rarity: "Basic", chance: "1/20B", lvl: "LVL 14,000,000,000 MAX", color: "card-purple", stats: ["x7B Spooky Oof [MAX]", "x14B Ghost [MAX]", "+100 H.Rune Bulk [MAX]"] },
+          { name: "Spooky", rarity: "Basic", chance: "1/500B", lvl: "LVL 37,500,000,000 MAX", color: "card-slate", stats: ["x46.9B Spooky Oof [MAX]", "x28.1B Ghost [MAX]", "+125 H.Rune Bulk [MAX]", "x1.5 H.Rune Luck [MAX]"] },
+          { name: "Revenant", rarity: "Noobinia", chance: "1/333Qd", lvl: "LVL 65,000,000,000,000 MAX", color: "card-olive", stats: ["x195T Spooky Oof [MAX]", "x65T Ghost [MAX]", "x1.25 Candy Corn [MAX]", "x3.5 H.Rune Bulk [MAX]", "x1.25 H.Rune Luck [MAX]"] },
+          { name: "Lich", rarity: "Noobinia", chance: "1/125Qn", lvl: "LVL 17,000,000,000,000,000 MAX", color: "card-slate", stats: ["x68T Spooky Oof [MAX]", "x51T Ghost [MAX]", "x34T Pumpkin [MAX]", "x1.75 Candy Corn [MAX]", "x12.8T Pumpkin XP [MAX]", "x4.5 H.Rune Bulk [MAX]", "x1.75 H.Rune Luck [MAX]"] },
+          { name: "Necromancer", rarity: "Noobinia", chance: "1/250Sx", lvl: "LVL 1,500,000,000,000,000,000 MAX", color: "card-green", stats: ["x7.5T Spooky Oof [MAX]", "x6T Ghost [MAX]", "x4.5T Pumpkin [MAX]", "x2.5 Candy Corn [MAX]", "x3T Pumpkin XP [MAX]", "x1.5T Sweets [MAX]", "x5.5 H.Rune Bulk [MAX]", "x2.25 H.Rune Luck [MAX]"] },
+          { name: "Banshee", rarity: "Noobinia", chance: "1/5UDe", lvl: "LVL 777,777 MAX", color: "card-teal", stats: ["x7.78M Spooky Oof [MAX]", "x7.78M Ghost [MAX]", "x5.83M Pumpkin [MAX]", "x5.83M Pumpkin XP [MAX]", "x19.39M Sweets [MAX]", "x4.5 Candy Corn [MAX]", "x11.5 H.Rune Bulk [MAX]", "x3 H.Rune Luck [MAX]"] }
+        ],
+        "Pumpkin": [
+          { name: "Nightfall", rarity: "Basic", chance: "1/1.01", lvl: "LVL 12,500,000 MAX", color: "card-slate", stats: ["x1.88M Spooky Oof [MAX]", "x6.25M Ghost [MAX]", "x6.25M Pumpkin [MAX]"] },
+          { name: "Black Cat", rarity: "Basic", chance: "1/250M", lvl: "LVL 85,000,000 MAX", color: "card-teal", stats: ["x63.8M Spooky Oof [MAX]", "x21.29M Pumpkin [MAX]"] },
+          { name: "Raven", rarity: "Basic", chance: "1/50B", lvl: "LVL 550,000,000 MAX", color: "card-purple", stats: ["x7 Ghost [MAX]", "x110M Pumpkin [MAX]"] },
+          { name: "Pumpkin", rarity: "Basic", chance: "1/10T", lvl: "LVL 3,500,000,000 MAX", color: "card-brown", stats: ["x875M Sweets [MAX]", "x1.25 H.Rune Luck [MAX]"] },
+          { name: "Tombstone", rarity: "Basic", chance: "1/1.25Qd", lvl: "LVL 13,000,000,000 MAX", color: "card-teal", stats: ["x2.6B Sweets [MAX]", "x1.3B Pumpkin [MAX]", "x13B Pumpkin XP [MAX]", "+1k H.Rune Bulk [MAX]"] },
+          { name: "Graveyard", rarity: "Basic", chance: "1/35Qd", lvl: "LVL 45,000,000,000 MAX", color: "card-brown", stats: ["x22.5B Sweets [MAX]", "x36B Pumpkin [MAX]", "x1.25 H.Rune Luck [MAX]"] },
+          { name: "Coven", rarity: "Basic", chance: "1/1Qn", lvl: "LVL 160,000,000,000 MAX", color: "card-purple", stats: ["x80B Sweets [MAX]", "x480B Pumpkin XP [MAX]", "x1.3 H.Rune Bulk [MAX]", "x1.3 H.Rune Luck [MAX]"] },
+          { name: "Cobweb", rarity: "Basic", chance: "1/20Qn", lvl: "LVL 315,000,000,000 MAX", color: "card-slate", stats: ["x315B Spooky Oof [MAX]", "x158B Pumpkin XP [MAX]", "x394B Pumpkin [MAX]", "x189B Sweets [MAX]", "x1.75 H.Rune Bulk [MAX]", "x1.75 H.Rune Luck [MAX]"] },
+          { name: "Scarecrow", rarity: "Basic", chance: "1/400Qn", lvl: "LVL 415,000,000,000 MAX", color: "card-maroon", stats: ["x249B Ghost [MAX]", "x415B Pumpkin XP [MAX]", "x311B Pumpkin [MAX]", "x332B Sweets [MAX]", "x3 H.Rune Bulk [MAX]", "x3 H.Rune Luck [MAX]"] },
+          { name: "Coffin", rarity: "Noobinia", chance: "1/6.5Qn", lvl: "LVL 45,000,000,000,000 MAX", color: "card-olive", stats: ["x180T Spooky Oof [MAX]", "x90T Ghost [MAX]", "x33.79T Pumpkin [MAX]", "x1.5 Candy Corn [MAX]", "x4 H.Rune Bulk [MAX]", "x1.5 H.Rune Luck [MAX]"] },
+          { name: "Witch Fire", rarity: "Noobinia", chance: "1/5Sx", lvl: "LVL 7,500,000,000,000 MAX", color: "card-purple", stats: ["x37.5T Spooky Oof [MAX]", "x30T Ghost [MAX]", "x22.5T Pumpkin [MAX]", "x2 Candy Corn [MAX]", "x15T Pumpkin XP [MAX]", "x7.5T Sweets [MAX]", "x5 H.Rune Bulk [MAX]", "x2 H.Rune Luck [MAX]"] },
+          { name: "Ghost Rider", rarity: "Noobinia", chance: "1/25Sp", lvl: "LVL 360,000,000,000,000 MAX", color: "card-maroon", stats: ["x4.5T Spooky Oof [MAX]", "x3.6T Ghost [MAX]", "x2.7T Pumpkin [MAX]", "x3 Candy Corn [MAX]", "x1.8T Pumpkin XP [MAX]", "x900B Sweets [MAX]", "x11 H.Rune Bulk [MAX]", "x1.2 Prism [MAX]"] },
+          { name: "Headless Horseman", rarity: "Noobinia", chance: "1/200DDe", lvl: "LVL 2,500 MAX", color: "card-brown", stats: ["x125k Spooky Oof [MAX]", "x125k Ghost [MAX]", "x62.5k Pumpkin [MAX]", "x7.5 H.Rune Speed [MAX]", "x250k Sweets [MAX]", "x251 Candy Corn [MAX]", "x18.5 H.Rune Bulk [MAX]", "x10 H.Rune Luck [MAX]"] }
+        ],
+        "Witch": [
+          { name: "Broomstick", rarity: "Basic", chance: "1/1.01", lvl: "LVL 2,750 MAX", color: "card-brown", stats: ["x2.06k Pumpkin [MAX]", "x8.25k Pumpkin XP [MAX]", "x689 Sweets [MAX]", "x1.38k Dark Magic [MAX]"] },
+          { name: "Cauldron", rarity: "Basic", chance: "1/100T", lvl: "LVL 7,500 MAX", color: "card-purple", stats: ["x1.88k Ghost [MAX]", "x2.25k Spooky Oof [MAX]", "x5.25k Dark Magic [MAX]"] },
+          { name: "Hex Dust", rarity: "Basic", chance: "1/200Sx", lvl: "LVL 40,000 MAX", color: "card-brown", stats: ["x20k Ghost [MAX]", "x10k Pumpkin [MAX]", "x40k Eyeballs [MAX]", "+5k H.Rune Bulk [MAX]"] },
+          { name: "Nightbrew", rarity: "Basic", chance: "1/400No", lvl: "LVL 47,500 MAX", color: "card-slate", stats: ["x19k Spooky Oof [MAX]", "x23.79k Pumpkin XP [MAX]", "x47.5k Sweets [MAX]", "x33.29k Dark Magic [MAX]"] },
+          { name: "Crow", rarity: "Basic", chance: "1/10UDe", lvl: "LVL 72,500 MAX", color: "card-slate", stats: ["x36.29k Ghost [MAX]", "x14.5k Spooky Oof [MAX]", "x54.4k Pumpkin [MAX]", "x36.29k Pumpkin XP [MAX]", "x18.1k Sweets [MAX]", "x10.9k Dark Magic [MAX]"] },
+          { name: "Spellbound", rarity: "Basic", chance: "1/2.5DDe", lvl: "LVL 100,000 MAX", color: "card-green", stats: ["x125k Ghost [MAX]", "x100k Spooky Oof [MAX]", "x75k Pumpkin [MAX]", "x150k Pumpkin XP [MAX]", "x45k Sweets [MAX]", "x35k Dark Magic [MAX]", "x75k Eyeballs [MAX]", "+30k H.Rune Bulk [MAX]"] },
+          { name: "Moonhex", rarity: "Basic", chance: "1/30DDe", lvl: "LVL 95,000 MAX", color: "card-olive", stats: ["x119k Ghost [MAX]", "x95k Spooky Oof [MAX]", "x71.3k Pumpkin [MAX]", "x47.5k Pumpkin XP [MAX]", "x23.79k Sweets [MAX]", "x9.5k Dark Magic [MAX]"] },
+          { name: "Spell Book", rarity: "Basic", chance: "1/240DDe", lvl: "LVL 111,111 MAX", color: "card-purple", stats: ["x111k Spells [MAX]", "x111k Spooky Oof [MAX]", "x11.1k Spell Luck [MAX]", "x2.22k Spell Bulk [MAX]", "x556k Sweets [MAX]", "x556k Pumpkin [MAX]", "x55.59k Dark Magic [MAX]", "+60k H.Rune Bulk [MAX]"] },
+          { name: "Covenmist", rarity: "Basic", chance: "1/1.75TDe", lvl: "LVL 125,000 MAX", color: "card-maroon", stats: ["x188k Spells [MAX]", "x250k Spooky Oof [MAX]", "x25k Spell Luck [MAX]", "x6.25k Spell Bulk [MAX]", "x1.25M Sweets [MAX]", "x938k Pumpkin [MAX]", "x125k Dark Magic [MAX]", "+90k H.Rune Bulk [MAX]"] },
+          { name: "Hagshadow", rarity: "Noobinia", chance: "1/75De", lvl: "LVL 19,500,000 MAX", color: "card-olive", stats: ["x6.25 Candy Corn [MAX]", "x293M Spooky Oof [MAX]", "x975k Eyeballs [MAX]", "x11 Spell Bulk [MAX]", "x9.75M Spell Luck [MAX]", "x58.5M Spells [MAX]", "x29.3M Dark Magic [MAX]", "x8 H.Rune Bulk [MAX]"] },
+          { name: "Witchbane", rarity: "Noobinia", chance: "1/750UDe", lvl: "LVL 60,000 MAX", color: "card-purple", stats: ["x4.5 Candy Corn [MAX]", "x3M Spooky Oof [MAX]", "x601 Item Generator Amount [MAX]", "x6 Spell Bulk [MAX]", "x300k Spell Luck [MAX]", "x600k Spells [MAX]", "x1.2M Dark Magic [MAX]", "x15 H.Rune Bulk [MAX]"] },
+          { name: "Eldritch", rarity: "Noobinia", chance: "1/150TDe", lvl: "LVL 100 MAX", color: "card-green", stats: ["x51 Candy Corn [MAX]", "x5 H.Rune Speed [MAX]", "x6 Item Generator Amount [MAX]", "x2 Spell Bulk [MAX]", "x1k Spell Luck [MAX]", "x10k Spells [MAX]", "x20k Dark Magic [MAX]", "x36 H.Rune Bulk [MAX]"] }
+        ],
+        "Thanksgiving": [
+          { name: "Harvest", rarity: "Basic", chance: "1/1.05", lvl: "LVL 225 MAX", color: "card-brown", stats: ["x79.7 Turkey Oof [MAX]"] },
+          { name: "Cranberry", rarity: "Basic", chance: "1/20", lvl: "LVL 200 MAX", color: "card-maroon", stats: ["x301 Feathers [MAX]", "+14 T.Rune Bulk [MAX]"] },
+          { name: "Cornucopia", rarity: "Basic", chance: "1/500", lvl: "LVL 175 MAX", color: "card-olive", stats: ["x88.5 Turkey Oof [MAX]", "+35 T.Rune Bulk [MAX]", "x1.75 T.Rune Luck [MAX]"] },
+          { name: "Gravy", rarity: "Basic", chance: "1/500k", lvl: "LVL 175 MAX", color: "card-brown", stats: ["+50 T.Rune Bulk [MAX]", "x1.75k Turkey Oof [MAX]", "x614 Feathers [MAX]", "x3 Turkey Damage [MAX]"] },
+          { name: "Pilgrim", rarity: "Basic", chance: "1/15M", lvl: "LVL 225 MAX", color: "card-purple", stats: ["x2.7k Turkey Oof [MAX]", "x282 Feathers [MAX]", "+100 T.Rune Bulk [MAX]"] },
+          { name: "Maple", rarity: "Basic", chance: "1/850M", lvl: "LVL 225 MAX", color: "card-brown", stats: ["x1.58k Turkey Oof [MAX]", "x395 Feathers [MAX]", "x2 Turkey Damage [MAX]", "+100 T.Rune Bulk [MAX]"] },
+          { name: "Harvest King", rarity: "Noobinia", chance: "1/1Qn", lvl: "LVL 49", color: "card-olive", stats: ["x246 Turkey Oof", "x25.5 Turkey Damage", "x74.5 Feathers", "x3.45 Pies", "x3.5 T.Rune Bulk [MAX]", "x1.25 T.Rune Luck [MAX]"] },
+          { name: "Harvest Lord", rarity: "Noobinia", chance: "1/200Qn", lvl: "LVL 6", color: "card-brown", stats: ["x151 Turkey Oof", "x10 Turkey Damage", "x61 Feathers", "x3.1 Pies", "x6 T.Rune Bulk [MAX]", "x1.75 T.Rune Luck [MAX]", "x1.3 Glory", "x1.3 Oof"] },
+          { name: "Gobbler", rarity: "Basic", chance: "1/1.01", lvl: "LVL 60 MAX", color: "card-green", stats: ["x73 Turkey Oof [MAX]", "x2.5 Pies [MAX]"] },
+          { name: "Drumstick", rarity: "Basic", chance: "1/300M", lvl: "LVL 75 MAX", color: "card-olive", stats: ["x3 Pies [MAX]", "x170 Feathers [MAX]"] },
+          { name: "Wishbone", rarity: "Basic", chance: "1/5B", lvl: "LVL 75 MAX", color: "card-teal", stats: ["x151 Feathers [MAX]", "x451 Turkey Oof [MAX]"] },
+          { name: "Roasted", rarity: "Basic", chance: "1/60B", lvl: "LVL 75 MAX", color: "card-brown", stats: ["x4.5 Turkey Damage [MAX]", "+150 T.Rune Bulk [MAX]", "x8.5 Pies [MAX]"] },
+          { name: "Turkey", rarity: "Basic", chance: "1/2T", lvl: "LVL 90 MAX", color: "card-brown", stats: ["x100 Feathers [MAX]", "x3 Turkey Damage [MAX]"] },
+          { name: "Turkey Lord", rarity: "Basic", chance: "1/35T", lvl: "LVL 75 MAX", color: "card-teal", stats: ["x46 Feathers [MAX]", "+200 T.Rune Bulk [MAX]", "x38.5 Turkey Oof [MAX]"] },
+          { name: "Eternal Feast", rarity: "Basic", chance: "1/750T", lvl: "LVL 65 MAX", color: "card-brown", stats: ["x131 Feathers [MAX]", "x33.5 Turkey Damage [MAX]", "x66 Turkey Oof [MAX]"] },
+          { name: "Harvest Crown", rarity: "Basic", chance: "1/15Qd", lvl: "LVL 50 MAX", color: "card-olive", stats: ["x176 Feathers [MAX]", "x6 Turkey Damage [MAX]", "x126 Turkey Oof [MAX]", "+350 T.Rune Bulk [MAX]"] },
+          { name: "Thanksgiving", rarity: "Noobinia", chance: "1/12.5Qn", lvl: "LVL 56", color: "card-olive", stats: ["x561 Turkey Oof", "x57 Turkey Damage", "x281 Feathers", "x12.2 Pies", "x4.75 T.Rune Bulk [MAX]", "x1.5 T.Rune Luck [MAX]"] },
+          { name: "Gratitude", rarity: "Noobinia", chance: "1/3.5Sx", lvl: "LVL 5", color: "card-purple", stats: ["x251 Turkey Oof", "x13.5 Turkey Damage", "x76 Feathers", "x3.5 Pies", "x7.25 T.Rune Bulk [MAX]", "x2 T.Rune Luck [MAX]", "x1.05 Prism [MAX]", "x1.1 Rune Bulk"] }
+        ]
+      }
+    };
+
+    const CREATOR_CONFIG = {
+      robloxNick: "Csawa10109v1",
+      avatarUrl: "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-F88770FC3E43F51D7557274EE9F3F950-Png/150/150/AvatarHeadshot/Webp/noFilter",
+      isOnline: true,
+      discordTag: "suprem_ta6letka",
+      discordUrl: "https://discord.com/users/suprem_ta6letka"
+    };
+
+    const UI_TEXT = {
+      ru: {
+        searchPlaceholder: "Поиск руны или стата...",
+        selectRealm: "Выбери мир или категорию (Realm / Events)",
+        eventsBtnLabel: "Events (Ивенты)",
+        supportBtnLabel: "Support",
+        selectTab: "Выбери вкладку",
+        selectEventTab: "Выбери ивент (Категория Events)",
+        eventBannerHtml: "<strong>Категория Events:</strong> выбери нужный ивент выше — <strong>Football</strong>, <strong>Spooky</strong>, <strong>Pumpkin</strong>, <strong>Witch</strong> или <strong>Thanksgiving</strong>.",
+        eventCount: (eventsCount, totalRunes) => `Ивентов: ${eventsCount} • Всего ивентовых рун: ${totalRunes}`,
+        boardHint: "Показаны значения со скринов и документов (включая [MAX] и текущие уровни)",
+        runesWord: "Runes",
+        emptyTab: (q) => `Ничего не найдено по запросу «${q}» в этой вкладке.`,
+        statusOnline: "В сети",
+        statusOffline: "Не в сети",
+        discordBtn: "Discord",
+        discordNote: "(contact the creator, reach out if you found bugs),",
+        discordNote: "(связь с создателем обращайтесь если нашли багги ),",
+        discordCopied: (tag) => `Открыт Discord • Ник для инвайта скопирован: ${tag}`,
+        creatorBadge: "Creator",
+        creatorRobloxLabel: "Roblox ник: Csawa10109v1",
+        creatorDesc: "Нажми кнопку Discord, чтобы открыть ссылку и скопировать ник suprem_ta6letka для отправки инвайта в друзья.",
+        discordPending: "Переход по ссылке Discord выполнен.",
+        toggleStatusBtn: "Переключить статус сети",
+        creatorBoardTitle: "",
+        creatorBoardHint: ""
+      },
+      en: {
+        searchPlaceholder: "Search rune or stat...",
+        selectRealm: "Select world or category (Realm / Events)",
+        eventsBtnLabel: "Events",
+        supportBtnLabel: "Support",
+        selectTab: "Select tab",
+        selectEventTab: "Select event (Events category)",
+        eventBannerHtml: "<strong>Events category:</strong> choose an event above — <strong>Football</strong>, <strong>Spooky</strong>, <strong>Pumpkin</strong>, <strong>Witch</strong>, or <strong>Thanksgiving</strong>.",
+        eventCount: (eventsCount, totalRunes) => `Events: ${eventsCount} • Total event runes: ${totalRunes}`,
+        boardHint: "Showing values from screenshots and docs (including [MAX] and current levels)",
+        runesWord: "Runes",
+        emptyTab: (q) => `Nothing found for "${q}" in this tab.`,
+        statusOnline: "Online",
+        statusOffline: "Offline",
+        discordBtn: "Discord",
+        discordCopied: (tag) => `Opening Discord • Invite username copied: ${tag}`,
+        creatorBadge: "Creator",
+        creatorRobloxLabel: "Roblox handle: Csawa10109v1",
+        creatorDesc: "Click Discord to open the link and copy suprem_ta6letka to send a friend invite.",
+        discordPending: "Discord link opened.",
+        toggleStatusBtn: "Toggle online status",
+        creatorBoardTitle: "",
+        creatorBoardHint: ""
+      }
+    };
+
+    const NOTE_TRANSLATIONS = {
+      "Получается ближе к концу Realm 3": {
+        ru: "Получается ближе к концу Realm 3",
+        en: "Obtained near the end of Realm 3"
+      },
+      "Found in Realm 1 Upgrade Tree Area": {
+        ru: "Находится в зоне Upgrade Tree (Realm 1)",
+        en: "Found in Realm 1 Upgrade Tree Area"
+      },
+      "Found in Realm 2 Mine": {
+        ru: "Находится в шахте Realm 2 (Mine)",
+        en: "Found in Realm 2 Mine"
+      },
+      "Found in Realm 3 Sand Area": {
+        ru: "Находится в песчаной зоне Realm 3 (Sand Area)",
+        en: "Found in Realm 3 Sand Area"
+      },
+      "Found by Colosseum Milestones": {
+        ru: "Открывается за Colosseum Milestones",
+        en: "Found by Colosseum Milestones"
+      }
+    };
+
+    const realmKeys = Object.keys(RUNE_DATA);
+    const CREATOR_TAB_KEY = "__CREATOR__";
+    let activeRealm = realmKeys[0];
+    let activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
+    let searchQuery = "";
+    let currentLang = "ru";
+    let discordFeedbackMsg = "";
+
+    function isMaxRune(item) {
+      return /\bMAX\b/i.test(String(item.lvl || ""));
+    }
+
+    function parseLevelNumber(lvlText) {
+      const match = String(lvlText || "").match(/LVL\s*([\d,]+)/i);
+      if (!match) return 0;
+      const num = parseInt(match[1].replace(/,/g, ""), 10);
+      return Number.isFinite(num) ? num : 0;
+    }
+
+    function isHighLevelZeroMax(item) {
+      return !isMaxRune(item) && parseLevelNumber(item.lvl) >= 50;
+    }
+
+    function formatLevelDisplay(lvlText) {
+      return String(lvlText || "").replace(/\s*\([^)]*\)/g, "").trim();
+    }
+
+    function translateNote(noteText) {
+      if (!noteText) return "";
+      const entry = NOTE_TRANSLATIONS[noteText];
+      if (entry && entry[currentLang]) return entry[currentLang];
+      return noteText;
+    }
+
+    function getStatColorClass(label) {
+      const s = label.toLowerCase();
+      if (s.includes("oof")) return "st-oof";
+      if (s.includes("rebirth")) return "st-rebirth";
+      if (s.includes("fire")) return "st-fire";
+      if (s.includes("bulk")) return "st-bulk";
+      if (s.includes("luck")) return "st-luck";
+      if (s.includes("speed")) return "st-speed";
+      if (s.includes("cash")) return "st-cash";
+      if (s.includes("prism")) return "st-prism";
+      if (s.includes("coin")) return "st-coin";
+      if (s.includes("bread") || s.includes("wheat") || s.includes("milk") || s.includes("egg") || s.includes("bacon") || s.includes("pies") || s.includes("sweets") || s.includes("candy corn")) return "st-food";
+      if (s.includes("hack")) return "st-hack";
+      if (s.includes("water") || s.includes("ice") || s.includes("bubbles")) return "st-water";
+      if (s.includes("gem")) return "st-gem";
+      if (s.includes("wood") || s.includes("planks") || s.includes("bones") || s.includes("sand") || s.includes("ash") || s.includes("feathers")) return "st-mat";
+      if (s.includes("damage")) return "st-dmg";
+      if (s.includes("souls")) return "st-souls";
+      if (s.includes("yang")) return "st-yang";
+      if (s.includes("yin")) return "st-yin";
+      if (s.includes("sea") || s.includes("pearl") || s.includes("coral") || s.includes("oil")) return "st-sea";
+      if (s.includes("stars") || s.includes("planets") || s.includes("moon") || s.includes("blackholes") || s.includes("starlight")) return "st-space";
+      if (s.includes("goals") || s.includes("turkey") || s.includes("pumpkin") || s.includes("ghost") || s.includes("spooky") || s.includes("eyeballs") || s.includes("spells") || s.includes("dark magic")) return "st-event";
+      return "st-misc";
+    }
+
+    function buildStatElement(text) {
+      const div = document.createElement("div");
+      div.className = "st-row";
+      const firstSpace = text.indexOf(" ");
+      if (firstSpace > 0) {
+        const numSpan = document.createElement("span");
+        numSpan.className = "st-val";
+        numSpan.textContent = text.slice(0, firstSpace);
+
+        const restText = text.slice(firstSpace + 1);
+        const maxMatch = restText.match(/^(.*?)(\s*\[MAX\])$/i);
+
+        if (maxMatch) {
+          const labelOnly = maxMatch[1];
+          const maxTag = maxMatch[2];
+
+          const labelSpan = document.createElement("span");
+          labelSpan.className = getStatColorClass(labelOnly);
+          labelSpan.textContent = " " + labelOnly;
+
+          const maxSpan = document.createElement("span");
+          maxSpan.className = "st-max";
+          maxSpan.textContent = maxTag;
+
+          div.appendChild(numSpan);
+          div.appendChild(labelSpan);
+          div.appendChild(maxSpan);
+        } else {
+          const labelSpan = document.createElement("span");
+          labelSpan.className = getStatColorClass(restText);
+          labelSpan.textContent = " " + restText;
+
+          div.appendChild(numSpan);
+          div.appendChild(labelSpan);
+        }
+      } else {
+        div.textContent = text;
+      }
+      return div;
+    }
+
+    function copyTextFallback(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function renderCreatorSection(grid, t) {
+      const wrap = document.createElement("div");
+      wrap.className = "creator-wrap";
+
+      const card = document.createElement("div");
+      card.className = "creator-card";
+
+      const topBadge = document.createElement("div");
+      topBadge.className = "creator-badge-top";
+      topBadge.textContent = t.creatorBadge;
+      card.appendChild(topBadge);
+
+      const avatarFrame = document.createElement("div");
+      avatarFrame.className = "creator-avatar-frame";
+
+      const avatarImg = document.createElement("img");
+      avatarImg.className = "creator-avatar-img";
+      avatarImg.src = CREATOR_CONFIG.avatarUrl;
+      avatarImg.alt = CREATOR_CONFIG.robloxNick;
+      avatarImg.onerror = function () {
+        this.onerror = null;
+        this.src = "https://placehold.co/150x150/1e1b38/ffffff?text=C";
+      };
+      avatarFrame.appendChild(avatarImg);
+      card.appendChild(avatarFrame);
+
+      const nickEl = document.createElement("div");
+      nickEl.className = "creator-nick";
+      nickEl.textContent = CREATOR_CONFIG.robloxNick;
+      card.appendChild(nickEl);
+
+      const subEl = document.createElement("div");
+      subEl.className = "creator-sub";
+      subEl.textContent = t.creatorRobloxLabel;
+      card.appendChild(subEl);
+
+      const statusPill = document.createElement("div");
+      statusPill.className = "status-pill " + (CREATOR_CONFIG.isOnline ? "is-online" : "is-offline");
+
+      const dot = document.createElement("span");
+      dot.className = "status-dot";
+      statusPill.appendChild(dot);
+
+      const statusText = document.createElement("span");
+      statusText.textContent = CREATOR_CONFIG.isOnline ? t.statusOnline : t.statusOffline;
+      statusPill.appendChild(statusText);
+
+      card.appendChild(statusPill);
+
+      const dcBtn = document.createElement("button");
+      dcBtn.type = "button";
+      dcBtn.className = "discord-btn";
+      dcBtn.innerHTML =
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>' +
+        "<span>" +
+        t.discordBtn +
+        "</span>";
+
+      dcBtn.onclick = function () {
+        if (CREATOR_CONFIG.discordUrl) {
+          window.open(CREATOR_CONFIG.discordUrl, "_blank", "noopener,noreferrer");
+        }
+        if (CREATOR_CONFIG.discordTag) {
+          copyTextFallback(CREATOR_CONFIG.discordTag);
+          discordFeedbackMsg = t.discordCopied(CREATOR_CONFIG.discordTag);
+        } else if (!CREATOR_CONFIG.discordUrl) {
+          discordFeedbackMsg = t.discordPending;
+        }
+        draw();
+      };
+      card.appendChild(dcBtn);
+
+      const noteEl = document.createElement("div");
+      noteEl.className = "discord-note";
+      noteEl.textContent = t.discordNote;
+      card.appendChild(noteEl);
+
+      const fbEl = document.createElement("div");
+      fbEl.className = "discord-feedback";
+      fbEl.textContent = discordFeedbackMsg;
+      card.appendChild(fbEl);
+
+      wrap.appendChild(card);
+      grid.appendChild(wrap);
+    }
+
+    function draw() {
+      const t = UI_TEXT[currentLang] || UI_TEXT.ru;
+      document.documentElement.lang = currentLang;
+
+      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+
+      const langTag = document.getElementById("langTag");
+      langTag.textContent = currentLang.toUpperCase();
+
+      document.getElementById("realmLabel").textContent = t.selectRealm;
+
+      const realmRow = document.getElementById("realmRow");
+      const subLabel = document.getElementById("subLabel");
+      const subRow = document.getElementById("subRow");
+      const eventBanner = document.getElementById("eventBanner");
+      const eventBannerText = document.getElementById("eventBannerText");
+      const eventCountInfo = document.getElementById("eventCountInfo");
+      const boardTitle = document.getElementById("boardTitle");
+      const grid = document.getElementById("runesGrid");
+
+      realmRow.innerHTML = "";
+      realmKeys.forEach(function (rKey) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "game-btn" + (rKey === "Events" ? " event-main" : "") + (rKey === activeRealm ? " active" : "");
+        b.textContent = rKey === "Events" ? t.eventsBtnLabel : rKey;
+        b.onclick = function () {
+          activeRealm = rKey;
+          activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
+          discordFeedbackMsg = "";
+          draw();
+        };
+        realmRow.appendChild(b);
+      });
+
+      const supportBtn = document.getElementById("supportBtn");
+      if (supportBtn) {
+        supportBtn.textContent = t.supportBtnLabel;
+        supportBtn.classList.toggle("active", activeRealm === CREATOR_TAB_KEY);
+      }
+
+      if (activeRealm === CREATOR_TAB_KEY) {
+        subLabel.style.display = "none";
+        subRow.style.display = "none";
+        eventBanner.style.display = "none";
+        boardTitle.textContent = t.creatorBoardTitle;
+        grid.innerHTML = "";
+        renderCreatorSection(grid, t);
+        return;
+      }
+
+      subLabel.style.display = "block";
+      subRow.style.display = "flex";
+
+      const subs = Object.keys(RUNE_DATA[activeRealm]);
+      if (!subs.includes(activeSub)) activeSub = subs[0];
+
+      const isEvents = activeRealm === "Events";
+      subLabel.textContent = isEvents ? t.selectEventTab : t.selectTab;
+      eventBanner.style.display = isEvents ? "flex" : "none";
+      if (isEvents) {
+        eventBannerText.innerHTML = t.eventBannerHtml;
+        const totalEventRunes = subs.reduce(function (acc, k) {
+          return acc + (RUNE_DATA.Events[k] || []).length;
+        }, 0);
+        eventCountInfo.textContent = t.eventCount(subs.length, totalEventRunes);
+      }
+
+      subRow.innerHTML = "";
+      subs.forEach(function (sKey) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "game-btn sub-btn" + (sKey === activeSub ? " active" : "");
+        b.textContent = sKey;
+        b.onclick = function () {
+          activeSub = sKey;
+          draw();
+        };
+        subRow.appendChild(b);
+      });
+
+      const rawList = RUNE_DATA[activeRealm][activeSub] || [];
+      const q = searchQuery.trim().toLowerCase();
+      let list = rawList;
+
+      if (q) {
+        list = list.filter(function (item) {
+          return (
+            item.name.toLowerCase().includes(q) ||
+            item.rarity.toLowerCase().includes(q) ||
+            item.chance.toLowerCase().includes(q) ||
+            formatLevelDisplay(item.lvl).toLowerCase().includes(q) ||
+            (item.stats || []).some(function (st) {
+              return st.toLowerCase().includes(q);
+            })
+          );
+        });
+      }
+
+      boardTitle.textContent =
+        activeRealm +
+        " • " +
+        activeSub +
+        " (" +
+        list.length +
+        (q ? " / " + rawList.length : "") +
+        " " +
+        t.runesWord +
+        ")";
+
+      grid.innerHTML = "";
+
+      if (list.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = t.emptyTab(searchQuery);
+        grid.appendChild(empty);
+        return;
+      }
+
+      list.forEach(function (item) {
+        const card = document.createElement("div");
+        card.className = "rune-card " + (item.color || "card-slate");
+
+        if (item.note) {
+          const tag = document.createElement("div");
+          tag.className = "note-tag";
+          tag.textContent = translateNote(item.note);
+          card.appendChild(tag);
+        }
+
+        const nEl = document.createElement("div");
+        nEl.className = "r-name";
+        nEl.textContent = item.name;
+        card.appendChild(nEl);
+
+        const rarEl = document.createElement("div");
+        const isNoob = String(item.rarity || "").toLowerCase().includes("noob");
+        rarEl.className = "r-rarity " + (isNoob ? "rar-noob" : "rar-basic");
+        rarEl.textContent = item.rarity;
+        card.appendChild(rarEl);
+
+        const chEl = document.createElement("div");
+        chEl.className = "r-chance";
+        chEl.textContent = item.chance;
+        card.appendChild(chEl);
+
+        const hasMax = isMaxRune(item);
+        const lvEl = document.createElement("div");
+        lvEl.className = "r-lvl" + (hasMax ? "" : " is-nonmax");
+        lvEl.textContent = formatLevelDisplay(item.lvl);
+        card.appendChild(lvEl);
+
+        const statsList = item.stats || [];
+        const stBox = document.createElement("div");
+        stBox.className = "r-stats";
+        statsList.forEach(function (line) {
+          stBox.appendChild(buildStatElement(line));
+        });
+        card.appendChild(stBox);
+
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", function (e) {
+      if (activeRealm === CREATOR_TAB_KEY) {
+        activeRealm = realmKeys[0];
+        activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
+      }
+      searchQuery = e.target.value || "";
+      draw();
+    });
+
+    document.getElementById("langBtn").addEventListener("click", function () {
+      currentLang = currentLang === "ru" ? "en" : "ru";
+      discordFeedbackMsg = "";
+      draw();
+    });
+
+    document.getElementById("supportBtn").addEventListener("click", function () {
+      activeRealm = CREATOR_TAB_KEY;
+      discordFeedbackMsg = "";
+      draw();
+    });
+
+    draw();
+  </script>
+</body>
+</html>
