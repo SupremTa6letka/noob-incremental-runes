@@ -1692,7 +1692,7 @@
 
     draw();
   </script>
-  <style>
+<style>
   .pets-panel {
     max-width: 1380px;
     margin: 18px auto 0;
@@ -1786,12 +1786,6 @@
     border-top: 1px solid #1e2333;
     padding-top: 8px;
   }
-  .pet-stats-group {
-    margin-top: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #93c5fd;
-  }
   .pet-stats div {
     margin: 1px 0;
   }
@@ -1843,10 +1837,7 @@
           'x1.83 H.Rune Bulk',
           'x166 Pumpkin',
           'x17.5 Spell Bulk',
-          'x17.5 Dark Magic'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
+          'x17.5 Dark Magic',
           'x1.27 Item Generator Amount',
           'x1.27 Candy Corn',
           'x1.83 H.Rune Luck',
@@ -1950,13 +1941,6 @@
           'x304 Oof',
           'x12 Trash Cash',
           'x9.8 Oil',
-          'x5.4 Sea Points'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
-          'x304 Oof',
-          'x12 Trash Cash',
-          'x9.8 Oil',
           'x5.4 Sea Points',
           'x7.6 Coral',
           'x1.35 Prism',
@@ -1974,13 +1958,6 @@
           'x2.1 Starlight',
           'x1.5 Prism',
           'x441 Oof',
-          'x4.3 Momentum',
-          'x3.48 Radiance',
-          'x2.93 Thunder',
-          'x2.54 Rune Speed'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
           'x4.3 Momentum',
           'x3.48 Radiance',
           'x2.93 Thunder',
@@ -2130,16 +2107,13 @@
           ? `<span class="pet-source">${pet.source}</span>`
           : '';
         const statsHtml = pet.stats.map((s) => `<div>${s}</div>`).join('');
-        const extraHtml = pet.extraStats && pet.extraStats.length
-          ? `<div class="pet-stats-group">${pet.extraStatsLabel || 'Extra'}:</div>${pet.extraStats.map((s) => `<div>${s}</div>`).join('')}`
-          : '';
 
         return `
           <article class="pet-card">
             <div class="pet-top-meta">${chanceHtml}${sourceHtml}</div>
             <img class="pet-portrait" src="${pet.img}" alt="${pet.name}" loading="lazy">
             <div class="pet-name">${pet.name}</div>
-            <div class="pet-stats">${statsHtml}${extraHtml}</div>
+            <div class="pet-stats">${statsHtml}</div>
           </article>
         `;
       }).join('');
