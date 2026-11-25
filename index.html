@@ -660,6 +660,82 @@
     .pet-stats div {
       margin: 1px 0;
     }
+
+    .eq-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .eq-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f3f4f6;
+    }
+    .eq-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .eq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 12px;
+    }
+    .eq-card {
+      background: linear-gradient(180deg, #1b1830 0%, #0e1118 80%);
+      border: 1px solid #2b2642;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 7px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    }
+    .eq-slot-badge {
+      background: rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(167, 139, 250, 0.45);
+      color: #ddd6fe;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .eq-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .eq-portrait {
+      width: 84px;
+      height: 84px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #161a24;
+      padding: 4px;
+    }
+    .eq-source {
+      font-size: 11.5px;
+      color: #9ca3af;
+      line-height: 1.35;
+    }
+    .eq-stats {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #e5e7eb;
+      border-top: 1px solid #1e2333;
+      padding-top: 8px;
+    }
+    .eq-stats div {
+      margin: 2px 0;
+    }
   </style>
 </head>
 <body>
@@ -1310,7 +1386,8 @@
         ]
       },
       "Others": {
-        "Minions": []
+        "Minions": [],
+        "Equipment": []
       }
     };
 
@@ -1357,7 +1434,9 @@
         petFilterSecret: "Secret Minions",
         petFilterGiveaway: "Giveaway (Pack 2)",
         petFilterDev: "Developer (Pack 1)",
-        petChancePrefix: "Chance:"
+        petChancePrefix: "Chance:",
+        eqTitle: "Equipment",
+        eqEmpty: (q) => `Ничего не найдено по запросу «${q}» в Equipment.`
       },
       en: {
         searchPlaceholder: "Search rune or stat...",
@@ -1367,7 +1446,6 @@
         codesHint: "Click a code to copy • Updated: Thanksgiving / Realm 6",
         selectRealm: "Select world or category (Realm / Events)",
         eventsBtnLabel: "Events",
-        othersBtnLabel: "Others",
         othersBtnLabel: "Others",
         supportBtnLabel: "Support",
         selectTab: "Select tab",
@@ -1394,7 +1472,9 @@
         petFilterSecret: "Secret Minions",
         petFilterGiveaway: "Giveaway (Pack 2)",
         petFilterDev: "Developer (Pack 1)",
-        petChancePrefix: "Chance:"
+        petChancePrefix: "Chance:",
+        eqTitle: "Equipment",
+        eqEmpty: (q) => `Nothing found for "${q}" in Equipment.`
       }
     };
 
@@ -1460,7 +1540,7 @@
     }
 
     function isMaxRune(item) {
-      return /MAX/i.test(String(item.lvl || ""));
+      return / MAX /i.test(String(item.lvl || ""));
     }
 
     function parseLevelNumber(lvlText) {
@@ -1657,7 +1737,7 @@
         name: 'Ronaldo',
         chance: '1/200k',
         source: 'Football Event capsule',
-        img: './pets/ronaldo.png',
+        img: './pets/ronaldo.png.jpg',
         stats: [
           { text: 'x12 Planks', color: '#9a3412' },
           { text: 'x34 Goals', color: '#bae6fd' },
@@ -1894,7 +1974,7 @@
         name: '0hxsn',
         chance: '',
         source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/0hxsn.png',
+        img: './pets/ohxsn.png',
         stats: [
           { text: 'x1.45 Stats', color: '#38bdf8' },
           { text: 'x12 Coin', color: '#f59e0b' },
@@ -2034,6 +2114,334 @@
       grid.appendChild(wrap);
     }
 
+    const EQUIPMENT_DATA = [
+      {
+        slot: "Market",
+        name: "Runic Stone",
+        source: "Special Geodes purchased from the Market",
+        img: "./Equipment/runic-stone.png",
+        stats: [
+          { text: "+x2.25 Gem", color: "#e879f9" },
+          { text: "+x19 Rune Speed", color: "#38bdf8" },
+          { text: "+x6.4 Ice", color: "#cbd5e1" }
+        ]
+      },
+      {
+        slot: "Market",
+        name: "Galactic Shard",
+        source: "Special Geodes purchased from the Market",
+        img: "./Equipment/galactic-shard.png",
+        stats: [
+          { text: "+x2.52 Gem", color: "#e879f9" },
+          { text: "+x1.63 Alien Cash", color: "#3b82f6" },
+          { text: "x1.6 Rune Speed", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Garden Incremental",
+        name: "Leaf Sword",
+        source: "Singularity 1 (Garden Incremental)",
+        img: "./Equipment/leaf-sword.png",
+        stats: [
+          { text: "+x1.18 Rune Luck", color: "#4ade80" },
+          { text: "+x1.18 Rune Bulk", color: "#f59e0b" }
+        ]
+      },
+      {
+        slot: "Garden Incremental",
+        name: "Electric Sword",
+        source: "Singularity 20 (Garden Incremental)",
+        img: "./Equipment/electric-sword.png",
+        stats: [
+          { text: "+x1.45 Rune Luck", color: "#4ade80" },
+          { text: "+x1.27 Rune Bulk", color: "#f59e0b" }
+        ]
+      },
+      {
+        slot: "Shop Bundles",
+        name: "Wizard Staff",
+        source: "Unique equipment from Shop bundles",
+        img: "./Equipment/wizard-staff.png",
+        stats: [
+          { text: "x10 Tier Bulk", color: "#f59e0b" },
+          { text: "+x2.08 Pickaxe Damage", color: "#ef4444" },
+          { text: "+x7.3 Gem", color: "#e879f9" },
+          { text: "+x11.8 Hack Points", color: "#4ade80" }
+        ]
+      },
+      {
+        slot: "Shop Bundles",
+        name: "Dragon Shuriken",
+        source: "Unique equipment from Shop bundles",
+        img: "./Equipment/dragon-shuriken.png",
+        stats: [
+          { text: "x20 Tier Bulk", color: "#f59e0b" },
+          { text: "x1.25 Prism", color: "#38bdf8" },
+          { text: "x5 Tier Luck", color: "#4ade80" },
+          { text: "+x12.3 Hack Points", color: "#4ade80" },
+          { text: "+x2.5 Pickaxe Damage", color: "#ef4444" }
+        ]
+      },
+      {
+        slot: "Shop Bundles",
+        name: "Divine Totem",
+        source: "Unique equipment from Shop bundles",
+        img: "./Equipment/divine-totem.png",
+        stats: [
+          { text: "x1.75 Goals", color: "#93c5fd" },
+          { text: "x1.25 Prism", color: "#38bdf8" },
+          { text: "+x2.98 Fire", color: "#ef4444" },
+          { text: "+x8.19 Oof", color: "#facc15" },
+          { text: "+x4.59 Rebirth", color: "#f472b6" },
+          { text: "+x1.18 Rune Bulk", color: "#f59e0b" }
+        ]
+      },
+      {
+        slot: "Easy Expedition",
+        name: "Aether Sigil",
+        source: "Easy Expedition equipment",
+        img: "./Equipment/aether-sigil.png",
+        stats: [
+          { text: "+x2.35 Coin", color: "#f59e0b" },
+          { text: "+x1.9 Tier Bulk", color: "#eab308" }
+        ]
+      },
+      {
+        slot: "Easy Expedition",
+        name: "Mythos Mark",
+        source: "Easy Expedition equipment",
+        img: "./Equipment/mythos-mark.png",
+        stats: [
+          { text: "+x3.7 Coin", color: "#f59e0b" },
+          { text: "+x2.8 Tier Bulk", color: "#eab308" }
+        ]
+      },
+      {
+        slot: "Medium Expedition",
+        name: "Elder Glyph",
+        source: "Medium Expedition equipment",
+        img: "./Equipment/elder-glyph.png",
+        stats: [
+          { text: "+x6.4 Coin", color: "#f59e0b" },
+          { text: "+x4.59 Tier Bulk", color: "#eab308" }
+        ]
+      },
+      {
+        slot: "Medium Expedition",
+        name: "Axe",
+        source: "Medium Expedition equipment",
+        img: "./Equipment/axe.png",
+        stats: [
+          { text: "+x7.3 Tier Bulk", color: "#eab308" },
+          { text: "+x11.8 Coin", color: "#f59e0b" },
+          { text: "+x1.27 Prism Rune Speed", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Medium Expedition",
+        name: "Dagger",
+        source: "Medium Expedition equipment",
+        img: "./Equipment/dagger.png",
+        stats: [
+          { text: "+x4.59 Tier Luck", color: "#4ade80" },
+          { text: "+x8.19 Coin", color: "#f59e0b" },
+          { text: "+x1.9 Prism Rune Bulk", color: "#eab308" }
+        ]
+      },
+      {
+        slot: "Hard Expedition",
+        name: "Spear",
+        source: "Hard Expedition equipment",
+        img: "./Equipment/spear.png",
+        stats: [
+          { text: "+x2.17 Prism", color: "#38bdf8" },
+          { text: "+x3.39 Rune Bulk", color: "#f59e0b" },
+          { text: "+x2.52 Gem", color: "#e879f9" },
+          { text: "+x8.19 Hack Points", color: "#4ade80" }
+        ]
+      },
+      {
+        slot: "Extreme Expedition",
+        name: "Amethyst Geode",
+        source: "Extreme Expedition equipment",
+        img: "./Equipment/amethyst-geode.png",
+        stats: [
+          { text: "+x10 Tier Bulk", color: "#f59e0b" },
+          { text: "+x17.2 Coin", color: "#f59e0b" },
+          { text: "+x1.27 Bones", color: "#d6b48a" }
+        ]
+      },
+      {
+        slot: "Extreme Expedition",
+        name: "Light Sword",
+        source: "Extreme Expedition equipment",
+        img: "./Equipment/light-sword.png",
+        stats: [
+          { text: "x1.1 Stats", color: "#38bdf8" },
+          { text: "+x2.17 Prism Rune Bulk", color: "#f59e0b" },
+          { text: "x1.25 Prism", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Galaxy Expedition",
+        name: "Elemental Relic",
+        source: "Galaxy Expedition equipment",
+        img: "./Equipment/elemental-relic.png",
+        stats: [
+          { text: "+x22.6 Tier Bulk", color: "#f59e0b" },
+          { text: "x1.8 Rune Speed", color: "#38bdf8" },
+          { text: "+x53.2 Coin", color: "#f59e0b" },
+          { text: "+x1.9 Alien Cash", color: "#3b82f6" }
+        ]
+      },
+      {
+        slot: "Galaxy Expedition",
+        name: "Pluto",
+        source: "Galaxy Expedition equipment",
+        img: "./Equipment/pluto.png",
+        stats: [
+          { text: "x1.14 Stats", color: "#38bdf8" },
+          { text: "+x2.8 Knowledge", color: "#f472b6" },
+          { text: "+x3.88 Rune Bulk", color: "#f59e0b" }
+        ]
+      },
+      {
+        slot: "Yin Yang Expedition",
+        name: "Infinite Void",
+        source: "Yin Yang Expedition (or Market for 75sx prisms)",
+        img: "./Equipment/infinite-void.png",
+        stats: [
+          { text: "+x29.8 Tier Bulk", color: "#f59e0b" },
+          { text: "x1.75 Yang", color: "#f8fafc" },
+          { text: "+x145 Coin", color: "#f59e0b" },
+          { text: "x1.35 Yin", color: "#94a3b8" },
+          { text: "x1.95 Rune Speed", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Yin Yang Expedition",
+        name: "Dual Chi Scythe",
+        source: "Yin Yang Expedition equipment",
+        img: "./Equipment/dual-chi-scythe.png",
+        stats: [
+          { text: "x2 Yin", color: "#94a3b8" },
+          { text: "x3 Yang", color: "#f8fafc" },
+          { text: "x7.5 Coin", color: "#f59e0b" },
+          { text: "x1.25 Stats", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Underwater Expedition",
+        name: "Atlantic Treasure",
+        source: "Underwater Expedition equipment",
+        img: "./Equipment/atlantic-treasure.png",
+        stats: [
+          { text: "+x58.6 Tier Bulk", color: "#f59e0b" },
+          { text: "x3 Sea Points", color: "#67e8f9" },
+          { text: "+x451 Coin", color: "#f59e0b" },
+          { text: "x2.15 Rune Speed", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Underwater Expedition",
+        name: "Trident",
+        source: "Underwater Expedition equipment",
+        img: "./Equipment/trident.png",
+        stats: [
+          { text: "x5 Bubbles", color: "#38bdf8" },
+          { text: "+x1.18 Prism Rune Luck", color: "#4ade80" },
+          { text: "+x2.62 Prism Rune Bulk", color: "#f59e0b" },
+          { text: "x1.45 Minion Capsule Luck", color: "#22c55e" }
+        ]
+      },
+      {
+        slot: "Godly Expedition",
+        name: "Bolder Fragment",
+        source: "Godly Expedition equipment",
+        img: "./Equipment/bolder-fragment.png",
+        stats: [
+          { text: "+x116 Tier Bulk", color: "#f59e0b" },
+          { text: "+x18k Coin", color: "#f59e0b" },
+          { text: "x2.35 Rune Speed", color: "#38bdf8" }
+        ]
+      },
+      {
+        slot: "Godly Expedition",
+        name: "Thunder of Zeus",
+        source: "Godly Expedition equipment",
+        img: "./Equipment/thunder-of-zeus.png",
+        stats: [
+          { text: "x10 Blaze", color: "#38bdf8" },
+          { text: "x3 Radiance", color: "#facc15" },
+          { text: "x3 Starlight", color: "#f97316" },
+          { text: "x1.65 Prism", color: "#38bdf8" },
+          { text: "x10 Fire", color: "#ef4444" },
+          { text: "x10 Coin", color: "#f59e0b" },
+          { text: "x10 Cash", color: "#4ade80" }
+        ]
+      }
+    ];
+
+    function renderEquipmentSection(grid, t) {
+      const wrap = document.createElement("div");
+      wrap.style.gridColumn = "1 / -1";
+      wrap.style.width = "100%";
+
+      const header = document.createElement("div");
+      header.className = "eq-header";
+
+      const titleEl = document.createElement("div");
+      titleEl.className = "eq-title";
+      titleEl.textContent = t.eqTitle || "Equipment";
+      header.appendChild(titleEl);
+
+      wrap.appendChild(header);
+
+      const eqGrid = document.createElement("div");
+      eqGrid.className = "eq-grid";
+
+      function drawEquipmentCards() {
+        const q = searchQuery.trim().toLowerCase();
+        const list = EQUIPMENT_DATA.filter(function (item) {
+          if (!q) return true;
+          return (
+            item.name.toLowerCase().includes(q) ||
+            item.slot.toLowerCase().includes(q) ||
+            item.source.toLowerCase().includes(q) ||
+            (item.stats || []).some(function (s) {
+              return String(s.text || s).toLowerCase().includes(q);
+            })
+          );
+        });
+
+        if (list.length === 0) {
+          eqGrid.innerHTML = `<div class="empty-state">${t.eqEmpty ? t.eqEmpty(searchQuery) : "Nothing found."}</div>`;
+          return;
+        }
+
+        eqGrid.innerHTML = list.map(function (item) {
+          const statsHtml = (item.stats || []).map(function (s) {
+            if (typeof s === "string") return `<div>${s}</div>`;
+            const styleAttr = s.color ? ` style="color: ${s.color};"` : "";
+            return `<div${styleAttr}>${s.text}</div>`;
+          }).join("");
+
+          return `
+            <article class="eq-card">
+              <span class="eq-slot-badge">${item.slot}</span>
+              <div class="eq-source">${item.source}</div>
+              <img class="eq-portrait" src="${item.img}" alt="${item.name}" loading="lazy">
+              <div class="eq-name">${item.name}</div>
+              <div class="eq-stats">${statsHtml}</div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      drawEquipmentCards();
+      wrap.appendChild(eqGrid);
+      grid.appendChild(wrap);
+    }
 
     function draw() {
       const t = UI_TEXT[currentLang] || UI_TEXT.ru;
@@ -2122,6 +2530,13 @@
         boardTitle.textContent = activeRealm + " • " + activeSub;
         grid.innerHTML = "";
         renderMinionsSection(grid, t);
+        return;
+      }
+
+      if (activeRealm === "Others" && activeSub === "Equipment") {
+        boardTitle.textContent = activeRealm + " • " + activeSub;
+        grid.innerHTML = "";
+        renderEquipmentSection(grid, t);
         return;
       }
 
