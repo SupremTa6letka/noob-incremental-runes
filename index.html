@@ -571,6 +571,95 @@
       .search-input { min-width: 150px; flex: 1; }
       .runes-grid { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 9px; }
     }
+    .pets-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .pets-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f3f4f6;
+    }
+    .pets-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pet-filter-btn {
+      background: #1a1f2e;
+      color: #cbd5e1;
+      border: 1px solid #2e354b;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .pet-filter-btn.active {
+      background: rgba(124, 58, 237, 0.22);
+      border-color: #7c3aed;
+      color: #ffffff;
+    }
+    .pets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .pet-card {
+      background: #0e1118;
+      border: 1px solid #232838;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+    .pet-top-meta {
+      font-size: 11.5px;
+      line-height: 1.35;
+      color: #9ca3af;
+    }
+    .pet-chance {
+      display: block;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+    .pet-source {
+      display: block;
+      color: #cbd5e1;
+    }
+    .pet-portrait {
+      width: 84px;
+      height: 84px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #161a24;
+      padding: 4px;
+    }
+    .pet-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .pet-stats {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #e5e7eb;
+      border-top: 1px solid #1e2333;
+      padding-top: 8px;
+    }
+    .pet-stats div {
+      margin: 1px 0;
+    }
   </style>
 </head>
 <body>
@@ -586,7 +675,7 @@
           <span>RU / EN</span>
           <span id="langTag" class="lang-tag">RU</span>
         </button>
-        <div class="meta-pill">Realms 1–6 + Events</div>
+        <div id="metaPill" class="meta-pill">Realms 1–6 + Events</div>
         <button id="supportBtn" class="support-btn" type="button">Support</button>
       </div>
     </div>
@@ -657,10 +746,10 @@
 
 <details class="codes-panel" open>
   <summary>
-    <span>🎁 Active Codes (Redeem in Shop)</span>
-    <span class="codes-badge">21 Active • Click to Copy</span>
+    <span id="codesTitleText">🎁 Active Codes (Redeem in Shop)</span>
+    <span id="codesBadgeText" class="codes-badge">21 Active • Click to Copy</span>
   </summary>
-  <div class="codes-hint">Нажми на код, чтобы скопировать • Updated: Thanksgiving / Realm 6</div>
+  <div id="codesHintText" class="codes-hint">Нажми на код, чтобы скопировать • Updated: Thanksgiving / Realm 6</div>
   <div class="codes-grid">
     <button class="code-chip" data-code="HAPPYTHANKSGIVING">HAPPYTHANKSGIVING</button>
     <button class="code-chip" data-code="HAPPYSHUTDOWN">HAPPYSHUTDOWN</button>
@@ -741,7 +830,9 @@
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(code).catch(() => {});
         }
-        showToastNearCursor(`Copied: ${code}`, e.clientX, e.clientY);
+        const lang = document.documentElement.lang === 'en' ? 'en' : 'ru';
+        const msg = lang === 'en' ? `Copied: ${code}` : `Скопировано: ${code}`;
+        showToastNearCursor(msg, e.clientX, e.clientY);
       });
     });
   })();
@@ -1217,6 +1308,9 @@
           { name: "Thanksgiving", rarity: "Noobinia", chance: "1/12.5Qn", lvl: "LVL 56", color: "card-olive", stats: ["x561 Turkey Oof", "x57 Turkey Damage", "x281 Feathers", "x12.2 Pies", "x4.75 T.Rune Bulk [MAX]", "x1.5 T.Rune Luck [MAX]"] },
           { name: "Gratitude", rarity: "Noobinia", chance: "1/3.5Sx", lvl: "LVL 5", color: "card-purple", stats: ["x251 Turkey Oof", "x13.5 Turkey Damage", "x76 Feathers", "x3.5 Pies", "x7.25 T.Rune Bulk [MAX]", "x2 T.Rune Luck [MAX]", "x1.05 Prism [MAX]", "x1.1 Rune Bulk"] }
         ]
+      },
+      "Others": {
+        "Minions": []
       }
     };
 
@@ -1231,8 +1325,13 @@
     const UI_TEXT = {
       ru: {
         searchPlaceholder: "Поиск руны или стата...",
+        metaPill: "Realms 1–6 + Events",
+        codesTitle: "🎁 Active Codes (Redeem in Shop)",
+        codesBadge: "21 Active • Click to Copy",
+        codesHint: "Нажми на код, чтобы скопировать • Updated: Thanksgiving / Realm 6",
         selectRealm: "Выбери мир или категорию (Realm / Events)",
-        eventsBtnLabel: "Events (Ивенты)",
+        eventsBtnLabel: "Events",
+        othersBtnLabel: "Others",
         supportBtnLabel: "Support",
         selectTab: "Выбери вкладку",
         selectEventTab: "Выбери ивент (Категория Events)",
@@ -1244,7 +1343,6 @@
         statusOnline: "В сети",
         statusOffline: "Не в сети",
         discordBtn: "Discord",
-        discordNote: "(contact the creator, reach out if you found bugs),",
         discordNote: "(связь с создателем обращайтесь если нашли багги ),",
         discordCopied: (tag) => `Открыт Discord • Ник для инвайта скопирован: ${tag}`,
         creatorBadge: "Creator",
@@ -1253,12 +1351,24 @@
         discordPending: "Переход по ссылке Discord выполнен.",
         toggleStatusBtn: "Переключить статус сети",
         creatorBoardTitle: "",
-        creatorBoardHint: ""
+        creatorBoardHint: "",
+        petsTitle: "Pets",
+        petFilterAll: "All",
+        petFilterSecret: "Secret Minions",
+        petFilterGiveaway: "Giveaway (Pack 2)",
+        petFilterDev: "Developer (Pack 1)",
+        petChancePrefix: "Chance:"
       },
       en: {
         searchPlaceholder: "Search rune or stat...",
+        metaPill: "Realms 1–6 + Events",
+        codesTitle: "🎁 Active Codes (Redeem in Shop)",
+        codesBadge: "21 Active • Click to Copy",
+        codesHint: "Click a code to copy • Updated: Thanksgiving / Realm 6",
         selectRealm: "Select world or category (Realm / Events)",
         eventsBtnLabel: "Events",
+        othersBtnLabel: "Others",
+        othersBtnLabel: "Others",
         supportBtnLabel: "Support",
         selectTab: "Select tab",
         selectEventTab: "Select event (Events category)",
@@ -1270,6 +1380,7 @@
         statusOnline: "Online",
         statusOffline: "Offline",
         discordBtn: "Discord",
+        discordNote: "(contact the creator, reach out if you found bugs),",
         discordCopied: (tag) => `Opening Discord • Invite username copied: ${tag}`,
         creatorBadge: "Creator",
         creatorRobloxLabel: "Roblox handle: Csawa10109v1",
@@ -1277,7 +1388,13 @@
         discordPending: "Discord link opened.",
         toggleStatusBtn: "Toggle online status",
         creatorBoardTitle: "",
-        creatorBoardHint: ""
+        creatorBoardHint: "",
+        petsTitle: "Pets",
+        petFilterAll: "All",
+        petFilterSecret: "Secret Minions",
+        petFilterGiveaway: "Giveaway (Pack 2)",
+        petFilterDev: "Developer (Pack 1)",
+        petChancePrefix: "Chance:"
       }
     };
 
@@ -1312,8 +1429,38 @@
     let currentLang = "ru";
     let discordFeedbackMsg = "";
 
+    function applyStaticTranslations(t) {
+      const metaPill = document.getElementById("metaPill");
+      if (metaPill) metaPill.textContent = t.metaPill;
+
+      const codesTitleText = document.getElementById("codesTitleText");
+      if (codesTitleText) codesTitleText.textContent = t.codesTitle;
+
+      const codesBadgeText = document.getElementById("codesBadgeText");
+      if (codesBadgeText) codesBadgeText.textContent = t.codesBadge;
+
+      const codesHintText = document.getElementById("codesHintText");
+      if (codesHintText) codesHintText.textContent = t.codesHint;
+
+      const petsTitleText = document.getElementById("petsTitleText");
+      if (petsTitleText) petsTitleText.textContent = t.petsTitle;
+
+      const filterBtns = document.querySelectorAll("#petFilters .pet-filter-btn");
+      filterBtns.forEach((btn) => {
+        const grp = btn.dataset.group;
+        if (grp === "all") btn.textContent = t.petFilterAll;
+        else if (grp === "secret") btn.textContent = t.petFilterSecret;
+        else if (grp === "giveaway") btn.textContent = t.petFilterGiveaway;
+        else if (grp === "dev") btn.textContent = t.petFilterDev;
+      });
+
+      if (typeof window.refreshPetsLang === "function") {
+        window.refreshPetsLang(t);
+      }
+    }
+
     function isMaxRune(item) {
-      return /\bMAX\b/i.test(String(item.lvl || ""));
+      return /MAX/i.test(String(item.lvl || ""));
     }
 
     function parseLevelNumber(lvlText) {
@@ -1504,309 +1651,6 @@
       grid.appendChild(wrap);
     }
 
-    function draw() {
-      const t = UI_TEXT[currentLang] || UI_TEXT.ru;
-      document.documentElement.lang = currentLang;
-
-      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
-
-      const langTag = document.getElementById("langTag");
-      langTag.textContent = currentLang.toUpperCase();
-
-      document.getElementById("realmLabel").textContent = t.selectRealm;
-
-      const realmRow = document.getElementById("realmRow");
-      const subLabel = document.getElementById("subLabel");
-      const subRow = document.getElementById("subRow");
-      const eventBanner = document.getElementById("eventBanner");
-      const eventBannerText = document.getElementById("eventBannerText");
-      const eventCountInfo = document.getElementById("eventCountInfo");
-      const boardTitle = document.getElementById("boardTitle");
-      const grid = document.getElementById("runesGrid");
-
-      realmRow.innerHTML = "";
-      realmKeys.forEach(function (rKey) {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "game-btn" + (rKey === "Events" ? " event-main" : "") + (rKey === activeRealm ? " active" : "");
-        b.textContent = rKey === "Events" ? t.eventsBtnLabel : rKey;
-        b.onclick = function () {
-          activeRealm = rKey;
-          activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
-          discordFeedbackMsg = "";
-          draw();
-        };
-        realmRow.appendChild(b);
-      });
-
-      const supportBtn = document.getElementById("supportBtn");
-      if (supportBtn) {
-        supportBtn.textContent = t.supportBtnLabel;
-        supportBtn.classList.toggle("active", activeRealm === CREATOR_TAB_KEY);
-      }
-
-      if (activeRealm === CREATOR_TAB_KEY) {
-        subLabel.style.display = "none";
-        subRow.style.display = "none";
-        eventBanner.style.display = "none";
-        boardTitle.textContent = t.creatorBoardTitle;
-        grid.innerHTML = "";
-        renderCreatorSection(grid, t);
-        return;
-      }
-
-      subLabel.style.display = "block";
-      subRow.style.display = "flex";
-
-      const subs = Object.keys(RUNE_DATA[activeRealm]);
-      if (!subs.includes(activeSub)) activeSub = subs[0];
-
-      const isEvents = activeRealm === "Events";
-      subLabel.textContent = isEvents ? t.selectEventTab : t.selectTab;
-      eventBanner.style.display = isEvents ? "flex" : "none";
-      if (isEvents) {
-        eventBannerText.innerHTML = t.eventBannerHtml;
-        const totalEventRunes = subs.reduce(function (acc, k) {
-          return acc + (RUNE_DATA.Events[k] || []).length;
-        }, 0);
-        eventCountInfo.textContent = t.eventCount(subs.length, totalEventRunes);
-      }
-
-      subRow.innerHTML = "";
-      subs.forEach(function (sKey) {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "game-btn sub-btn" + (sKey === activeSub ? " active" : "");
-        b.textContent = sKey;
-        b.onclick = function () {
-          activeSub = sKey;
-          draw();
-        };
-        subRow.appendChild(b);
-      });
-
-      const rawList = RUNE_DATA[activeRealm][activeSub] || [];
-      const q = searchQuery.trim().toLowerCase();
-      let list = rawList;
-
-      if (q) {
-        list = list.filter(function (item) {
-          return (
-            item.name.toLowerCase().includes(q) ||
-            item.rarity.toLowerCase().includes(q) ||
-            item.chance.toLowerCase().includes(q) ||
-            formatLevelDisplay(item.lvl).toLowerCase().includes(q) ||
-            (item.stats || []).some(function (st) {
-              return st.toLowerCase().includes(q);
-            })
-          );
-        });
-      }
-
-      boardTitle.textContent =
-        activeRealm +
-        " • " +
-        activeSub +
-        " (" +
-        list.length +
-        (q ? " / " + rawList.length : "") +
-        " " +
-        t.runesWord +
-        ")";
-
-      grid.innerHTML = "";
-
-      if (list.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty-state";
-        empty.textContent = t.emptyTab(searchQuery);
-        grid.appendChild(empty);
-        return;
-      }
-
-      list.forEach(function (item) {
-        const card = document.createElement("div");
-        card.className = "rune-card " + (item.color || "card-slate");
-
-        if (item.note) {
-          const tag = document.createElement("div");
-          tag.className = "note-tag";
-          tag.textContent = translateNote(item.note);
-          card.appendChild(tag);
-        }
-
-        const nEl = document.createElement("div");
-        nEl.className = "r-name";
-        nEl.textContent = item.name;
-        card.appendChild(nEl);
-
-        const rarEl = document.createElement("div");
-        const isNoob = String(item.rarity || "").toLowerCase().includes("noob");
-        rarEl.className = "r-rarity " + (isNoob ? "rar-noob" : "rar-basic");
-        rarEl.textContent = item.rarity;
-        card.appendChild(rarEl);
-
-        const chEl = document.createElement("div");
-        chEl.className = "r-chance";
-        chEl.textContent = item.chance;
-        card.appendChild(chEl);
-
-        const hasMax = isMaxRune(item);
-        const lvEl = document.createElement("div");
-        lvEl.className = "r-lvl" + (hasMax ? "" : " is-nonmax");
-        lvEl.textContent = formatLevelDisplay(item.lvl);
-        card.appendChild(lvEl);
-
-        const statsList = item.stats || [];
-        const stBox = document.createElement("div");
-        stBox.className = "r-stats";
-        statsList.forEach(function (line) {
-          stBox.appendChild(buildStatElement(line));
-        });
-        card.appendChild(stBox);
-
-        grid.appendChild(card);
-      });
-    }
-
-    document.getElementById("searchInput").addEventListener("input", function (e) {
-      if (activeRealm === CREATOR_TAB_KEY) {
-        activeRealm = realmKeys[0];
-        activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
-      }
-      searchQuery = e.target.value || "";
-      draw();
-    });
-
-    document.getElementById("langBtn").addEventListener("click", function () {
-      currentLang = currentLang === "ru" ? "en" : "ru";
-      discordFeedbackMsg = "";
-      draw();
-    });
-
-    document.getElementById("supportBtn").addEventListener("click", function () {
-      activeRealm = CREATOR_TAB_KEY;
-      discordFeedbackMsg = "";
-      draw();
-    });
-
-    draw();
-  </script>
-<style>
-  .pets-panel {
-    max-width: 1380px;
-    margin: 18px auto 0;
-    background: #131620;
-    border: 1px solid #262b3d;
-    border-radius: 12px;
-    padding: 14px;
-  }
-  .pets-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .pets-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #f3f4f6;
-  }
-  .pets-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .pet-filter-btn {
-    background: #1a1f2e;
-    color: #cbd5e1;
-    border: 1px solid #2e354b;
-    border-radius: 8px;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .pet-filter-btn.active {
-    background: rgba(124, 58, 237, 0.22);
-    border-color: #7c3aed;
-    color: #ffffff;
-  }
-  .pets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-  }
-  .pet-card {
-    background: #0e1118;
-    border: 1px solid #232838;
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-  .pet-top-meta {
-    font-size: 11.5px;
-    line-height: 1.35;
-    color: #9ca3af;
-  }
-  .pet-chance {
-    display: block;
-    font-weight: 700;
-    color: #fbbf24;
-  }
-  .pet-source {
-    display: block;
-    color: #cbd5e1;
-  }
-  .pet-portrait {
-    width: 84px;
-    height: 84px;
-    object-fit: contain;
-    border-radius: 8px;
-    background: #161a24;
-    padding: 4px;
-  }
-  .pet-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-  .pet-stats {
-    width: 100%;
-    text-align: left;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.4;
-    color: #e5e7eb;
-    border-top: 1px solid #1e2333;
-    padding-top: 8px;
-  }
-  .pet-stats div {
-    margin: 1px 0;
-  }
-</style>
-
-<section id="petsSection" class="pets-panel">
-  <div class="pets-header">
-    <div class="pets-title">Pets</div>
-    <div class="pets-filters" id="petFilters">
-      <button type="button" class="pet-filter-btn active" data-group="all">All</button>
-      <button type="button" class="pet-filter-btn" data-group="secret">Secret Minions</button>
-      <button type="button" class="pet-filter-btn" data-group="giveaway">Giveaway (Pack 2)</button>
-      <button type="button" class="pet-filter-btn" data-group="dev">Developer (Pack 1)</button>
-    </div>
-  </div>
-  <div id="petsGrid" class="pets-grid"></div>
-</section>
-
-<script>
-  (() => {
     const PETS_DATA = [
       {
         group: 'secret',
@@ -1990,9 +1834,9 @@
         source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
         img: './pets/awp.png',
         stats: [
-          'x2 Tier Luck',
-          'x5 Coin',
-          'x4 Tier Bulk'
+          { text: 'x2 Tier Luck', color: '#22c55e' },
+          { text: 'x5 Coin', color: '#f59e0b' },
+          { text: 'x4 Tier Bulk', color: '#eab308' }
         ]
       },
       {
@@ -2002,9 +1846,9 @@
         source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
         img: './pets/d4n0.png',
         stats: [
-          'x1.75 Pickaxe Damage',
-          'x1.2 Stats',
-          'x1.75 Prism'
+          { text: 'x1.75 Pickaxe Damage', color: '#ef4444' },
+          { text: 'x1.2 Stats', color: '#38bdf8' },
+          { text: 'x1.75 Prism', color: '#22d3ee' }
         ]
       },
       {
@@ -2014,9 +1858,9 @@
         source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
         img: './pets/fruit.png',
         stats: [
-          'x1.2 Prism Rune Luck',
-          'x1.35 Prism Rune Bulk',
-          'x1.75 Prism'
+          { text: 'x1.2 Prism Rune Luck', color: '#4ade80' },
+          { text: 'x1.35 Prism Rune Bulk', color: '#f59e0b' },
+          { text: 'x1.75 Prism', color: '#38bdf8' }
         ]
       },
       {
@@ -2026,10 +1870,10 @@
         source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
         img: './pets/nobo.png',
         stats: [
-          'x3 Yin',
-          'x1.2 Stats',
-          'x1.5 Sea Points',
-          'x5 Yang'
+          { text: 'x3 Yin', color: '#94a3b8' },
+          { text: 'x1.2 Stats', color: '#38bdf8' },
+          { text: 'x1.5 Sea Points', color: '#bae6fd' },
+          { text: 'x5 Yang', color: '#f8fafc' }
         ]
       },
       {
@@ -2039,10 +1883,10 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/ghoulax.png',
         stats: [
-          'x1.3 Minion Capsule Luck',
-          'x1.51 Stats',
-          'x800 Oof',
-          'x750 Cash'
+          { text: 'x1.3 Minion Capsule Luck', color: '#22c55e' },
+          { text: 'x1.51 Stats', color: '#38bdf8' },
+          { text: 'x800 Oof', color: '#facc15' },
+          { text: 'x750 Cash', color: '#4ade80' }
         ]
       },
       {
@@ -2052,9 +1896,9 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/ohxsn.png',
         stats: [
-          'x1.45 Stats',
-          'x12 Coin',
-          'x1.65 Rune Luck'
+          { text: 'x1.45 Stats', color: '#38bdf8' },
+          { text: 'x12 Coin', color: '#f59e0b' },
+          { text: 'x1.65 Rune Luck', color: '#4ade80' }
         ]
       },
       {
@@ -2064,10 +1908,10 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/tehleat.png',
         stats: [
-          'x7.5 Tier Bulk',
-          'x1.45 Stats',
-          'x3.75 Tier Luck',
-          'x1.45 Prism Rune Speed'
+          { text: 'x7.5 Tier Bulk', color: '#eab308' },
+          { text: 'x1.45 Stats', color: '#38bdf8' },
+          { text: 'x3.75 Tier Luck', color: '#4ade80' },
+          { text: 'x1.45 Prism Rune Speed', color: '#22d3ee' }
         ]
       },
       {
@@ -2077,9 +1921,9 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/zyfley.png',
         stats: [
-          'x1.45 Prism Rune Luck',
-          'x1.45 Stats',
-          'x1.95 Prism'
+          { text: 'x1.45 Prism Rune Luck', color: '#4ade80' },
+          { text: 'x1.45 Stats', color: '#38bdf8' },
+          { text: 'x1.95 Prism', color: '#38bdf8' }
         ]
       },
       {
@@ -2089,10 +1933,10 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/lucky666.png',
         stats: [
-          'x1.5 Prism Rune Luck',
-          'x1.45 Stats',
-          'x1.45 Minion Capsule Luck',
-          'x1.3 Expedition Luck'
+          { text: 'x1.5 Prism Rune Luck', color: '#4ade80' },
+          { text: 'x1.45 Stats', color: '#38bdf8' },
+          { text: 'x1.45 Minion Capsule Luck', color: '#22c55e' },
+          { text: 'x1.3 Expedition Luck', color: '#4ade80' }
         ]
       },
       {
@@ -2102,57 +1946,291 @@
         source: 'Developer Minions (Minion pack 1, Starred)',
         img: './pets/connor.png',
         stats: [
-          'x1.45 Stats',
-          'x1.65 Prism Rune Bulk',
-          '+2 Minion Capsule Open'
+          { text: 'x1.45 Stats', color: '#38bdf8' },
+          { text: 'x1.65 Prism Rune Bulk', color: '#f59e0b' },
+          { text: '+2 Minion Capsule Open', color: '#eab308' }
         ]
       }
     ];
 
-    const grid = document.getElementById('petsGrid');
-    const filterWrap = document.getElementById('petFilters');
+    function renderMinionsSection(grid, t) {
+      const wrap = document.createElement("div");
+      wrap.style.gridColumn = "1 / -1";
+      wrap.style.width = "100%";
 
-    function renderPets(group) {
-      if (!grid) return;
-      const list = group === 'all' ? PETS_DATA : PETS_DATA.filter((p) => p.group === group);
-      grid.innerHTML = list.map((pet) => {
-        const chanceHtml = pet.chance
-          ? `<span class="pet-chance">Chance: ${pet.chance}</span>`
-          : '';
-        const sourceHtml = pet.source
-          ? `<span class="pet-source">${pet.source}</span>`
-          : '';
-        const statsHtml = pet.stats.map((s) => {
-          if (typeof s === 'string') {
-            return `<div>${s}</div>`;
-          }
-          const styleAttr = s.color ? ` style="color: ${s.color};"` : '';
-          return `<div${styleAttr}>${s.text}</div>`;
-        }).join('');
+      const header = document.createElement("div");
+      header.className = "pets-header";
 
-        return `
-          <article class="pet-card">
-            <div class="pet-top-meta">${chanceHtml}${sourceHtml}</div>
-            <img class="pet-portrait" src="${pet.img}" alt="${pet.name}" loading="lazy">
-            <div class="pet-name">${pet.name}</div>
-            <div class="pet-stats">${statsHtml}</div>
-          </article>
-        `;
-      }).join('');
+      const titleEl = document.createElement("div");
+      titleEl.className = "pets-title";
+      titleEl.textContent = t.petsTitle || "Pets";
+      header.appendChild(titleEl);
+
+      const filters = document.createElement("div");
+      filters.className = "pets-filters";
+
+      const filterDefs = [
+        { group: "all", label: t.petFilterAll || "All" },
+        { group: "secret", label: t.petFilterSecret || "Secret Minions" },
+        { group: "giveaway", label: t.petFilterGiveaway || "Giveaway (Pack 2)" },
+        { group: "dev", label: t.petFilterDev || "Developer (Pack 1)" }
+      ];
+
+      let currentGroup = "all";
+      const petsGrid = document.createElement("div");
+      petsGrid.className = "pets-grid";
+
+      function drawPetsCards() {
+        const list = currentGroup === "all"
+          ? PETS_DATA
+          : PETS_DATA.filter(function (p) { return p.group === currentGroup; });
+
+        petsGrid.innerHTML = list.map(function (pet) {
+          const chanceHtml = pet.chance
+            ? `<span class="pet-chance">${t.petChancePrefix || "Chance:"} ${pet.chance}</span>`
+            : "";
+          const sourceHtml = pet.source
+            ? `<span class="pet-source">${pet.source}</span>`
+            : "";
+          const statsHtml = (pet.stats || []).map(function (s) {
+            if (typeof s === "string") {
+              return `<div>${s}</div>`;
+            }
+            const styleAttr = s.color ? ` style="color: ${s.color};"` : "";
+            return `<div${styleAttr}>${s.text}</div>`;
+          }).join("");
+
+          return `
+            <article class="pet-card">
+              <div class="pet-top-meta">${chanceHtml}${sourceHtml}</div>
+              <img class="pet-portrait" src="${pet.img}" alt="${pet.name}" loading="lazy">
+              <div class="pet-name">${pet.name}</div>
+              <div class="pet-stats">${statsHtml}</div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      filterDefs.forEach(function (fd) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pet-filter-btn" + (fd.group === currentGroup ? " active" : "");
+        btn.dataset.group = fd.group;
+        btn.textContent = fd.label;
+        btn.addEventListener("click", function () {
+          currentGroup = fd.group;
+          filters.querySelectorAll(".pet-filter-btn").forEach(function (b) {
+            b.classList.toggle("active", b.dataset.group === currentGroup);
+          });
+          drawPetsCards();
+        });
+        filters.appendChild(btn);
+      });
+
+      header.appendChild(filters);
+      wrap.appendChild(header);
+      drawPetsCards();
+      wrap.appendChild(petsGrid);
+      grid.appendChild(wrap);
     }
 
-    if (filterWrap) {
-      filterWrap.addEventListener('click', (e) => {
-        const btn = e.target.closest('.pet-filter-btn');
-        if (!btn) return;
-        filterWrap.querySelectorAll('.pet-filter-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderPets(btn.dataset.group || 'all');
+
+    function draw() {
+      const t = UI_TEXT[currentLang] || UI_TEXT.ru;
+      document.documentElement.lang = currentLang;
+
+      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+
+      const langTag = document.getElementById("langTag");
+      langTag.textContent = currentLang.toUpperCase();
+
+      applyStaticTranslations(t);
+
+      document.getElementById("realmLabel").textContent = t.selectRealm;
+
+      const realmRow = document.getElementById("realmRow");
+      const subLabel = document.getElementById("subLabel");
+      const subRow = document.getElementById("subRow");
+      const eventBanner = document.getElementById("eventBanner");
+      const eventBannerText = document.getElementById("eventBannerText");
+      const eventCountInfo = document.getElementById("eventCountInfo");
+      const boardTitle = document.getElementById("boardTitle");
+      const grid = document.getElementById("runesGrid");
+
+      realmRow.innerHTML = "";
+      realmKeys.forEach(function (rKey) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "game-btn" + (rKey === "Events" ? " event-main" : "") + (rKey === activeRealm ? " active" : "");
+        b.textContent = rKey === "Events" ? t.eventsBtnLabel : (rKey === "Others" ? t.othersBtnLabel : rKey);
+        b.onclick = function () {
+          activeRealm = rKey;
+          activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
+          discordFeedbackMsg = "";
+          draw();
+        };
+        realmRow.appendChild(b);
+      });
+
+      const supportBtn = document.getElementById("supportBtn");
+      if (supportBtn) {
+        supportBtn.textContent = t.supportBtnLabel;
+        supportBtn.classList.toggle("active", activeRealm === CREATOR_TAB_KEY);
+      }
+
+      if (activeRealm === CREATOR_TAB_KEY) {
+        subLabel.style.display = "none";
+        subRow.style.display = "none";
+        eventBanner.style.display = "none";
+        boardTitle.textContent = t.creatorBoardTitle;
+        grid.innerHTML = "";
+        renderCreatorSection(grid, t);
+        return;
+      }
+
+      subLabel.style.display = "block";
+      subRow.style.display = "flex";
+
+      const subs = Object.keys(RUNE_DATA[activeRealm]);
+      if (!subs.includes(activeSub)) activeSub = subs[0];
+
+      const isEvents = activeRealm === "Events";
+      subLabel.textContent = isEvents ? t.selectEventTab : t.selectTab;
+      eventBanner.style.display = isEvents ? "flex" : "none";
+      if (isEvents) {
+        eventBannerText.innerHTML = t.eventBannerHtml;
+        const totalEventRunes = subs.reduce(function (acc, k) {
+          return acc + (RUNE_DATA.Events[k] || []).length;
+        }, 0);
+        eventCountInfo.textContent = t.eventCount(subs.length, totalEventRunes);
+      }
+
+      subRow.innerHTML = "";
+      subs.forEach(function (sKey) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "game-btn sub-btn" + (sKey === activeSub ? " active" : "");
+        b.textContent = sKey;
+        b.onclick = function () {
+          activeSub = sKey;
+          draw();
+        };
+        subRow.appendChild(b);
+      });
+
+      if (activeRealm === "Others" && activeSub === "Minions") {
+        boardTitle.textContent = activeRealm + " • " + activeSub;
+        grid.innerHTML = "";
+        renderMinionsSection(grid, t);
+        return;
+      }
+
+      const rawList = RUNE_DATA[activeRealm][activeSub] || [];
+      const q = searchQuery.trim().toLowerCase();
+      let list = rawList;
+
+      if (q) {
+        list = list.filter(function (item) {
+          return (
+            item.name.toLowerCase().includes(q) ||
+            item.rarity.toLowerCase().includes(q) ||
+            item.chance.toLowerCase().includes(q) ||
+            formatLevelDisplay(item.lvl).toLowerCase().includes(q) ||
+            (item.stats || []).some(function (st) {
+              return st.toLowerCase().includes(q);
+            })
+          );
+        });
+      }
+
+      boardTitle.textContent =
+        activeRealm +
+        " • " +
+        activeSub +
+        " (" +
+        list.length +
+        (q ? " / " + rawList.length : "") +
+        " " +
+        t.runesWord +
+        ")";
+
+      grid.innerHTML = "";
+
+      if (list.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = t.emptyTab(searchQuery);
+        grid.appendChild(empty);
+        return;
+      }
+
+      list.forEach(function (item) {
+        const card = document.createElement("div");
+        card.className = "rune-card " + (item.color || "card-slate");
+
+        if (item.note) {
+          const tag = document.createElement("div");
+          tag.className = "note-tag";
+          tag.textContent = translateNote(item.note);
+          card.appendChild(tag);
+        }
+
+        const nEl = document.createElement("div");
+        nEl.className = "r-name";
+        nEl.textContent = item.name;
+        card.appendChild(nEl);
+
+        const rarEl = document.createElement("div");
+        const isNoob = String(item.rarity || "").toLowerCase().includes("noob");
+        rarEl.className = "r-rarity " + (isNoob ? "rar-noob" : "rar-basic");
+        rarEl.textContent = item.rarity;
+        card.appendChild(rarEl);
+
+        const chEl = document.createElement("div");
+        chEl.className = "r-chance";
+        chEl.textContent = item.chance;
+        card.appendChild(chEl);
+
+        const hasMax = isMaxRune(item);
+        const lvEl = document.createElement("div");
+        lvEl.className = "r-lvl" + (hasMax ? "" : " is-nonmax");
+        lvEl.textContent = formatLevelDisplay(item.lvl);
+        card.appendChild(lvEl);
+
+        const statsList = item.stats || [];
+        const stBox = document.createElement("div");
+        stBox.className = "r-stats";
+        statsList.forEach(function (line) {
+          stBox.appendChild(buildStatElement(line));
+        });
+        card.appendChild(stBox);
+
+        grid.appendChild(card);
       });
     }
 
-    renderPets('all');
-  })();
-</script>
+    document.getElementById("searchInput").addEventListener("input", function (e) {
+      if (activeRealm === CREATOR_TAB_KEY) {
+        activeRealm = realmKeys[0];
+        activeSub = Object.keys(RUNE_DATA[activeRealm])[0];
+      }
+      searchQuery = e.target.value || "";
+      draw();
+    });
+
+    document.getElementById("langBtn").addEventListener("click", function () {
+      currentLang = currentLang === "ru" ? "en" : "ru";
+      discordFeedbackMsg = "";
+      draw();
+    });
+
+    document.getElementById("supportBtn").addEventListener("click", function () {
+      activeRealm = CREATOR_TAB_KEY;
+      discordFeedbackMsg = "";
+      draw();
+    });
+
+    draw();
+  </script>
 </body>
 </html>
