@@ -750,471 +750,7 @@
     <div class="nav-panel">
       <div id="realmLabel" class="nav-label">Выбери мир или категорию (Realm / Events)</div>
       <div id="realmRow" class="btn-row"></div>
-<style>
-  .pets-panel {
-    margin: 14px 0 18px;
-    background: #131620;
-    border: 1px solid #262b3d;
-    border-radius: 12px;
-    padding: 14px;
-  }
-  .pets-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .pets-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #f3f4f6;
-  }
-  .pets-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .pet-filter-btn {
-    background: #1a1f2e;
-    color: #cbd5e1;
-    border: 1px solid #2e354b;
-    border-radius: 8px;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .pet-filter-btn.active {
-    background: rgba(124, 58, 237, 0.22);
-    border-color: #7c3aed;
-    color: #ffffff;
-  }
-  .pets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-  }
-  .pet-card {
-    background: #0e1118;
-    border: 1px solid #232838;
-    border-radius: 10px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-  .pet-top-meta {
-    font-size: 11.5px;
-    line-height: 1.35;
-    color: #9ca3af;
-  }
-  .pet-chance {
-    display: block;
-    font-weight: 700;
-    color: #fbbf24;
-  }
-  .pet-source {
-    display: block;
-    color: #cbd5e1;
-  }
-  .pet-portrait {
-    width: 84px;
-    height: 84px;
-    object-fit: contain;
-    border-radius: 8px;
-    background: #161a24;
-    padding: 4px;
-  }
-  .pet-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-  .pet-stats {
-    width: 100%;
-    text-align: left;
-    font-size: 12px;
-    line-height: 1.4;
-    color: #e5e7eb;
-    border-top: 1px solid #1e2333;
-    padding-top: 8px;
-  }
-  .pet-stats-group {
-    margin-top: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #93c5fd;
-  }
-  .pet-stats div {
-    margin: 1px 0;
-  }
-</style>
 
-<section id="petsSection" class="pets-panel">
-  <div class="pets-header">
-    <div class="pets-title">Pets</div>
-    <div class="pets-filters" id="petFilters">
-      <button type="button" class="pet-filter-btn active" data-group="all">All</button>
-      <button type="button" class="pet-filter-btn" data-group="secret">Secret Minions</button>
-      <button type="button" class="pet-filter-btn" data-group="giveaway">Giveaway (Pack 2)</button>
-      <button type="button" class="pet-filter-btn" data-group="dev">Developer (Pack 1)</button>
-    </div>
-  </div>
-  <div id="petsGrid" class="pets-grid"></div>
-</section>
-
-<script>
-  (() => {
-    const PETS_DATA = [
-      {
-        group: 'secret',
-        name: 'Ronaldo',
-        chance: '1/200k',
-        source: 'Football Event capsule',
-        img: './pets/ronaldo.png',
-        stats: [
-          'x12 Planks',
-          'x34 Goals',
-          'x4.3 Ash',
-          'x1.55 Rune Speed',
-          'x83.5 Oof',
-          'x2.38 Gem',
-          'x2.25 Rune Bulk'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Ghostdeer',
-        chance: '1/25k',
-        source: 'Halloween Capsule (Halloween Event)',
-        img: './pets/ghostdeer.png',
-        stats: [
-          'x34 Spell Luck',
-          'x166 Pumpkin XP',
-          'x826 Ghost',
-          'x56 Spells',
-          'x1.83 H.Rune Bulk',
-          'x166 Pumpkin',
-          'x17.5 Spell Bulk',
-          'x17.5 Dark Magic'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
-          'x1.27 Item Generator Amount',
-          'x1.27 Candy Corn',
-          'x1.83 H.Rune Luck',
-          'x83.5 Sweets',
-          'x826 Spooky Oof'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Galaxy',
-        chance: '1/100k',
-        source: 'Classic capsule in Hacker area',
-        img: './pets/galaxy.png',
-        stats: [
-          'x1.83 Wheat',
-          'x1.66 Rune Speed',
-          'x10.9 Hack Points',
-          'x1.55 Prism',
-          'x83.5 Oof',
-          'x56 Cash',
-          'x2.38 Rune Bulk'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Vampire',
-        chance: '1/250k',
-        source: 'Super Capsule in Realm 2',
-        img: './pets/vampire.png',
-        stats: [
-          'x67 Water',
-          'x9.8 Planks',
-          'x6.5 Ash',
-          'x2.6 Rune Bulk',
-          'x1.72 Rune Speed',
-          'x111 Oof',
-          'x4.3 Gem',
-          'x34 Ice'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Anubis',
-        chance: '1/667k',
-        source: 'Ancient Capsule in Realm 3',
-        img: './pets/anubis.png',
-        stats: [
-          'x12 Bones',
-          'x1.94 Rune Speed',
-          'x4.84 Sand',
-          'x6.5 Souls',
-          'x194 Oof',
-          'x47.8 Meat',
-          'x2.93 Rune Bulk'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Luminus',
-        chance: '1/4m',
-        source: 'Cosmic Capsule in Realm 4',
-        img: './pets/luminus.png',
-        stats: [
-          'x4.84 Blackholes',
-          'x3.75 Rune Bulk',
-          'x2.16 Rune Speed',
-          'x1.14 Prism',
-          'x5.95 Planets',
-          'x225 Oof',
-          'x34 Alien Cash',
-          'x2.65 Knowledge'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Duality',
-        chance: '1/20m',
-        source: 'Yin Yang Capsule in Yin Yang Realm',
-        img: './pets/duality.png',
-        stats: [
-          'x10 Yang',
-          'x2.21 Rune Speed',
-          'x1.2 Prism',
-          'x5 Yin',
-          'x2 Chips',
-          'x240 Oof',
-          'x3.92 Rune Bulk'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Kraken',
-        chance: '1/200m',
-        source: 'Underwater Capsule in Realm 5',
-        img: './pets/kraken.png',
-        stats: [
-          'x7.6 Air',
-          'x2.31 Rune Speed',
-          'x12 Pearl',
-          'x14.2 Bubbles',
-          'x304 Oof',
-          'x12 Trash Cash',
-          'x9.8 Oil',
-          'x5.4 Sea Points'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
-          'x304 Oof',
-          'x12 Trash Cash',
-          'x9.8 Oil',
-          'x5.4 Sea Points',
-          'x7.6 Coral',
-          'x1.35 Prism',
-          'x4.3 Rune Bulk'
-        ]
-      },
-      {
-        group: 'secret',
-        name: 'Zeus',
-        chance: '1/1.25b',
-        source: 'Olympus Capsule in Realm 6',
-        img: './pets/zeus.png',
-        stats: [
-          'x5.4 Burden',
-          'x2.1 Starlight',
-          'x1.5 Prism',
-          'x441 Oof',
-          'x4.3 Momentum',
-          'x3.48 Radiance',
-          'x2.93 Thunder',
-          'x2.54 Rune Speed'
-        ],
-        extraStatsLabel: 'Variant / Second Roll',
-        extraStats: [
-          'x4.3 Momentum',
-          'x3.48 Radiance',
-          'x2.93 Thunder',
-          'x2.54 Rune Speed',
-          'x4.3 Glory',
-          'x1.55 Authority',
-          'x4.84 Rune Bulk'
-        ]
-      },
-      {
-        group: 'giveaway',
-        name: 'Awp',
-        chance: '',
-        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
-        img: './pets/awp.png',
-        stats: [
-          'x2 Tier Luck',
-          'x5 Coin',
-          'x4 Tier Bulk'
-        ]
-      },
-      {
-        group: 'giveaway',
-        name: 'D4n0',
-        chance: '',
-        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
-        img: './pets/d4n0.png',
-        stats: [
-          'x1.75 Pickaxe Damage',
-          'x1.2 Stats',
-          'x1.75 Prism'
-        ]
-      },
-      {
-        group: 'giveaway',
-        name: 'Fruit',
-        chance: '',
-        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
-        img: './pets/fruit.png',
-        stats: [
-          'x1.2 Prism Rune Luck',
-          'x1.35 Prism Rune Bulk',
-          'x1.75 Prism'
-        ]
-      },
-      {
-        group: 'giveaway',
-        name: 'Nobo',
-        chance: '',
-        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
-        img: './pets/nobo.png',
-        stats: [
-          'x3 Yin',
-          'x1.2 Stats',
-          'x1.5 Sea Points',
-          'x5 Yang'
-        ]
-      },
-      {
-        group: 'dev',
-        name: 'Ghoulax',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/ghoulax.png',
-        stats: [
-          'x1.3 Minion Capsule Luck',
-          'x1.51 Stats',
-          'x800 Oof',
-          'x750 Cash'
-        ]
-      },
-      {
-        group: 'dev',
-        name: '0hxsn',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/ohxsn.png',
-        stats: [
-          'x1.45 Stats',
-          'x12 Coin',
-          'x1.65 Rune Luck'
-        ]
-      },
-      {
-        group: 'dev',
-        name: 'Tehleat',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/tehleat.png',
-        stats: [
-          'x7.5 Tier Bulk',
-          'x1.45 Stats',
-          'x3.75 Tier Luck',
-          'x1.45 Prism Rune Speed'
-        ]
-      },
-      {
-        group: 'dev',
-        name: 'Zyfley',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/zyfley.png',
-        stats: [
-          'x1.45 Prism Rune Luck',
-          'x1.45 Stats',
-          'x1.95 Prism'
-        ]
-      },
-      {
-        group: 'dev',
-        name: 'Lucky666',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/lucky666.png',
-        stats: [
-          'x1.5 Prism Rune Luck',
-          'x1.45 Stats',
-          'x1.45 Minion Capsule Luck',
-          'x1.3 Expedition Luck'
-        ]
-      },
-      {
-        group: 'dev',
-        name: 'Connor',
-        chance: '',
-        source: 'Developer Minions (Minion pack 1, Starred)',
-        img: './pets/connor.png',
-        stats: [
-          'x1.45 Stats',
-          'x1.65 Prism Rune Bulk',
-          '+2 Minion Capsule Open'
-        ]
-      }
-    ];
-
-    const grid = document.getElementById('petsGrid');
-    const filterWrap = document.getElementById('petFilters');
-
-    function renderPets(group) {
-      if (!grid) return;
-      const list = group === 'all' ? PETS_DATA : PETS_DATA.filter((p) => p.group === group);
-      grid.innerHTML = list.map((pet) => {
-        const chanceHtml = pet.chance
-          ? `<span class="pet-chance">Chance: ${pet.chance}</span>`
-          : '';
-        const sourceHtml = pet.source
-          ? `<span class="pet-source">${pet.source}</span>`
-          : '';
-        const statsHtml = pet.stats.map((s) => `<div>${s}</div>`).join('');
-        const extraHtml = pet.extraStats && pet.extraStats.length
-          ? `<div class="pet-stats-group">${pet.extraStatsLabel || 'Extra'}:</div>${pet.extraStats.map((s) => `<div>${s}</div>`).join('')}`
-          : '';
-
-        return `
-          <article class="pet-card">
-            <div class="pet-top-meta">${chanceHtml}${sourceHtml}</div>
-            <img class="pet-portrait" src="${pet.img}" alt="${pet.name}" loading="lazy">
-            <div class="pet-name">${pet.name}</div>
-            <div class="pet-stats">${statsHtml}${extraHtml}</div>
-          </article>
-        `;
-      }).join('');
-    }
-
-    if (filterWrap) {
-      filterWrap.addEventListener('click', (e) => {
-        const btn = e.target.closest('.pet-filter-btn');
-        if (!btn) return;
-        filterWrap.querySelectorAll('.pet-filter-btn').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderPets(btn.dataset.group || 'all');
-      });
-    }
-
-    renderPets('all');
-  })();
-</script>
       <div id="subLabel" class="nav-label">Выбери вкладку</div>
       <div id="subRow" class="btn-row"></div>
     </div>
@@ -2156,5 +1692,471 @@
 
     draw();
   </script>
+  <style>
+  .pets-panel {
+    max-width: 1380px;
+    margin: 18px auto 0;
+    background: #131620;
+    border: 1px solid #262b3d;
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .pets-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .pets-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f4f6;
+  }
+  .pets-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pet-filter-btn {
+    background: #1a1f2e;
+    color: #cbd5e1;
+    border: 1px solid #2e354b;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pet-filter-btn.active {
+    background: rgba(124, 58, 237, 0.22);
+    border-color: #7c3aed;
+    color: #ffffff;
+  }
+  .pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .pet-card {
+    background: #0e1118;
+    border: 1px solid #232838;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+  .pet-top-meta {
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: #9ca3af;
+  }
+  .pet-chance {
+    display: block;
+    font-weight: 700;
+    color: #fbbf24;
+  }
+  .pet-source {
+    display: block;
+    color: #cbd5e1;
+  }
+  .pet-portrait {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #161a24;
+    padding: 4px;
+  }
+  .pet-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .pet-stats {
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #e5e7eb;
+    border-top: 1px solid #1e2333;
+    padding-top: 8px;
+  }
+  .pet-stats-group {
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #93c5fd;
+  }
+  .pet-stats div {
+    margin: 1px 0;
+  }
+</style>
+
+<section id="petsSection" class="pets-panel">
+  <div class="pets-header">
+    <div class="pets-title">Pets</div>
+    <div class="pets-filters" id="petFilters">
+      <button type="button" class="pet-filter-btn active" data-group="all">All</button>
+      <button type="button" class="pet-filter-btn" data-group="secret">Secret Minions</button>
+      <button type="button" class="pet-filter-btn" data-group="giveaway">Giveaway (Pack 2)</button>
+      <button type="button" class="pet-filter-btn" data-group="dev">Developer (Pack 1)</button>
+    </div>
+  </div>
+  <div id="petsGrid" class="pets-grid"></div>
+</section>
+
+<script>
+  (() => {
+    const PETS_DATA = [
+      {
+        group: 'secret',
+        name: 'Ronaldo',
+        chance: '1/200k',
+        source: 'Football Event capsule',
+        img: './pets/ronaldo.png.jpg',
+        stats: [
+          'x12 Planks',
+          'x34 Goals',
+          'x4.3 Ash',
+          'x1.55 Rune Speed',
+          'x83.5 Oof',
+          'x2.38 Gem',
+          'x2.25 Rune Bulk'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Ghostdeer',
+        chance: '1/25k',
+        source: 'Halloween Capsule (Halloween Event)',
+        img: './pets/ghostdeer.png',
+        stats: [
+          'x34 Spell Luck',
+          'x166 Pumpkin XP',
+          'x826 Ghost',
+          'x56 Spells',
+          'x1.83 H.Rune Bulk',
+          'x166 Pumpkin',
+          'x17.5 Spell Bulk',
+          'x17.5 Dark Magic'
+        ],
+        extraStatsLabel: 'Variant / Second Roll',
+        extraStats: [
+          'x1.27 Item Generator Amount',
+          'x1.27 Candy Corn',
+          'x1.83 H.Rune Luck',
+          'x83.5 Sweets',
+          'x826 Spooky Oof'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Galaxy',
+        chance: '1/100k',
+        source: 'Classic capsule in Hacker area',
+        img: './pets/galaxy.png',
+        stats: [
+          'x1.83 Wheat',
+          'x1.66 Rune Speed',
+          'x10.9 Hack Points',
+          'x1.55 Prism',
+          'x83.5 Oof',
+          'x56 Cash',
+          'x2.38 Rune Bulk'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Vampire',
+        chance: '1/250k',
+        source: 'Super Capsule in Realm 2',
+        img: './pets/vampire.png',
+        stats: [
+          'x67 Water',
+          'x9.8 Planks',
+          'x6.5 Ash',
+          'x2.6 Rune Bulk',
+          'x1.72 Rune Speed',
+          'x111 Oof',
+          'x4.3 Gem',
+          'x34 Ice'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Anubis',
+        chance: '1/667k',
+        source: 'Ancient Capsule in Realm 3',
+        img: './pets/anubis.png',
+        stats: [
+          'x12 Bones',
+          'x1.94 Rune Speed',
+          'x4.84 Sand',
+          'x6.5 Souls',
+          'x194 Oof',
+          'x47.8 Meat',
+          'x2.93 Rune Bulk'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Luminus',
+        chance: '1/4m',
+        source: 'Cosmic Capsule in Realm 4',
+        img: './pets/luminus.png',
+        stats: [
+          'x4.84 Blackholes',
+          'x3.75 Rune Bulk',
+          'x2.16 Rune Speed',
+          'x1.14 Prism',
+          'x5.95 Planets',
+          'x225 Oof',
+          'x34 Alien Cash',
+          'x2.65 Knowledge'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Duality',
+        chance: '1/20m',
+        source: 'Yin Yang Capsule in Yin Yang Realm',
+        img: './pets/duality.png',
+        stats: [
+          'x10 Yang',
+          'x2.21 Rune Speed',
+          'x1.2 Prism',
+          'x5 Yin',
+          'x2 Chips',
+          'x240 Oof',
+          'x3.92 Rune Bulk'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Kraken',
+        chance: '1/200m',
+        source: 'Underwater Capsule in Realm 5',
+        img: './pets/kraken.png',
+        stats: [
+          'x7.6 Air',
+          'x2.31 Rune Speed',
+          'x12 Pearl',
+          'x14.2 Bubbles',
+          'x304 Oof',
+          'x12 Trash Cash',
+          'x9.8 Oil',
+          'x5.4 Sea Points'
+        ],
+        extraStatsLabel: 'Variant / Second Roll',
+        extraStats: [
+          'x304 Oof',
+          'x12 Trash Cash',
+          'x9.8 Oil',
+          'x5.4 Sea Points',
+          'x7.6 Coral',
+          'x1.35 Prism',
+          'x4.3 Rune Bulk'
+        ]
+      },
+      {
+        group: 'secret',
+        name: 'Zeus',
+        chance: '1/1.25b',
+        source: 'Olympus Capsule in Realm 6',
+        img: './pets/zeus.png',
+        stats: [
+          'x5.4 Burden',
+          'x2.1 Starlight',
+          'x1.5 Prism',
+          'x441 Oof',
+          'x4.3 Momentum',
+          'x3.48 Radiance',
+          'x2.93 Thunder',
+          'x2.54 Rune Speed'
+        ],
+        extraStatsLabel: 'Variant / Second Roll',
+        extraStats: [
+          'x4.3 Momentum',
+          'x3.48 Radiance',
+          'x2.93 Thunder',
+          'x2.54 Rune Speed',
+          'x4.3 Glory',
+          'x1.55 Authority',
+          'x4.84 Rune Bulk'
+        ]
+      },
+      {
+        group: 'giveaway',
+        name: 'Awp',
+        chance: '',
+        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
+        img: './pets/awp.png',
+        stats: [
+          'x2 Tier Luck',
+          'x5 Coin',
+          'x4 Tier Bulk'
+        ]
+      },
+      {
+        group: 'giveaway',
+        name: 'D4n0',
+        chance: '',
+        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
+        img: './pets/d4n0.png',
+        stats: [
+          'x1.75 Pickaxe Damage',
+          'x1.2 Stats',
+          'x1.75 Prism'
+        ]
+      },
+      {
+        group: 'giveaway',
+        name: 'Fruit',
+        chance: '',
+        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
+        img: './pets/fruit.png',
+        stats: [
+          'x1.2 Prism Rune Luck',
+          'x1.35 Prism Rune Bulk',
+          'x1.75 Prism'
+        ]
+      },
+      {
+        group: 'giveaway',
+        name: 'Nobo',
+        chance: '',
+        source: 'Giveaway Minions (Minion Pack 2, Unstarred)',
+        img: './pets/nobo.png',
+        stats: [
+          'x3 Yin',
+          'x1.2 Stats',
+          'x1.5 Sea Points',
+          'x5 Yang'
+        ]
+      },
+      {
+        group: 'dev',
+        name: 'Ghoulax',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/ghoulax.png',
+        stats: [
+          'x1.3 Minion Capsule Luck',
+          'x1.51 Stats',
+          'x800 Oof',
+          'x750 Cash'
+        ]
+      },
+      {
+        group: 'dev',
+        name: '0hxsn',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/ohxsn.png',
+        stats: [
+          'x1.45 Stats',
+          'x12 Coin',
+          'x1.65 Rune Luck'
+        ]
+      },
+      {
+        group: 'dev',
+        name: 'Tehleat',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/tehleat.png',
+        stats: [
+          'x7.5 Tier Bulk',
+          'x1.45 Stats',
+          'x3.75 Tier Luck',
+          'x1.45 Prism Rune Speed'
+        ]
+      },
+      {
+        group: 'dev',
+        name: 'Zyfley',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/zyfley.png',
+        stats: [
+          'x1.45 Prism Rune Luck',
+          'x1.45 Stats',
+          'x1.95 Prism'
+        ]
+      },
+      {
+        group: 'dev',
+        name: 'Lucky666',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/lucky666.png',
+        stats: [
+          'x1.5 Prism Rune Luck',
+          'x1.45 Stats',
+          'x1.45 Minion Capsule Luck',
+          'x1.3 Expedition Luck'
+        ]
+      },
+      {
+        group: 'dev',
+        name: 'Connor',
+        chance: '',
+        source: 'Developer Minions (Minion pack 1, Starred)',
+        img: './pets/connor.png',
+        stats: [
+          'x1.45 Stats',
+          'x1.65 Prism Rune Bulk',
+          '+2 Minion Capsule Open'
+        ]
+      }
+    ];
+
+    const grid = document.getElementById('petsGrid');
+    const filterWrap = document.getElementById('petFilters');
+
+    function renderPets(group) {
+      if (!grid) return;
+      const list = group === 'all' ? PETS_DATA : PETS_DATA.filter((p) => p.group === group);
+      grid.innerHTML = list.map((pet) => {
+        const chanceHtml = pet.chance
+          ? `<span class="pet-chance">Chance: ${pet.chance}</span>`
+          : '';
+        const sourceHtml = pet.source
+          ? `<span class="pet-source">${pet.source}</span>`
+          : '';
+        const statsHtml = pet.stats.map((s) => `<div>${s}</div>`).join('');
+        const extraHtml = pet.extraStats && pet.extraStats.length
+          ? `<div class="pet-stats-group">${pet.extraStatsLabel || 'Extra'}:</div>${pet.extraStats.map((s) => `<div>${s}</div>`).join('')}`
+          : '';
+
+        return `
+          <article class="pet-card">
+            <div class="pet-top-meta">${chanceHtml}${sourceHtml}</div>
+            <img class="pet-portrait" src="${pet.img}" alt="${pet.name}" loading="lazy">
+            <div class="pet-name">${pet.name}</div>
+            <div class="pet-stats">${statsHtml}${extraHtml}</div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    if (filterWrap) {
+      filterWrap.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pet-filter-btn');
+        if (!btn) return;
+        filterWrap.querySelectorAll('.pet-filter-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPets(btn.dataset.group || 'all');
+      });
+    }
+
+    renderPets('all');
+  })();
+</script>
 </body>
 </html>
