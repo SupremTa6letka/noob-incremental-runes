@@ -685,20 +685,66 @@
     <button class="code-chip" data-code="THANKS4JOINING">THANKS4JOINING</button>
   </div>
 </details>
+<style>
+  .cursor-toast {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: #141824;
+    color: #a7f3d0;
+    border: 1px solid #10b981;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, -135%) scale(0.95);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .cursor-toast.show {
+    opacity: 1;
+    transform: translate(-50%, -155%) scale(1);
+  }
+</style>
+
+<div id="codeCursorToast" class="cursor-toast" aria-hidden="true"></div>
 
 <script>
-  document.querySelectorAll('.code-chip').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const code = btn.dataset.code;
-      navigator.clipboard.writeText(code);
-      btn.textContent = '✓ Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = code;
-        btn.classList.remove('copied');
-      }, 1200);
+  (() => {
+    const toast = document.getElementById('codeCursorToast');
+    let hideTimer = null;
+
+    function showToastNearCursor(text, clientX, clientY) {
+      if (!toast) return;
+      const x = Math.min(window.innerWidth - 90, Math.max(90, clientX));
+      const y = Math.min(window.innerHeight - 20, Math.max(36, clientY));
+
+      toast.textContent = text;
+      toast.style.left = `${x}px`;
+      toast.style.top = `${y}px`;
+      toast.classList.add('show');
+
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1100);
+    }
+
+    document.querySelectorAll('.code-chip').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const code = btn.dataset.code || btn.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(code).catch(() => {});
+        }
+        showToastNearCursor(`Copied: ${code}`, e.clientX, e.clientY);
+      });
     });
-  });
+  })();
 </script>
 
     <div class="nav-panel">
